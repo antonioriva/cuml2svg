@@ -1,0 +1,110 @@
+S -> diagram DIAGRAM_TYPE nome_diagramma { CLASSES_DEFINITIONS LINKS_DEFINITIONS }
+DIAGRAM_TYPE -> uml
+
+OPTIONAL_COMMENT -> epsilon
+OPTIONAL_COMMENT -> comment
+COMMENT -> comment
+
+CLASSES_DEFINITIONS -> CLASS_DEFINITION CLASSES_DEFINITION 
+CLASSES_DEFINITIONS -> epsilon
+CLASS_DEFINITION -> OPTIONAL_COMMENT CLASS_TYPE class_name { RELATIONS ATTRIBUTES METHODS }
+
+RELATIONS -> relations { RELATIONS_DEFINITIONS }
+RELATIONS_DEFINITIONS -> RELATIONS_DEFINITION RELATIONS_DEFINITIONS
+RELATIONS_DEFINITIONS -> epsilon
+RELATIONS_DEFINITION -> OPTIONAL_COMMENT extends class_name CLASSES_LIST
+RELATIONS_DEFINITION -> OPTIONAL_COMMENT use class_name RELATION_CARDINALITY CLASSES_LIST_WITH_CARDINALITY
+RELATIONS_DEFINITION -> OPTIONAL_COMMENT include class_name CLASSES_LIST
+
+CLASSES_LIST -> , class_name CLASSES_LIST
+CLASSES_LIST -> epsilon
+CLASSES_LIST_WITH_CARDINALITY -> , class_name RELATION_CARDINALITY CLASSES_LIST_WITH_CARDINALITY
+CLASSES_LIST_WITH_CARDINALITY -> epsilon
+
+RELATION_CARDINALITY -> (CARDINALITY, CARDINALITY)
+CARDINALITY -> integer
+CARDINALITY -> epsilon
+CARDINALITY -> infinity
+
+ATTRIBUTES -> ATTRIBUTE ATTRIBUTES
+ATTRIBUTES -> epsilon
+ATTRIBUTE -> COMMENT VISIBILITY ATTRIBUTE_TYPE attribute_name DEFAULT_VALUE
+
+DEFAULT_VALUE -> epsilon
+DEFAULT_VALUE -> = value
+
+METHODS -> METHOD METHODS
+METHODS -> epsilon
+METHOD -> COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
+METHOD_ARGS -> METHOD_ARG METHOD_ARGS
+METHOD_ARGS -> epsilon
+METHOD_ARG -> COMMENT arg_name DEFAULT_VALUE
+
+CLASS_TYPE -> interface
+CLASS_TYPE -> class
+CLASS_TYPE -> abstract 
+
+/*
+#LINKS_DEFINITIONS -> LINK_DEFINITION LINKS_DEFINITIONS
+#LINKS_DEFINITIONS -> epsilon
+
+#LINK_DEFINITION -> link LINK_TYPE link_name { LINK }
+#LINK -> class_name LINK_DIRECTION class_name
+
+#LINK_DIRECTION -> '->'
+#LINK_DIRECTION -> '<->'
+#LINK_DIRECTION -> '<-'
+
+#LINK_TYPE -> subclass
+#LINK_TYPE -> use
+#LINK_TYPE -> ...
+*/
+
+diagram uml "nome_diagramma"{
+ 
+        #
+        class_type nome_classe{
+         	
+         	relations{
+        		#
+        		extends nome_classe,nome_classe
+        		
+        		#
+        		use nome_classe(1,n) , nome_classe(n,n)
+        		
+        		#
+        		include nome_classe
+        	}
+                
+                #
+		visibility type nome_attributo=value
+		
+		#
+		visibility type nome_metodo{
+		
+			#
+			tipo nome_arg1=value
+		
+			#
+			tipo nome_arg1
+		}
+	}
+	
+	        #
+        class_type nome_classe{
+                
+		#
+		visibility type nome_attributo=value
+		
+		#
+		visibility type nome_metodo{
+		
+			#
+			tipo nome_arg1=value
+		
+			#
+			tipo nome_arg1
+		}
+	}
+	
+}
