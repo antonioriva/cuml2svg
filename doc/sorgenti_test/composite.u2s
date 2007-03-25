@@ -1,0 +1,43 @@
+diagram uml “composite pattern” {
+	class Client{
+		relations{
+			use Component
+		}
+	}
+	interface Component{
+		public operation{
+		}
+		public add{
+			Component
+		}
+		public remove{
+			Component
+		}
+		public getChild{
+			int
+		}
+	}
+	class Leaf{
+		relations{
+			implement Component
+		}
+		public operation{
+		}
+	}
+	class Composite{
+		relations{
+			implement Component
+		}
+		public operation{
+		}
+		public add{
+			Component
+		}
+		public remove{
+			Component
+		}
+		public getChild{
+			int
+		}
+	}
+}

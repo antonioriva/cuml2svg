@@ -1,0 +1,36 @@
+diagram uml “facade pattern”{
+	class Client{
+		relations{
+			use Facade
+		}
+	}
+	class Facade{
+		relations{
+			use Behind1, Behind2, Behind3, Behind4
+		}
+		public facadeMethod{
+		}
+	}
+	class Behind1{
+		public behindMethod1{
+			float
+		}
+	}
+	class Behind2{
+		public behindMethod2{
+			int
+		}
+	}
+	class Behind3{
+		public behindMethod3_1{
+			Array
+		}
+		public behindMethod3_2{
+			List
+		}
+	}
+	class Behind4{
+		public behindMethod1{
+		}
+	}
+}
