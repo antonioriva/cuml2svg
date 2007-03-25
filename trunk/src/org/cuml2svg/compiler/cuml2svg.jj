@@ -50,16 +50,12 @@ SKIP : {
 //S → diagram DIAGRAM_TYPE diagram_name { PACKAGE_DEFINITIONS }
 void s() :  {}
 {
-  <DIAGRAM> diagram_type() <DIAGRAM_NAME> "{" package_definitions() "}"
-	
+	<DIAGRAM> diagram_type() <DIAGRAM_NAME> "{" package_definitions() "}"
 }
-
-
 
 TOKEN:{
 	<DIAGRAM: "diagram">
 }
-
 
 ////////////////////
 //DIAGRAM_TYPE → uml
@@ -77,7 +73,7 @@ TOKEN:{
 //PACKAGE_DEFINITIONS → PACKAGE_DEFINITION PACKAGE_DEFINITIONS
 //PACKAGE_DEFINITIONS → ε
 void package_definitions():{}{
-	package_definition() package_definitions()
+	package_definition()  package_definitions()
 | 	{}
 }
 
@@ -109,14 +105,17 @@ void comment():{}{
 }
 
 TOKEN:{
-	<COMMENT: "//"(~[])*>
+	<COMMENT: "//"(~["\n"])*
+|			 "#"(~["\n"])*
+|			"/*"(~[])*"*/"
+>
 }
 
 ////////////////////////////////////////////////////////////
 //CLASS_DEFINITIONS → CLASS_DEFINITION CLASS_DEFINITIONS
 //CLASS_DEFINITIONS → ε
 void class_definitions():{}{
-	class_definition() class_definitions()
+	class_definition()  class_definitions() 
 |	{}
 }
 
@@ -134,6 +133,7 @@ void class_name():{}{
 //RELATIONS → relations { RELATION_DEFINITIONS }
 void relations():{}{
 	<RELATIONS> "{" relation_definitions() "}"
+|	{}
 }
 
 TOKEN:{
@@ -144,7 +144,7 @@ TOKEN:{
 //RELATIONS_DEFINITIONS → RELATION_DEFINITION RELATION_DEFINITIONS
 //RELATIONS_DEFINITIONS → ε
 void relation_definitions():{}{
-	relation_definition() relation_definitions()
+	relation_definition() relation_definitions() ";"
 |	{}
 }
 
@@ -184,7 +184,8 @@ TOKEN:{
 //CLASS_LIST_WITH_CARDINALITY → , class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
 //CLASS_LIST_WITH_CARDINALITY → ε
 void class_list_with_cardinality():{}{
-	class_name() relation_cardinality() class_list_with_cardinality()
+	"," class_name() relation_cardinality() class_list_with_cardinality()
+|	{}
 }
 
 
@@ -256,7 +257,7 @@ void methods():{}{
 /////////////////////////////////////////////////////////////////////
 //METHOD → COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
 void method():{}{
-	comment() visibility() method_type() method_name() "{" method_args() "}"
+	optional_comment() visibility() method_type() method_name() "(" method_args() ")"
 }
 void method_name():{}{
 	<VARIABLE>
@@ -264,8 +265,16 @@ void method_name():{}{
 
 ////////////////////////////////////////////////
 //METHOD_ARGS → METHOD_ARG METHOD_ARGS_ITERATION
+//void method_args():{}{
+//	method_arg() mathod_args_iteration()
+//}
+
+////////////////////////////////////////////////
+//METHOD_ARGS → METHOD_ARG METHOD_ARGS
+//METHOD_ARGS → ε 
 void method_args():{}{
-	method_arg() mathod_args_iteration()
+	method_arg() method_args()
+|	{}
 }
 
 ////////////////////////////////////////////////////////////
@@ -279,7 +288,7 @@ void mathod_args_iteration():{}{
 //////////////////////////////////////////////////////
 //METHOD_ARG → COMMENT ARG_TYPE arg_name DEFAULT_VALUE
 void method_arg():{}{
-	comment() arg_type() arg_name() default_value()
+	optional_comment() arg_type() arg_name() default_value()
 }
 void arg_name():{}{
 	<VARIABLE>
