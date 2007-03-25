@@ -14,7 +14,7 @@ import java.io.FileNotFoundException;
 public class cuml2svg {
   public static void main(String args[]) throws ParseException {
       try {
-    	 cuml2svg parser = new cuml2svg(new FileInputStream("doc/esempi/visitor"));
+    	 cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/composite.u2s"));
     	parser.s();
         
       } catch (FileNotFoundException e1) {
@@ -50,11 +50,22 @@ SKIP : {
 //S → diagram DIAGRAM_TYPE diagram_name { PACKAGE_DEFINITIONS }
 void s() :  {}
 {
-	<DIAGRAM> diagram_type() <DIAGRAM_NAME> "{" package_definitions() "}"
+	<DIAGRAM> diagram_type() <DIAGRAM_NAME> "{" diagram_content() "}"
 }
 
 TOKEN:{
 	<DIAGRAM: "diagram">
+}
+
+////////////////////////////////////////////////////////////////
+//DIAGRAM_CONTENT → PACKAGE_DEFINITIONS
+//DIAGRAM_CONTENT → CLASS_DEFINITIONS
+//enable to skip package definition for 1 package diagram
+//force the diagram to have at leas one package or one classes
+void diagram_content() :  {}
+{
+	class_definition() class_definitions()
+|	package_definition() package_definitions()
 }
 
 ////////////////////
@@ -74,7 +85,7 @@ TOKEN:{
 //PACKAGE_DEFINITIONS → ε
 void package_definitions():{}{
 	package_definition()  package_definitions()
-| 	{}
+|	{}
 }
 
 ///////////////////////////////////////////////////////////////////
