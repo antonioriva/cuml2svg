@@ -5,6 +5,7 @@
 
 options {
   JDK_VERSION = "1.5";
+  LOOKAHEAD=2;
 }
 PARSER_BEGIN(cuml2svg)
 package org.cuml2svg.compiler;
@@ -14,7 +15,7 @@ import java.io.FileNotFoundException;
 public class cuml2svg {
   public static void main(String args[]) throws ParseException {
       try {
-    	 cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/composite.u2s"));
+    	 cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/visitor.u2sm"));
     	parser.s();
         
       } catch (FileNotFoundException e1) {
@@ -33,28 +34,44 @@ public class cuml2svg {
 PARSER_END(cuml2svg)
 
 SKIP : {
- 	" "
+	< ("//" (~["\n"])* ) >
+|	< ("/*" (~[])*  "*/") >
+| 	" "
 |	"\r"
 |	"\t"
 |	"\n"
+
 }
 
+TOKEN:{
+//	<COMMENT: "//"(~["\n"])* | "#"(~["\n"])* |	"/*"(~[])*"*/" >
+
+ 	<COMMENT: ("#"(~["\n"])*)>
+|	<PACKAGE: "package">
+|	<RELATIONS: "relations">
+|	<ATTRIBUTES: "attributes">	
+|	<METHOD: "methods" >
+|	<VISIBILITY: "private" | "public" | "protected">
+| 	<RELATION_TYPE: "use" | "extend" |"associate"| "include"| "composed"| "realize"| "depend" >
+|	<CLASS_TYPE: "interface" | "class">
+|	<EQUAL:"=">
 
 
+|   <NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
+|	<STRING: "\"" (~[])* "\"">
+|	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+>
+}
 
 
 
 
 
 ////////////////////////////////////////////////////////////////
-//S → diagram DIAGRAM_TYPE diagram_name { PACKAGE_DEFINITIONS }
+//S → diagram DIAGRAM_TYPE diagram_name { DIAGRAM_CONTENT }
 void s() :  {}
 {
-	<DIAGRAM> diagram_type() <DIAGRAM_NAME> "{" diagram_content() "}"
-}
-
-TOKEN:{
-	<DIAGRAM: "diagram">
+	model()
+//|	layout()
 }
 
 ////////////////////////////////////////////////////////////////
@@ -62,52 +79,24 @@ TOKEN:{
 //DIAGRAM_CONTENT → CLASS_DEFINITIONS
 //enable to skip package definition for 1 package diagram
 //force the diagram to have at leas one package or one classes
-void diagram_content() :  {}
+void model() :  {}
 {
-	class_definition() class_definitions()
-|	package_definition() package_definitions()
+	(class_definition())+ 
+|	(package_definition())+
 }
 
-////////////////////
-//DIAGRAM_TYPE → uml
-void diagram_type(): {}
-{
-	<DIAGRAM_TYPE>
-}
 
-TOKEN:{
-	<DIAGRAM_TYPE: "uml">
-//|	<DIAGRAM_TYPE: "petrinet">
-}
 
-////////////////////////////////////////////////////////////////
-//PACKAGE_DEFINITIONS → PACKAGE_DEFINITION PACKAGE_DEFINITIONS
-//PACKAGE_DEFINITIONS → ε
-void package_definitions():{}{
-	package_definition()  package_definitions()
-|	{}
-}
 
 ///////////////////////////////////////////////////////////////////
 //PACKAGE_DEFINITION → package package_name { CLASS_DEFINITIONS }
 void package_definition():{}{
-	<PACKAGE> package_name() "{" class_definitions() "}"
+	<PACKAGE> package_name() "{" (class_definition())+ "}"
 }
 void package_name():{}{
 	<VARIABLE>
 }
-TOKEN:{
-	<PACKAGE: "package">
-}
 
-
-////////////////////////////
-//OPTIONAL_COMMENT → ε
-//OPTIONAL_COMMENT → COMMENT
-void optional_comment():{}{
-	comment()
-|	{}
-}
 
 ///////////////////
 //COMMENT → comment
@@ -115,48 +104,23 @@ void comment():{}{
 	<COMMENT>
 }
 
-TOKEN:{
-	<COMMENT: "//"(~["\n"])*
-|			 "#"(~["\n"])*
-|			"/*"(~[])*"*/"
->
-}
-
-////////////////////////////////////////////////////////////
-//CLASS_DEFINITIONS → CLASS_DEFINITION CLASS_DEFINITIONS
-//CLASS_DEFINITIONS → ε
-void class_definitions():{}{
-	class_definition()  class_definitions() 
-|	{}
-}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //CLASS_DEFINITION → OPTIONAL_COMMENT VISIBILITY CLASS_TYPE class_name { RELATIONS ATTRIBUTES METHODS }
 void class_definition():{}{
-	optional_comment() visibility() class_type() class_name() "{" relations() attributes() methods() "}"
+	(comment())? (visibility())? <CLASS_TYPE> class_name() "{" (relations())? (attributes())? (methods())? "}"
 }
 void class_name():{}{
 	<VARIABLE>
 }
 
+
+
 /////////////////////////////////////////////////
 //RELATIONS → relations { RELATION_DEFINITIONS }
 void relations():{}{
-	<RELATIONS> "{" relation_definitions() "}"
-|	{}
-}
-
-TOKEN:{
-	<RELATIONS: "relations">
-}
-
-///////////////////////////////////////////////////////////////////
-//RELATIONS_DEFINITIONS → RELATION_DEFINITION RELATION_DEFINITIONS
-//RELATIONS_DEFINITIONS → ε
-void relation_definitions():{}{
-	relation_definition() relation_definitions() ";"
-|	{}
+	<RELATIONS> "{" (relation())+ "}"
 }
 
 
@@ -164,40 +128,10 @@ void relation_definitions():{}{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
-void relation_definition():{}{
-	optional_comment() relation_type() class_name() relation_cardinality() class_list_with_cardinality()
+void relation():{}{
+	(comment())? <RELATION_TYPE> class_name() (relation_cardinality())? ("," class_name() (relation_cardinality())? )* ";"
 }
 
-///////////////////////////
-//RELATION_TYPE → use
-//RELATION_TYPE → extend
-//RELATION_TYPE → associate
-//RELATION_TYPE → include
-//RELATION_TYPE → composed
-//RELATION_TYPE → realize
-//RELATION_TYPE → depend
-void relation_type(): {}
-{
-	<RELATION_TYPE>
-}
-
-TOKEN:{
-	<RELATION_TYPE: "use" 
-| "extend"
-| "associate"
-| "include"
-| "composed"
-| "realize"
-| "depend" >
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//CLASS_LIST_WITH_CARDINALITY → , class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
-//CLASS_LIST_WITH_CARDINALITY → ε
-void class_list_with_cardinality():{}{
-	"," class_name() relation_cardinality() class_list_with_cardinality()
-|	{}
-}
 
 
 
@@ -205,8 +139,7 @@ void class_list_with_cardinality():{}{
 //RELATION_CARDINALITY → ε
 //RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
 void relation_cardinality():{}{
-	"(" cardinality() "," cardinality() "," cardinality() ")"
-|	{}
+	"(" (cardinality())? "," (cardinality())? "," (cardinality())? ")"
 }
 
 //////////////////////
@@ -214,24 +147,31 @@ void relation_cardinality():{}{
 //CARDINALITY → ε
 void cardinality():{}{
 	<STRING>
-|	{}
 }
 
-///////////////////////////////////
-//ATTRIBUTES → ATTRIBUTE ATTRIBUTES
+////////////////////////////////////
+//ATTRIBUTES → ATTRIBUTE_DEFINITIONS
 //ATTRIBUTES → ε
 void attributes():{}{
-	attribute()	attributes()
-|	{}
+	<ATTRIBUTES> "{" (attribute())+ "}"
 }
+
+
 
 ////////////////////////////////////////////////////////////////////////////
 //ATTRIBUTE → COMMENT VISIBILITY ATTRIBUTE_TYPE attribute_name DEFAULT_VALUE
 void attribute():{}{
-	comment() visibility() attribute_type() attribute_name() default_value()
+	(comment())? 
+	(visibility())? 
+	(typed_attribute_name() | attribute_name() )
+	(default_value())? ";"
 }
 void attribute_name():{}{
 	<VARIABLE>
+}
+
+void typed_attribute_name():{}{
+	<VARIABLE> <VARIABLE>
 }
 
 /////////////////////////
@@ -239,12 +179,9 @@ void attribute_name():{}{
 //DEFAULT_VALUE → EQUAL_TO
 void default_value():{}{	
 	<EQUAL> equal_to()
-|	{}
 }
 
-TOKEN:{
-	<EQUAL:"=">
-}
+
 
 
 /////////////////////////
@@ -257,76 +194,50 @@ void equal_to():{}{
 
 
 //////////////////////////
-//METHODS → METHOD METHODS
+//METHODS → METHOD_DEFINITION
 //METHODS → ε
 void methods():{}{
-	method() methods()
-|	{}
+	<METHOD> "{" (method())+ "}" 
 }
+
+
 
 
 /////////////////////////////////////////////////////////////////////
-//METHOD → COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
+//METHOD → OPTIONAL_COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
+//METHOD_TYPE → TYPE
 void method():{}{
-	optional_comment() visibility() method_type() method_name() "(" method_args() ")"
+	(comment())? 
+	(visibility())? 
+	(typed_method() | method_name())
+	"(" (method_arg() ("," method_arg())* )? ")" ";"
 }
+
+void typed_method():{}{
+	<VARIABLE> <VARIABLE>
+}
+
 void method_name():{}{
-	<VARIABLE>
-}
-
-////////////////////////////////////////////////
-//METHOD_ARGS → METHOD_ARG METHOD_ARGS_ITERATION
-//void method_args():{}{
-//	method_arg() mathod_args_iteration()
-//}
-
-////////////////////////////////////////////////
-//METHOD_ARGS → METHOD_ARG METHOD_ARGS
-//METHOD_ARGS → ε 
-void method_args():{}{
-	method_arg() method_args()
-|	{}
-}
-
-////////////////////////////////////////////////////////////
-//METHOD_ARGS_ITERATION → , METHOD_ARG METHOD_ARGS_ITERATION
-//METHOD_ARGS_ITERATION → ε 
-void mathod_args_iteration():{}{
-	method_arg() mathod_args_iteration()
-|	{}
+	<VARIABLE> 
 }
 
 //////////////////////////////////////////////////////
 //METHOD_ARG → COMMENT ARG_TYPE arg_name DEFAULT_VALUE
+//ARG_TYPE → TYPE
 void method_arg():{}{
-	optional_comment() arg_type() arg_name() default_value()
+	(comment())? 
+	(typed_arg() | arg_name())
+	(default_value())?
 }
 void arg_name():{}{
 	<VARIABLE>
 }
 
-
-/////////////////////////
-//CLASS_TYPE → interface
-//CLASS_TYPE → class
-void class_type():{}{
-	<CLASS_TYPE>
+void typed_arg():{}{
+	<VARIABLE> <VARIABLE>
 }
 
-TOKEN:{
-	<CLASS_TYPE: "interface" | "class">
-}
 
-////////////////////
-//METHOD_TYPE → TYPE
-void method_type():{}{
-	type()
-}
-
-//ARG_TYPE → TYPE
-void arg_type():{}{
-	type()
-}
 
 ///////////////////////
 //ATTRIBUTE_TYPE → TYPE
@@ -340,7 +251,7 @@ void attribute_type():{}{
 //TYPE → ε 
 void type ():{}
 {
-	<STRING> | {}
+	<VARIABLE> 
 }
 
 //////////////////////
@@ -350,40 +261,9 @@ void type ():{}
 //VISIBILITY → ε 
 void visibility ():{}
 {
-	<VISIBILITY> | {}
+	<VISIBILITY>
 }
 
-TOKEN:{
-	<VISIBILITY: "private" | "public" | "protected">
-}
-
-
-//################################################################
-
-///////////////
-// NUMBER token
-TOKEN : {
-    < NUMBER: ( <DIGIT> )+ >
-|   < #DIGIT: ["0" - "9"] >
-}
-
-////////////////
-// VARIABLE token
-TOKEN:{
-	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+>
-}
-
-TOKEN:{
-	<DIAGRAM_NAME: <STRING> >
-}
-
-
-
-///////////////
-// STRING token
-TOKEN :{
-	<STRING: "\""(~["\""])*"\"">
-}
 
 
 
