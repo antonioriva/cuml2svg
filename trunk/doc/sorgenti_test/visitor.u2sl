@@ -1,0 +1,23 @@
+import visitor.u2sd;
+
+[
+	[
+		@layout 1x*;
+		@group gruppo1
+		@position 
+		@backgroud-color #76f76f 
+		@color #76f76f
+		[
+			@layout 1x*
+			@layout *x1
+			@layout *x* // sqrt del numero di classi
+			@layout overlapped
+			@style 
+			@position 159px 200cm;
+			class visitor.Visitor;
+		]
+		[class visitor.Visitor]
+		[class visitor.ConcreteVisitor1]
+		[class visitor.ConcreteVisitor2]
+	]
+]
