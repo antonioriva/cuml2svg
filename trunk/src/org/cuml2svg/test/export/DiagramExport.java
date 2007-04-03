@@ -17,7 +17,7 @@ public class DiagramExport {
 	 */
 	public static void main(String[] args) {
 		Diagram diagram = new Diagram("Diagramma di prova",Diagram.DiagramType.UML);
-		org.cuml2svg.model.Class firstClass = new org.cuml2svg.model.Class();
+		org.cuml2svg.model.Class firstClass = new org.cuml2svg.model.Class("Classe di prova");
 		diagram.addObject(firstClass);
 		
 		SVGExporter exporter = new SVGExporter(diagram,"output/FirstStep.svg");
