@@ -6,6 +6,7 @@
 options {
   JDK_VERSION = "1.5";
   LOOKAHEAD=2;
+  STATIC=false;
 }
 PARSER_BEGIN(cuml2svg)
 package org.cuml2svg.compiler;
@@ -15,8 +16,8 @@ import java.io.FileNotFoundException;
 public class cuml2svg {
   public static void main(String args[]) throws ParseException {
       try {
-    	 cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/visitor.u2sm"));
-    	parser.s();
+    	 	cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/visitor.u2sl"));
+    		parser.s();
         
       } catch (FileNotFoundException e1) {
     		e1.printStackTrace();
@@ -35,13 +36,17 @@ PARSER_END(cuml2svg)
 
 SKIP : {
 	< ("//" (~["\n"])* ) >
-|	< ("/*" (~[])*  "*/") >
+//|	< ("/*" (~[])*  "*/") >
 | 	" "
 |	"\r"
 |	"\t"
 |	"\n"
 
 }
+
+MORE : { "/*": IN_COMMENT } 
+< IN_COMMENT > MORE : {<  ~[] > } 
+< IN_COMMENT > SKIP : {  "*/": DEFAULT }
 
 TOKEN:{
 //	<COMMENT: "//"(~["\n"])* | "#"(~["\n"])* |	"/*"(~[])*"*/" >
@@ -51,16 +56,57 @@ TOKEN:{
 |	<RELATIONS: "relations">
 |	<ATTRIBUTES: "attributes">	
 |	<METHOD: "methods" >
-|	<VISIBILITY: "private" | "public" | "protected">
+//|	<IMPORT: "import">
+}
+
+TOKEN:{
+	<IMPORT: "import"> : IMPORT_STATE
+}
+<IMPORT_STATE>  TOKEN : { <FILE_NAME: (~[";"])* > : DEFAULT  }
+
+
+TOKEN:{
+	<LAYOUT: "@layout"> : LAYOUT_STATE
+} 
+<LAYOUT_STATE> SKIP:{	< ("//" (~["\n"])* ) >
+| 	" "
+|	"\r"
+|	"\t"
+|	"\n"}
+<LAYOUT_STATE>  TOKEN : { <LAYOUT_CARD: ((["1"-"9"])(["0"-"9"])* "x*") | ("*x" (["1"-"9"])(["0"-"9"])*) | ("*x*") > : DEFAULT  }
+<LAYOUT_STATE>  TOKEN : { <OVERLAPPED: "overlapped"> : DEFAULT}
+
+
+
+
+TOKEN:{
+	<VISIBILITY: "private" | "public" | "protected">
 | 	<RELATION_TYPE: "use" | "extend" |"associate"| "include"| "composed"| "realize"| "depend" >
 |	<CLASS_TYPE: "interface" | "class">
 |	<EQUAL:"=">
+}
+
+TOKEN:{
+	<STYLE: "@style">
+|	<POSITION: "@position">
+|	<GROUP: "@group">
+|	<BACKGROUND_COLOR: "@backgroud-color">
+|	<COLOR: "@color">
 
 
-|   <NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
+}
+
+TOKEN:{
+	< SIZE:(["0"-"9"])+ (("cm")|("px"))? >	
+|  	<NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
 |	<STRING: "\"" (~[])* "\"">
 |	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+>
+|	<HEX_COLOR: ("#" (["0"-"9", "a"-"f", "A"-"F"]){3} (["0"-"9", "a"-"f", "A"-"F"]){3})>
+|	<CLASS_VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("."(["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*>
 }
+
+
+
 
 
 
@@ -70,9 +116,84 @@ TOKEN:{
 //S → diagram DIAGRAM_TYPE diagram_name { DIAGRAM_CONTENT }
 void s() :  {}
 {
-	model()
-//|	layout()
+//	model()
+	{System.out.println("Starting parsing");}
+	layout()
 }
+
+void layout():{}{
+	(import_definition())+	
+	groups()
+}
+
+void import_definition():{
+	Token n;
+}{
+	<IMPORT> 
+	n = <FILE_NAME> {
+		try{
+			System.out.println("Importing model file: " + n.image);
+			cuml2svg modelParser = new cuml2svg(new FileInputStream(n.image.trim()));
+    		modelParser.model();
+    	} catch (FileNotFoundException e1) {
+    		e1.printStackTrace();
+    	}
+	}
+	";"
+	
+	
+}
+
+void main_group():{}{
+	"[" groups() "]"
+}
+
+void groups():{}{
+	"[" ((group_preference())* 
+		(groups()	 | group_definition()	)+) "]"
+}
+
+void group_preference():{}{
+	
+	layout_preference()
+|	position_preference()
+//|	group_preference()
+|	color_preference()
+
+
+}
+
+void group_definition():{}{
+	"[" <CLASS_TYPE> (<VARIABLE>|<CLASS_VARIABLE>) "]"
+
+}
+
+void layout_preference():{}{
+	
+	<LAYOUT>  <LAYOUT_CARD> 
+|	<LAYOUT> <OVERLAPPED> 
+}
+
+void position_preference():{}{
+	<POSITION> coordinate() coordinate()
+}
+
+
+
+
+
+void coordinate():{}{
+	<SIZE>
+
+}
+
+void color_preference():{}{
+	<COLOR> <HEX_COLOR>
+|	<BACKGROUND_COLOR> <HEX_COLOR>
+}
+	
+
+
 
 ////////////////////////////////////////////////////////////////
 //DIAGRAM_CONTENT → PACKAGE_DEFINITIONS
