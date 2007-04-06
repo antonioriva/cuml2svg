@@ -1,0 +1,36 @@
+diagram "class layout test"[
+		group gruppo1[
+			@group group2
+			@layout 1x*;
+			@layout *x1;
+			@layout *x*; // sqrt del numero di classi
+			@layout overlapped
+			@style 
+			@position 159px 200cm;
+		]
+]{
+	
+	class Grid1[
+			@group gruppo1
+			@position 
+			@backgroud-color #76f76f 
+			@color #76f76f
+	]{
+		
+		relation{
+		}
+		
+		attributes[
+			@collapsed
+		]{
+		
+		}
+		
+		method[
+			@collapsed
+		]{
+		}
+		
+	}
+	
+}
