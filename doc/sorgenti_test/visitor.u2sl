@@ -1,20 +1,20 @@
-import visitor.u2sd;
+import doc/sorgenti_test/visitor.u2sm;
 
 [
 	[
-		@layout 1x*;
-		@group gruppo1
-		@position 
-		@backgroud-color #76f76f 
-		@color #76f76f
+		@layout overlapped
+		//@group gruppo1
+		@position 159px 200cm
+		//@backgroud-color #76f76f 
+		//@color #76f76f
 		[
-			@layout 1x*
+			@layout 10x*
 			@layout *x1
 			@layout *x* // sqrt del numero di classi
 			@layout overlapped
-			@style 
-			@position 159px 200cm;
-			class visitor.Visitor;
+			//@style 
+			@position 159px 200
+			[class visitor.Visitor]
 		]
 		[class visitor.Visitor]
 		[class visitor.ConcreteVisitor1]
