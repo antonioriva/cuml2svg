@@ -13,11 +13,19 @@ package org.cuml2svg.compiler;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class cuml2svg {
   public static void main(String args[]) throws ParseException {
       try {
     	 	cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/visitor.u2sl"));
     		parser.s();
+    		
+    		for (Iterator iter = classList.iterator(); iter.hasNext();) {
+					String element =  (String)iter.next();
+					System.out.println(element);
+			}
         
       } catch (FileNotFoundException e1) {
     		e1.printStackTrace();
@@ -31,7 +39,11 @@ public class cuml2svg {
       }
   
 }
+static ArrayList<String> classList= new ArrayList<String>();
+static String currentPackage="";
 }
+
+	      	
 PARSER_END(cuml2svg)
 
 SKIP : {
@@ -114,7 +126,8 @@ TOKEN:{
 
 ////////////////////////////////////////////////////////////////
 //S → diagram DIAGRAM_TYPE diagram_name { DIAGRAM_CONTENT }
-void s() :  {}
+void s() :  {
+}
 {
 //	model()
 	{System.out.println("Starting parsing");}
@@ -211,11 +224,16 @@ void model() :  {}
 
 ///////////////////////////////////////////////////////////////////
 //PACKAGE_DEFINITION → package package_name { CLASS_DEFINITIONS }
-void package_definition():{}{
-	<PACKAGE> package_name() "{" (class_definition())+ "}"
+void package_definition():{String packageName;}{
+	<PACKAGE> 
+	packageName=package_name(){this.currentPackage=packageName;} 
+	
+	"{" (class_definition())+ "}" 
+	{this.currentPackage="";}
+	
 }
-void package_name():{}{
-	<VARIABLE>
+String package_name():{Token packageName;}{
+	packageName=<VARIABLE> {return packageName.image; }
 }
 
 
@@ -229,11 +247,30 @@ void comment():{}{
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //CLASS_DEFINITION → OPTIONAL_COMMENT VISIBILITY CLASS_TYPE class_name { RELATIONS ATTRIBUTES METHODS }
-void class_definition():{}{
-	(comment())? (visibility())? <CLASS_TYPE> class_name() "{" (relations())? (attributes())? (methods())? "}"
+void class_definition():{
+	String name;
+}{
+	(comment())? (visibility())? <CLASS_TYPE> 
+	
+	
+	name=class_name()
+	{
+		if(this.currentPackage.length()>0){
+			name= this.currentPackage+"."+name;
+		}
+		if(this.classList.contains(name)){
+			System.out.println("ERRORE: "+name+" already exist!");
+		}
+		this.classList.add(name);
+	} 
+	
+	"{" (relations())? (attributes())? (methods())? "}"
 }
-void class_name():{}{
-	<VARIABLE>
+
+String class_name():{Token name;}{
+	name=<VARIABLE> {
+		return name.image;
+	}
 }
 
 
