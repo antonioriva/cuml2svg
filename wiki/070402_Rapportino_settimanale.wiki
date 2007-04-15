@@ -17,13 +17,12 @@ Interfaccia grafica
 
  
 == Stato del progetto in relazione al Gantt presentato ==
-
+[http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
 [descrizione e commento di questioni notevoli affrontate e come queste impattano sul lavoro]
 [breve analisi dello stato del progetto rispetto ai tempi preventivati … fattori e motivi che determinano un disallineamento rispetto alle previsioni] 
 
 ==Note e Commenti==
 
 [varie … opzionale] 
-
 
 
