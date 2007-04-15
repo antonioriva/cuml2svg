@@ -1,0 +1,29 @@
+= Nome Progetto: cUml2svg =
+== Data Lezione: 02/04/2007 ==
+
+== Attività svolta ==
+
+Compilatore
+ * Aggiornamento della grammatica alla nuova soluzione model/template
+ * Inizio raccolta dati dalle produzioni e primi controlli sulla semantica
+
+Generazione Svg
+ *.....
+
+Interfaccia grafica
+ *.....
+
+== Problemi emersi e Soluzioni adottate (o ipotizzate) ==
+
+ 
+== Stato del progetto in relazione al Gantt presentato ==
+
+[descrizione e commento di questioni notevoli affrontate e come queste impattano sul lavoro]
+[breve analisi dello stato del progetto rispetto ai tempi preventivati … fattori e motivi che determinano un disallineamento rispetto alle previsioni] 
+
+==Note e Commenti==
+
+[varie … opzionale] 
+
+
+
