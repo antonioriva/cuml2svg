@@ -8,7 +8,8 @@ Compilatore
  * Inizio raccolta dati dalle produzioni e primi controlli sulla semantica
 
 Generazione Svg
- *.....
+ * Creata versione base delle classi per la traduzione in SVG
+ * Implementato motore di template Velocity
 
 Interfaccia grafica
  *.....
@@ -24,5 +25,4 @@ Interfaccia grafica
 ==Note e Commenti==
 
 [varie … opzionale] 
-
 
