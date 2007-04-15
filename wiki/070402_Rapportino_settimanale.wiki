@@ -22,7 +22,8 @@ Interfaccia grafica
 [descrizione e commento di questioni notevoli affrontate e come queste impattano sul lavoro]
 [breve analisi dello stato del progetto rispetto ai tempi preventivati … fattori e motivi che determinano un disallineamento rispetto alle previsioni] 
 
+Riguardo la parte di traduzione in SVG possiamo dire di essere allineati con i tempi previsti. Siamo un po' in ritardo con la creazione dei modelli in SVG da utilizzare ma solo perchè si è scelto di crearli insieme alle classi. Nella creazione delle classi infatti siamo abbastanza in anticipo con i tempi.
+
 ==Note e Commenti==
 
 [varie … opzionale] 
-
