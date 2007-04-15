@@ -12,10 +12,12 @@ Generazione Svg
  * Implementato motore di template Velocity
 
 Interfaccia grafica
- *.....
+ * Ricerca di guide per la creazione di Plugins
+ * Esecuzione di plugins standard
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
-
+Per iniziare a creare un editor per Eclipse, che aiuti nella scrittura del codice per Svg2Uml, sono stati provati degli esempi di plugins standard (hello world). il problema che abbiamo incontrato è la mancanza di guide aggiornate alla versione 3.2 di eclipse. Le guide che interessano il nostro progetto, inoltre, risultano frammentate, come anche la guida ufficiale di eclipse 3.2, che riporta informazioni in grossa parte carenti..
+Abbiamo ora a disposizione il libro “Professional Eclipse 3”, sul quale ci baseremo per sviluppare il nostro editor
  
 == Stato del progetto in relazione al Gantt presentato ==
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
@@ -24,6 +26,9 @@ Interfaccia grafica
 
 Riguardo la parte di traduzione in SVG possiamo dire di essere allineati con i tempi previsti. Siamo un po' in ritardo con la creazione dei modelli in SVG da utilizzare ma solo perchè si è scelto di crearli insieme alle classi. Nella creazione delle classi infatti siamo abbastanza in anticipo con i tempi.
 
+Riguardo alla parte dell'interfaccia grafica il progetto risulta in ritardo rispetto al tempo stabilito a causa della mancanza di supporto (guide e tutorial) allo sviluppo. Ora abbiamo a disposizione una guida per Eclipse su cui basarci. 
+
 ==Note e Commenti==
 
 [varie … opzionale] 
+
