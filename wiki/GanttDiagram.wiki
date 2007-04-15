@@ -1,4 +1,0 @@
-= Gantt Diagram =
-
-
-http://www.antonioriva.net/linguaggi/gantt/workspace//cuml2svg/doc/gantt/gantt.jpg
