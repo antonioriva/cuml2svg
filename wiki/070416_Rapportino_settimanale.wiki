@@ -4,21 +4,26 @@
 == Attività svolta ==
 
 ===Compilatore===
- * ...
+ * aggiunti nuovi metodi di raccolta delle informazioni
+ * collegamento con il gestore svg
+ * ulteriore separazione degli stati
+ * raccolta informazioni nelle classi gestite
 
 ===Generazione Svg===
- * ...
+ * aggiornamento classi wrapper
+ * prima versione alpha funzionante del visualizzatore di classi
+ * aggiornamento template del modello svg della classe
 
 ===Interfaccia grafica===
- * ...
+ * text-highlight dei commenti multilinea e a linea singola
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
 ===Compilatore===
-...
+ * Nulla da segnalare
 
 ===Generazione Svg===
-...
+ * Nulla da segnalare
 
 ===Interfaccia grafica===
 ...
