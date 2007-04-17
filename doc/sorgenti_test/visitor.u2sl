@@ -11,7 +11,8 @@ import doc/sorgenti_test/visitor.u2sm;
 		[
 			@layout 10x*
 			@layout *x1
-			@layout *x* // sqrt del numero di classi
+			@layout *x* 
+			// sqrt del numero di classi
 			@layout overlapped
 			//@style 
 			@position 159px 200

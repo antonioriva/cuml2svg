@@ -15,32 +15,108 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.cuml2svg.model.*;
+import org.cuml2svg.svg.SVGExporter;
+import org.cuml2svg.model.Class;
 
 public class cuml2svg {
-  public static void main(String args[]) throws ParseException {
-      try {
-    	 	cuml2svg parser = new cuml2svg(new FileInputStream("doc/sorgenti_test/visitor.u2sl"));
+	static ArrayList<Class> declaredClassList= new ArrayList<Class>();
+	static Diagram diagram=new Diagram("",Diagram.DiagramType.UML);
+	static String currentPackage="";
+	static String currentFileName="";
+	static boolean warningFlag= true;
+	static boolean noticeFlag= true;
+	static boolean errorFlag= true;
+	
+	
+	public cuml2svg(String input, String output,boolean warningFlag,boolean noticeFlag,boolean errorFlag){
+		this.warningFlag=warningFlag;
+		this.noticeFlag=noticeFlag;
+		this.errorFlag=errorFlag;
+		try {
+      		cuml2svg parser = new cuml2svg(new FileInputStream(input));
+    	 	currentFileName=input;
     		parser.s();
     		
-    		for (Iterator iter = classList.iterator(); iter.hasNext();) {
-					String element =  (String)iter.next();
-					System.out.println(element);
-			}
+    		 /*for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
+                Class element =  (Class)iter.next();
+             	System.out.println(element.getClassName());
+             	
+             	
+             }*/
+             
+		
+			 SVGExporter exporter = new SVGExporter(diagram,output);
+			 exporter.export();
         
-      } catch (FileNotFoundException e1) {
+      	} catch (FileNotFoundException e1) {
     		e1.printStackTrace();
-    }catch (Exception e) {
-        System.out.println("NOK.");
-        System.out.println(e.getMessage());
-      } 
-      catch (Error e) {
-        System.out.println("Oops.");
-        System.out.println(e.getMessage());
-      }
+   		}catch (Exception e) {
+	        printError("fatal error",-1,-1);
+	        System.out.println(e.getMessage());
+	        e.printStackTrace();
+      	} 
+	    catch (Error e) {
+	        printError("generic error",-1,-1);
+	        System.out.println(e.getMessage());
+	    }
+	}
+	
+	
+	public static boolean isClassAlreadyDeclared(String className){
+		  for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
+	          Class element =  (Class)iter.next();
+	          if(element.getClassName().compareTo(className)==0){
+	        	  return true;
+	          }
+	          
+	       }
+		  return false;
+  	}
   
-}
-static ArrayList<String> classList= new ArrayList<String>();
-static String currentPackage="";
+	public static Class getClassByClassName(String className){
+	  		for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
+	          Class element =  (Class)iter.next();
+	          if(element.getClassName().compareTo(className)==0){
+	        	  return element;
+	          }
+	          
+	       }
+		return null;
+	}
+  
+	public static void printNotice(String message,int lineNumber,int columnNumber){
+		if(noticeFlag){
+			System.out.print("NOTICE: "+message+" in file: \""+currentFileName+"\"");
+			if(lineNumber >= 0 &&columnNumber >= 0){
+				System.out.println(" at line "+lineNumber+ " at column "+columnNumber);
+			}else{
+				System.out.println("");
+			}
+		}
+	}
+
+	public static void printWarning(String message,int lineNumber,int columnNumber){
+		if(warningFlag){
+			System.out.print("WARNING: "+message+" in file: \""+currentFileName+"\"");
+			if(lineNumber >= 0 &&columnNumber >= 0){
+				System.out.println(" at line "+lineNumber+ " at column "+columnNumber);
+			}else{
+				System.out.println("");
+			}
+		}
+	}
+
+	public static void printError(String message,int lineNumber,int columnNumber){
+		if(errorFlag){
+			System.err.print("ERROR: "+message+" in file: \""+currentFileName+"\"");
+			if(lineNumber >= 0 &&columnNumber >= 0){
+				System.err.println(" at line "+lineNumber+ " at column "+columnNumber);
+			}else{
+				System.out.println("");
+			}
+		}
+	}
 }
 
 	      	
@@ -80,21 +156,24 @@ TOKEN:{
 TOKEN:{
 	<LAYOUT: "@layout"> : LAYOUT_STATE
 } 
-<LAYOUT_STATE> SKIP:{	< ("//" (~["\n"])* ) >
-| 	" "
-|	"\r"
-|	"\t"
-|	"\n"}
+<LAYOUT_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
 <LAYOUT_STATE>  TOKEN : { <LAYOUT_CARD: ((["1"-"9"])(["0"-"9"])* "x*") | ("*x" (["1"-"9"])(["0"-"9"])*) | ("*x*") > : DEFAULT  }
 <LAYOUT_STATE>  TOKEN : { <OVERLAPPED: "overlapped"> : DEFAULT}
 
+
+//riconosce i nomi delle classi come CLASS_NAME
+TOKEN:{
+	<CLASS_TYPE: "interface" | "class"> : CLASS_STATE
+}
+<CLASS_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<CLASS_STATE> TOKEN:{	<CLASS_NAME_WITH_PACKAGE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)+ > :DEFAULT}
+<CLASS_STATE> TOKEN:{	<CLASS_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+> :DEFAULT}
 
 
 
 TOKEN:{
 	<VISIBILITY: "private" | "public" | "protected">
 | 	<RELATION_TYPE: "use" | "extend" |"associate"| "include"| "composed"| "realize"| "depend" >
-|	<CLASS_TYPE: "interface" | "class">
 |	<EQUAL:"=">
 }
 
@@ -114,24 +193,20 @@ TOKEN:{
 |	<STRING: "\"" (~[])* "\"">
 |	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+>
 |	<HEX_COLOR: ("#" (["0"-"9", "a"-"f", "A"-"F"]){3} (["0"-"9", "a"-"f", "A"-"F"]){3})>
-|	<CLASS_VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("."(["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*>
+|	<CLASS_VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*>
 }
-
-
-
-
-
 
 
 
 ////////////////////////////////////////////////////////////////
 //S → diagram DIAGRAM_TYPE diagram_name { DIAGRAM_CONTENT }
-void s() :  {
-}
-{
+void s() :  {Token t;}{
 //	model()
-	{System.out.println("Starting parsing");}
+	{
+		printNotice("starting parsing",-1,-1);
+	}
 	layout()
+	
 }
 
 void layout():{}{
@@ -141,13 +216,17 @@ void layout():{}{
 
 void import_definition():{
 	Token n;
+	String oldFileName;
 }{
 	<IMPORT> 
 	n = <FILE_NAME> {
 		try{
-			System.out.println("Importing model file: " + n.image);
+			printNotice("importing model file \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
 			cuml2svg modelParser = new cuml2svg(new FileInputStream(n.image.trim()));
+			oldFileName=currentFileName;
+			currentFileName=n.image.trim();
     		modelParser.model();
+    		currentFileName=oldFileName;
     	} catch (FileNotFoundException e1) {
     		e1.printStackTrace();
     	}
@@ -176,15 +255,24 @@ void group_preference():{}{
 
 }
 
-void group_definition():{}{
-	"[" <CLASS_TYPE> (<VARIABLE>|<CLASS_VARIABLE>) "]"
+void group_definition():{Token name;}{
+	
+	"[" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>) "]"
+	
+	{	
+		Class c= this.getClassByClassName(name.image);
+		if(c!=null){
+    		diagram.addObject(c);
+		}else{
+			printError("class named "+name.image+ " doesn't exist",name.beginLine,name.beginColumn);
+		}
+	}
 
 }
 
 void layout_preference():{}{
 	
-	<LAYOUT>  <LAYOUT_CARD> 
-|	<LAYOUT> <OVERLAPPED> 
+	<LAYOUT> ( <LAYOUT_CARD> | <OVERLAPPED> )
 }
 
 void position_preference():{}{
@@ -237,39 +325,35 @@ String package_name():{Token packageName;}{
 }
 
 
-///////////////////
-//COMMENT → comment
-void comment():{}{
-	<COMMENT>
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //CLASS_DEFINITION → OPTIONAL_COMMENT VISIBILITY CLASS_TYPE class_name { RELATIONS ATTRIBUTES METHODS }
 void class_definition():{
-	String name;
-}{
-	(comment())? (visibility())? <CLASS_TYPE> 
+	Token className,vis,type;
+	Class currentDefinition;
 	
-	
-	name=class_name()
+}{	
+	(<COMMENT>)? (vis=<VISIBILITY>)? type=<CLASS_TYPE> className=<CLASS_NAME>
 	{
 		if(this.currentPackage.length()>0){
-			name= this.currentPackage+"."+name;
+			className.image= this.currentPackage+"."+className.image;
 		}
-		if(this.classList.contains(name)){
-			System.out.println("ERRORE: "+name+" already exist!");
-		}
-		this.classList.add(name);
+		
+		currentDefinition=new Class(className.image);
+		//currentDefinition.setVisibility(vis.image);
+		//currentDefinition.setType(type.image);
+		
 	} 
 	
-	"{" (relations())? (attributes())? (methods())? "}"
-}
-
-String class_name():{Token name;}{
-	name=<VARIABLE> {
-		return name.image;
+	"{" (relations())? (attributes(currentDefinition))? (methods(currentDefinition))? "}"
+	
+	{
+		if(isClassAlreadyDeclared(className.image)){
+			printWarning("class "+className.image+" already exist, the new definition was skipped",className.beginLine,className.beginColumn);
+		}else{
+			this.declaredClassList.add(currentDefinition);
+		}
 	}
 }
 
@@ -287,10 +371,9 @@ void relations():{}{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
 void relation():{}{
-	(comment())? <RELATION_TYPE> class_name() (relation_cardinality())? ("," class_name() (relation_cardinality())? )* ";"
+	//TODO forse al posto di variable sarebbe meglio classname
+	(<COMMENT>)? <RELATION_TYPE> <VARIABLE> (relation_cardinality())? ("," <VARIABLE> (relation_cardinality())? )* ";"
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////
@@ -310,19 +393,23 @@ void cardinality():{}{
 ////////////////////////////////////
 //ATTRIBUTES → ATTRIBUTE_DEFINITIONS
 //ATTRIBUTES → ε
-void attributes():{}{
-	<ATTRIBUTES> "{" (attribute())+ "}"
+void attributes(Class currentDefinition):{}{
+	<ATTRIBUTES> "{" (attribute(currentDefinition))+ "}"
 }
 
 
 
 ////////////////////////////////////////////////////////////////////////////
 //ATTRIBUTE → COMMENT VISIBILITY ATTRIBUTE_TYPE attribute_name DEFAULT_VALUE
-void attribute():{}{
-	(comment())? 
-	(visibility())? 
+void attribute(Class currentDefinition):{
+	Token vis;
+}{
+	(<COMMENT>)? 
+	(vis=<VISIBILITY>)? 
 	(typed_attribute_name() | attribute_name() )
 	(default_value())? ";"
+	
+	//{currentDefinition.addAttribute()};
 }
 void attribute_name():{}{
 	<VARIABLE>
@@ -354,8 +441,8 @@ void equal_to():{}{
 //////////////////////////
 //METHODS → METHOD_DEFINITION
 //METHODS → ε
-void methods():{}{
-	<METHOD> "{" (method())+ "}" 
+void methods(Class currentDefinition):{}{
+	<METHOD> "{" (method(currentDefinition))+ "}" 
 }
 
 
@@ -364,26 +451,37 @@ void methods():{}{
 /////////////////////////////////////////////////////////////////////
 //METHOD → OPTIONAL_COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
 //METHOD_TYPE → TYPE
-void method():{}{
-	(comment())? 
-	(visibility())? 
-	(typed_method() | method_name())
+void method(Class currentDefinition):{
+	Token vis,name;
+}{
+	(<COMMENT>)? 
+	(vis=<VISIBILITY>)? 
+	(name=typed_method() | name=method_name())
 	"(" (method_arg() ("," method_arg())* )? ")" ";"
+	{
+		currentDefinition.addMethod(new Method(name.image));
+	}
 }
 
-void typed_method():{}{
-	<VARIABLE> <VARIABLE>
+Token typed_method():{Token name;}{
+	<VARIABLE> name=<VARIABLE> 
+	{
+		return name;
+	}
 }
 
-void method_name():{}{
-	<VARIABLE> 
+Token method_name():{Token name;}{
+	name=<VARIABLE> 
+	{
+		return name;
+	}
 }
 
 //////////////////////////////////////////////////////
 //METHOD_ARG → COMMENT ARG_TYPE arg_name DEFAULT_VALUE
 //ARG_TYPE → TYPE
 void method_arg():{}{
-	(comment())? 
+	(<COMMENT>)? 
 	(typed_arg() | arg_name())
 	(default_value())?
 }
@@ -412,15 +510,6 @@ void type ():{}
 	<VARIABLE> 
 }
 
-//////////////////////
-//VISIBILITY → private
-//VISIBILITY → public
-//VISIBILITY → string
-//VISIBILITY → ε 
-void visibility ():{}
-{
-	<VISIBILITY>
-}
 
 
 

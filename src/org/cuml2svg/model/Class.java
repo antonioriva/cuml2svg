@@ -3,6 +3,7 @@ package org.cuml2svg.model;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.velocity.Template;
@@ -21,14 +22,23 @@ import org.cuml2svg.model.Diagram.OutputType;
  * @author Luca Cividini
  * 
  */
-public class Class implements Object {
+public class Class implements Object, Comparable<Class> {
 
 	private static final String SVG_CLASS_TEMPLATE = "templates/SVGClass.vm";
 
+	private static final int TYPE_CLASS = 0;
+
+	private static final int TYPE_INTERFACE = 1;
+	
 	/**
 	 * The name of the class
 	 */
 	private String className;
+	
+	/**
+	 * Class or interface
+	 */
+	private int type;
 
 	/**
 	 * The list of attributes of the class
@@ -66,10 +76,30 @@ public class Class implements Object {
 	 */
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
-		// TODO Auto-generated method stub
 		try {
 			Template template = Velocity.getTemplate(SVG_CLASS_TEMPLATE);
+			int maxLength = 0;
+			int numItems = methods.size() + attributes.size() + 2;
+			for (Iterator i = methods.iterator(); i.hasNext();) {
+				Method method = (Method) i.next();
+				if(method.getMethodName().length() > maxLength) {
+					maxLength = method.getMethodName().length();
+				}
+			}
+			context.put("x",50+Math.random()*100);
+			context.put("y",50+Math.random()*100);
+			context.put("width",28 * (maxLength + 4));
+			context.put("height",38 * numItems);
+			
+			context.put("className",this.className);
+			context.put("attributes", this.attributes);
+			context.put("methods", this.methods);
 			template.merge(context, writer);
+			
+//			for (Iterator i = this.methods.iterator(); i.hasNext();) {
+//				Method method = (Method) i.next();
+//				method.render(type, context, writer);
+//			}
 			return true;
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -149,4 +179,26 @@ public class Class implements Object {
 		this.methods.remove(method);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	public int compareTo(Class compared) {
+		return this.className.compareTo(compared.className);
+	}
+
+	/**
+	 * Get the type of the class
+	 * @return the type of the class
+	 */
+	public int getType() {
+		return type;
+	}
+
+	/**
+	 * Set the type of the class
+	 * @param type The type of the class TYPE_CLASS or TYPE_INTERFACE
+	 */
+	public void setType(int type) {
+		this.type = type;
+	}
 }
