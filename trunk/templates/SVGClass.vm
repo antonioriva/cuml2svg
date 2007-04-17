@@ -1,3 +1,64 @@
-<rect x=".01cm" y=".01cm" width="5cm" height="3cm"
-  fill="red" stroke="blue" stroke-width=".02cm" />
-  
+#set($fontSize = 28)
+#set($fontFamily = "Bitstream Vera Sans Mono")
+#set($attributeIndent = 20)
+#set($ax = $x + $attributeIndent)
+#set($ay = $y + $fontSize + 10)
+<g>
+  <rect
+    width="${width}"
+    height="${height}"
+    rx="0"
+    ry="0"
+    x="${x}"
+    y="${y}"
+    style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
+  />
+  <text
+    x="$ax"
+    y="$ay"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+    <tspan
+      #set($title_x = $ax + $width / 2)
+      x="${title_x}"
+      y="${ay}"
+      style="font-size:${fontSize}px;text-align:center;text-anchor:middle;font-family:${fontFamily}">
+      $className
+     </tspan>
+  </text>
+  <path
+    #set($lx = $x + $width)
+    #set($ly = $ay + 10)
+     d="M ${x},${ly} L ${lx},${ly}"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+## Render attributes
+#foreach( $attribute in $attributes)
+  #set($ay = $ay + $fontSize + 10)
+  <text
+    x="${ax}"
+    y="${ay}"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+      $attribute.getAttributeName() : $attribute.getAttributeType()
+  </text>
+#end
+  <path
+    #set($lx = $x + $width)
+    #set($ly = $ay + 10)
+     d="M ${x},${ly} L ${lx},${ly}"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+## Render methods
+#foreach( $method in $methods)
+  #set($ay = $ay + $fontSize + 10)
+  <text
+    x="${ax}"
+    y="${ay}"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+      #if($method.getVisibility() == "public")
+      	+$method.getMethodName()
+      #elseif($method.getVisibility() == "private")
+        -$method.getMethodName()
+      #end
+  </text>
+#end
+</g>

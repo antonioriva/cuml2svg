@@ -1,10 +1,16 @@
 package org.cuml2svg.model;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.cuml2svg.model.Diagram.OutputType;
 
 /**
@@ -16,15 +22,26 @@ import org.cuml2svg.model.Diagram.OutputType;
  * 
  */
 public class Method implements Renderable {
+	private static final String SVG_METHOD_TEMPLATE = "templates/SVGMethod.vm";
+	private static final String VISIBILITY_PUBLIC = "public";
+	private static final String VISIBILITY_PRIVATE = "private";
+	private static final String VISIBILITY_PROTECTED = "protected";
+
 	/**
 	 * The name of the method
 	 */
 	private String methodName;
+	
+	/**
+	 * The visibility of the method
+	 */
+	private String visibility;
 
 	/**
 	 * The list of parameters of the method
 	 */
 	private List<Attribute> parameters;
+	
 
 	/**
 	 * Create a new method object
@@ -34,6 +51,7 @@ public class Method implements Renderable {
 	 */
 	public Method(String methodName) {
 		this.methodName = methodName;
+		this.visibility = VISIBILITY_PUBLIC;
 
 		this.parameters = new ArrayList<Attribute>();
 	}
@@ -82,8 +100,44 @@ public class Method implements Renderable {
 	 */
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
-		// TODO Auto-generated method stub
+		try {
+			Template template = Velocity.getTemplate(SVG_METHOD_TEMPLATE);
+			context.put("methodName", this.methodName);
+			template.merge(context, writer);
+			return true;
+		} catch (ResourceNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MethodInvocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
+	}
+
+	/**
+	 * Get the visibility of the method
+	 * @return the visibility of the method
+	 */
+	public String getVisibility() {
+		return visibility;
+	}
+
+	/**
+	 * Set the visibility of the method
+	 * @param visibility The visibility level
+	 */
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
 	}
 
 }
