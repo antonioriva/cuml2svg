@@ -26,8 +26,8 @@
  * Nulla da segnalare
 
 ===Interfaccia grafica===
-...
- 
+ * Nulla da segnalare
+
 == Stato del progetto in relazione al Gantt presentato ==
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
 
@@ -38,7 +38,7 @@ E' risultato impossibile separare le fasi 2.4 2.5 2.6 come descritto dal diagram
 Rispetto al diagramma iniziale siamo perfettamente nei tempi previsti, la creazione del modello è quasi completa e siamo a buon punto anche con la creazione delle classi di esportazione. Rimangono da sistemare i template di conversione.
 
 === Interfaccia grafica ===
-...
+La parte relativa ai commenti è stata sistemata, sia commenti a singola riga che multiriga
 
 ==Note e Commenti==
 
