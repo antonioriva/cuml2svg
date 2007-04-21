@@ -32,7 +32,7 @@
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
 
 ===Compilatore===
-...
+E' risultato impossibile separare le fasi 2.4 2.5 2.6 come descritto dal diagramma! Siamoo quindi nella situazione in cui tutte e tre le fasi sono cominciate e le stiamo portando avanti in parallelo. Essendo già in una fase di integrazione con il generatore grafico possiamo dire che sul fronte compilatore siamo l pari (se non avanti) sulla tabella di marcia.
 
 === Generazione Svg ===
 Rispetto al diagramma iniziale siamo perfettamente nei tempi previsti, la creazione del modello è quasi completa e siamo a buon punto anche con la creazione delle classi di esportazione. Rimangono da sistemare i template di conversione.
