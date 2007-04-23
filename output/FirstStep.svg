@@ -1,171 +1,171 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="21cm" height="29.7cm" version="1.1"
+<svg version="1.1"
      xmlns="http://www.w3.org/2000/svg">
   <desc>Export of 
   </desc>
-  <g>
+  <g transform="translate(0,0)" >
   <rect
     width="700"
     height="152"
     rx="0"
     ry="0"
-    x="98.72142326731417"
-    y="105.52342297516674"
+    x="10"
+    y="10"
     style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
   />
   <text
-    x="118.72142326731417"
-    y="143.52342297516674"
+    x="30"
+    y="48"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
     <tspan
-            x="468.72142326731415"
-      y="143.52342297516674"
+            x="380"
+      y="48"
       style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
       visitor.Visitor
      </tspan>
   </text>
   <path
-         d="M 98.72142326731417,153.52342297516674 L 798.7214232673142,153.52342297516674"
+         d="M 10,58 L 710,58"
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
   <path
-         d="M 98.72142326731417,153.52342297516674 L 798.7214232673142,153.52342297516674"
+         d="M 10,58 L 710,58"
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
   <text
-    x="118.72142326731417"
-    y="181.52342297516674"
+    x="30"
+    y="86"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
             	+VisitConcreteElementA
         </text>
   <text
-    x="118.72142326731417"
-    y="219.52342297516674"
+    x="30"
+    y="124"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
             	+VisitConcreteElementB
         </text>
-</g><g>
+</g><g transform="translate(0,710)" >
   <rect
     width="700"
     height="152"
     rx="0"
     ry="0"
-    x="103.8161010241082"
-    y="74.76957546594905"
+    x="10"
+    y="10"
     style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
   />
   <text
-    x="123.8161010241082"
-    y="112.76957546594905"
+    x="30"
+    y="48"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
     <tspan
-            x="473.8161010241082"
-      y="112.76957546594905"
-      style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
-      visitor.Visitor
-     </tspan>
-  </text>
-  <path
-         d="M 103.8161010241082,122.76957546594905 L 803.8161010241082,122.76957546594905"
-     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-  />
-  <path
-         d="M 103.8161010241082,122.76957546594905 L 803.8161010241082,122.76957546594905"
-     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-  />
-  <text
-    x="123.8161010241082"
-    y="150.76957546594906"
-    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
-            	+VisitConcreteElementA
-        </text>
-  <text
-    x="123.8161010241082"
-    y="188.76957546594906"
-    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
-            	+VisitConcreteElementB
-        </text>
-</g><g>
-  <rect
-    width="700"
-    height="152"
-    rx="0"
-    ry="0"
-    x="65.26872094035299"
-    y="142.8116054397449"
-    style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
-  />
-  <text
-    x="85.26872094035299"
-    y="180.8116054397449"
-    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
-    <tspan
-            x="435.268720940353"
-      y="180.8116054397449"
+            x="380"
+      y="48"
       style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
       visitor.ConcreteVisitor1
      </tspan>
   </text>
   <path
-         d="M 65.26872094035299,190.8116054397449 L 765.268720940353,190.8116054397449"
+         d="M 10,58 L 710,58"
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
   <path
-         d="M 65.26872094035299,190.8116054397449 L 765.268720940353,190.8116054397449"
+         d="M 10,58 L 710,58"
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
   <text
-    x="85.26872094035299"
-    y="218.8116054397449"
+    x="30"
+    y="86"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
             	+VisitConcreteElementA
         </text>
   <text
-    x="85.26872094035299"
-    y="256.8116054397449"
+    x="30"
+    y="124"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
             	+VisitConcreteElementB
         </text>
-</g><g>
+</g><g transform="translate(0,1420)" >
   <rect
     width="700"
     height="152"
     rx="0"
     ry="0"
-    x="129.2870206039015"
-    y="133.45165361051784"
+    x="10"
+    y="10"
     style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
   />
   <text
-    x="149.2870206039015"
-    y="171.45165361051784"
+    x="30"
+    y="48"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
     <tspan
-            x="499.2870206039015"
-      y="171.45165361051784"
+            x="380"
+      y="48"
+      style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
+      visitor.ConcreteVisitor1
+     </tspan>
+  </text>
+  <path
+         d="M 10,58 L 710,58"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+  <path
+         d="M 10,58 L 710,58"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+  <text
+    x="30"
+    y="86"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+            	+VisitConcreteElementA
+        </text>
+  <text
+    x="30"
+    y="124"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+            	+VisitConcreteElementB
+        </text>
+</g><g transform="translate(0,1420)" >
+  <rect
+    width="700"
+    height="152"
+    rx="0"
+    ry="0"
+    x="10"
+    y="10"
+    style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
+  />
+  <text
+    x="30"
+    y="48"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+    <tspan
+            x="380"
+      y="48"
       style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
       visitor.ConcreteVisitor2
      </tspan>
   </text>
   <path
-         d="M 129.2870206039015,181.45165361051784 L 829.2870206039015,181.45165361051784"
+         d="M 10,58 L 710,58"
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
   <path
-         d="M 129.2870206039015,181.45165361051784 L 829.2870206039015,181.45165361051784"
+         d="M 10,58 L 710,58"
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
   <text
-    x="149.2870206039015"
-    y="209.45165361051784"
+    x="30"
+    y="86"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
             	+VisitConcreteElementA
         </text>
   <text
-    x="149.2870206039015"
-    y="247.45165361051784"
+    x="30"
+    y="124"
     style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
             	+VisitConcreteElementB
         </text>

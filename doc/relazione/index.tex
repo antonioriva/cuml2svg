@@ -1,0 +1,30 @@
+%Inizio Preambolo
+
+% Prepara un documento per carta A4, con un bel font grande
+\documentclass[a4paper,12pt]{book}
+\usepackage[italian]{babel} % Consente l'uso caratteri accentati italiani
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+
+\graphicspath{{img/}}
+
+\frenchspacing % forza LaTeX ad una spaziatura fra parole non inglese
+
+\title{Relazione del Progetto di Linguaggi e Compilatori} 
+\author{Luca Cividini, Fabio Marini, Antonio Riva}
+\date{20 aprile 2007}
+
+
+%Fine Preambolo
+
+\begin{document}
+\maketitle % Produce effettivamente il titolo a partire dai comandi \title,\author e \date
+
+\tableofcontents % Prepara l'indice generale
+
+\input{tex/introduzione.tex}
+
+
+
+\end{document}

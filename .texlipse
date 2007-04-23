@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Fri Apr 20 17:48:04 CEST 2007
+builderNum=2
+outputDir=doc/relazione/
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=doc/relazione
+mainTexFile=index.tex
+outputFile=index.pdf
+langSpell=
+markDer=true
+srcDir=doc/relazione/

@@ -3,7 +3,7 @@
 #set($attributeIndent = 20)
 #set($ax = $x + $attributeIndent)
 #set($ay = $y + $fontSize + 10)
-<g>
+<g transform="translate(${xtran},${ytran})" >
   <rect
     width="${width}"
     height="${height}"
