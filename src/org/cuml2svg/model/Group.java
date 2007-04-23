@@ -56,7 +56,6 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public void setProperty(String property, String value) {
 		this.properties.put(property, value);
-		System.out.println("=> PROPERTY_SET: " + property + " " + value);
 	}
 
 	/**
@@ -102,9 +101,8 @@ public class Group extends Groupable implements Object, Renderable {
 		int rows = 0;
 		int cols = 0;
 		int current = 0;
-		System.out.println("RIGHE "+ layoutRows);
-		System.out.println("COLONNE " + layoutCols);
-		System.out.println("OGGETTI " + objects.size());
+		int origXtran = this.getXtran();
+		int origYtran = this.getYtran();
 		switch (layout) {
 		case ROW_LAYOUT:
 			cols = objects.size() / this.layoutRows;
@@ -117,9 +115,10 @@ public class Group extends Groupable implements Object, Renderable {
 
 				this.setXtran(this.getXtran() + object.computeWidth()
 						+ HORIZONTAL_SPACING);
-				if((cols % (++current)) == 0) {
+				if (((++current) % cols) == 0) {
 					this.setYtran(this.getYtran() + object.computeHeight()
 							+ VERTICAL_SPACING);
+					this.setXtran(origXtran);
 				}
 			}
 			break;
@@ -132,33 +131,35 @@ public class Group extends Groupable implements Object, Renderable {
 				object.setYtran(this.getYtran());
 				object.render(type, context, writer);
 
-				if((rows % (++current)) == 0) {
-					this.setXtran(this.getXtran() + this.computeWidth()
-							+ HORIZONTAL_SPACING);
-				}
 				this.setYtran(this.getYtran() + this.computeHeight()
 						+ VERTICAL_SPACING);
+				if (((++current) % rows) == 0) {
+					this.setXtran(this.getXtran() + this.computeWidth()
+							+ HORIZONTAL_SPACING);
+					this.setYtran(origYtran);
+				}
 			}
 			break;
 		case SQUARE_LAYOUT:
 			rows = (int) Math.ceil(Math.sqrt(objects.size()));
 			cols = rows;
 			current = 0;
+			int maxHeight = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				if (this.layoutCols == -1 && this.layoutRows == -1)
-					object.setXtran(this.getXtran());
+				object.setXtran(this.getXtran());
 				object.setYtran(this.getYtran());
 				object.render(type, context, writer);
 
-//				if((rows % this.layoutRows) == 0) {
-//					this.setYtran(this.getYtran() + this.computeHeight()
-//							+ VERTICAL_SPACING);
-//				}
-				if((cols % (++current)) == 0) {
-					this.setYtran(this.getYtran() + this.computeHeight()
+				if(object.computeHeight() > maxHeight) {
+					maxHeight = object.computeHeight();
+				}
+				this.setXtran(this.getXtran() + this.computeWidth()
+						+ HORIZONTAL_SPACING);
+				if (((++current) % cols) == 0) {
+					this.setYtran(this.getYtran() + maxHeight
 							+ VERTICAL_SPACING);
-					this.setXtran(this.getXtran());
+					this.setXtran(origXtran);
 				}
 			}
 			break;
@@ -200,7 +201,7 @@ public class Group extends Groupable implements Object, Renderable {
 		int maxHeight = 0;
 		for (Iterator i = objects.iterator(); i.hasNext();) {
 			Groupable object = (Groupable) i.next();
-			height = object.computeWidth();
+			height = object.computeHeight();
 			if (maxHeight < height) {
 				maxHeight = height;
 			}
