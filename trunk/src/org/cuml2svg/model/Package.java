@@ -20,9 +20,10 @@ import org.cuml2svg.model.Diagram.OutputType;
  * @author Luca Cividini
  *
  */
-public class Package implements Object, Comparable<Package>{
+public class Package extends Groupable implements Object, Comparable<Package>{
 
-	private static final String SVG_PACKAGE_TEMPLATE = "templates/SVGPackage.vm";
+	private static final String SVG_PACKAGE_HEADER_TEMPLATE = "templates/SVGPackage_header.vm";
+	private static final String SVG_PACKAGE_FOOTER_TEMPLATE = "templates/SVGPackage_footer.vm";
 	/**
 	 * The name of the package
 	 */
@@ -45,13 +46,20 @@ public class Package implements Object, Comparable<Package>{
 	 */
 	public boolean render(OutputType type, VelocityContext context, Writer writer) {
 		try {
-			Template template = Velocity.getTemplate(SVG_PACKAGE_TEMPLATE);
+			Template template = Velocity.getTemplate(SVG_PACKAGE_HEADER_TEMPLATE);
+			
+			context.put("xtran", this.getXtran());
+			context.put("ytran", this.getYtran());
+			
 			template.merge(context, writer);
 			
 			for (Iterator i = this.classes.iterator(); i.hasNext();) {
 				Class object = (Class) i.next();
 				object.render(type, context, writer);
 			}
+			
+			template = Velocity.getTemplate(SVG_PACKAGE_FOOTER_TEMPLATE);
+			template.merge(context, writer);
 
 			return true;
 		} catch (ResourceNotFoundException e) {

@@ -22,7 +22,7 @@ import org.cuml2svg.model.Diagram.OutputType;
  * @author Luca Cividini
  * 
  */
-public class Class implements Object, Comparable<Class> {
+public class Class extends Groupable implements Object, Comparable<Class> {
 
 	private static final String SVG_CLASS_TEMPLATE = "templates/SVGClass.vm";
 
@@ -49,7 +49,7 @@ public class Class implements Object, Comparable<Class> {
 	 * The list of methods of the class
 	 */
 	private List<Method> methods;
-
+	
 	/**
 	 * Create a new Class object
 	 * 
@@ -78,28 +78,18 @@ public class Class implements Object, Comparable<Class> {
 			Writer writer) {
 		try {
 			Template template = Velocity.getTemplate(SVG_CLASS_TEMPLATE);
-			int maxLength = 0;
-			int numItems = methods.size() + attributes.size() + 2;
-			for (Iterator i = methods.iterator(); i.hasNext();) {
-				Method method = (Method) i.next();
-				if(method.getMethodName().length() > maxLength) {
-					maxLength = method.getMethodName().length();
-				}
-			}
-			context.put("x",50+Math.random()*100);
-			context.put("y",50+Math.random()*100);
-			context.put("width",28 * (maxLength + 4));
-			context.put("height",38 * numItems);
+			context.put("x",10);
+			context.put("y",10);
+			context.put("width",this.computeWidth());
+			context.put("height",this.computeHeight());
+			context.put("xtran", this.getXtran());
+			context.put("ytran", this.getYtran());
 			
 			context.put("className",this.className);
 			context.put("attributes", this.attributes);
 			context.put("methods", this.methods);
 			template.merge(context, writer);
 			
-//			for (Iterator i = this.methods.iterator(); i.hasNext();) {
-//				Method method = (Method) i.next();
-//				method.render(type, context, writer);
-//			}
 			return true;
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -201,4 +191,37 @@ public class Class implements Object, Comparable<Class> {
 	public void setType(int type) {
 		this.type = type;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Groupable#computeHeight()
+	 */
+	@Override
+	public int computeWidth() {
+		int maxLength = 0;
+		for (Iterator i = methods.iterator(); i.hasNext();) {
+			Method method = (Method) i.next();
+			if(method.getMethodName().length() > maxLength) {
+				maxLength = method.getMethodName().length();
+			}
+		}
+		for (Iterator i = attributes.iterator(); i.hasNext();) {
+			Attribute attribute = (Attribute) i.next();
+			if(attribute.getAttributeName().length() > maxLength) {
+				maxLength = attribute.getAttributeName().length();
+			}
+		}
+		return 28 * (maxLength + 4);
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Groupable#computeWidth()
+	 */
+	@Override
+	public int computeHeight() {
+		int numItems = methods.size() + attributes.size() + 2;
+		return 38 * numItems;
+	}
+	
+	
 }
