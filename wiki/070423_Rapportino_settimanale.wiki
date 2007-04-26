@@ -9,7 +9,8 @@
  * miglior gestione dei messaggi di errore
 
 ===Generazione Svg===
- * ...
+ * aggiunta gestione della disposizione in righe, colonne o griglia
+ * gestione layout innestati
 
 ===Interfaccia grafica===
  * creazione editor plugin per il codice del Model
@@ -22,7 +23,7 @@
  * nulla da segnalare
 
 ===Generazione Svg===
-...
+ * qualche problema nella realizzazione dei layout in righe, colonne e griglia innestati, roblemi quasi completamente risolti
 
 ===Interfaccia grafica===
  * è stato problematico capire il funzionamento del text-highlight di un plugin eclipse; di grande utilità è stata la pagina [http://www-128.ibm.com/developerworks/views/opensource/libraryview.jsp?search_by=CDT+based+editor IBM developersWork]
@@ -34,7 +35,7 @@
  * l'attività di integrazione ha subito un rallentamento dovuto alla non completa implementazione delle classi di binding; il lavoro è comunque sulla dirittura di arrivo.
 
 === Generazione Svg ===
-...
+ * rispetto al diagramma Gantt iniziale siamo pienamente nei tempi previsti
 
 === Interfaccia grafica ===
 ...
