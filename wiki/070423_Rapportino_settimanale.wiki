@@ -1,0 +1,40 @@
+= Nome Progetto: cUml2svg =
+== Data Lezione: 23/04/2007 ==
+
+== Attività svolta ==
+
+===Compilatore===
+ * ...
+
+===Generazione Svg===
+ * ...
+
+===Interfaccia grafica===
+ * ...
+
+== Problemi emersi e Soluzioni adottate (o ipotizzate) ==
+
+===Compilatore===
+...
+
+===Generazione Svg===
+...
+
+===Interfaccia grafica===
+...
+ 
+== Stato del progetto in relazione al Gantt presentato ==
+[http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
+
+===Compilatore===
+...
+
+=== Generazione Svg ===
+...
+
+=== Interfaccia grafica ===
+...
+
+==Note e Commenti==
+
+Nulla da segnalare
