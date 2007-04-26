@@ -4,18 +4,22 @@
 == Attività svolta ==
 
 ===Compilatore===
- * ...
+ * ulteriore integrazione con le classi di generazione SVG
+ * implementazione e affinamento del main() per il lancio del compilatore
+ * miglior gestione dei messaggi di errore
 
 ===Generazione Svg===
  * ...
 
 ===Interfaccia grafica===
- * ...
+ * creazione editor plugin per il codice del Model
+ * creazione dello stub del plugin per il codice del Layout
+ * implementazione del text highlight del codice del Model
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
 ===Compilatore===
-...
+ * nulla da segnalare
 
 ===Generazione Svg===
 ...
@@ -27,7 +31,7 @@
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
 
 ===Compilatore===
-...
+ * l'attività di integrazione ha subito un rallentamento dovuto alla non completa implementazione delle classi di binding; il lavoro è comunque sulla dirittura di arrivo.
 
 === Generazione Svg ===
 ...
