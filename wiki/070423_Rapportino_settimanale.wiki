@@ -21,7 +21,7 @@
 ...
 
 ===Interfaccia grafica===
-...
+ * è stato problematico capire il funzionamento del text-highlight di un plugin eclipse; di grande utilità è stata la pagina [http://www-128.ibm.com/developerworks/views/opensource/libraryview.jsp?search_by=CDT+based+editor IBM developersWork]
  
 == Stato del progetto in relazione al Gantt presentato ==
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
