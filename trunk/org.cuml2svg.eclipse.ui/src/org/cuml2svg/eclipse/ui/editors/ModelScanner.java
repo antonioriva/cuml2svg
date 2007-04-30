@@ -24,11 +24,11 @@ public class ModelScanner extends RuleBasedScanner {
 		ArrayList<IRule> rules= new ArrayList<IRule>();
 		
 		
+		/////////////////////////////////////////////////////
 		Token token= new Token(new TextAttribute(
 				manager.getColor(new RGB(255, 255,255)),
 				manager.getColor(new RGB(0,0,0)), 
 				SWT.BOLD));
-		
 		WordRule wordRule = new WordRule(new WordDetector());
 		//wordRule.addWord("function", token);
 		for (int i = 0; i < keywords.length; i++) {
@@ -36,33 +36,28 @@ public class ModelScanner extends RuleBasedScanner {
 		}
 		rules.add(wordRule);
 		
-		
+		////////////////////////////////////////////////////
 		token = new Token(new TextAttribute(manager.getColor(ColorConstants.COMMENT)));
 		//Add rule for processing instructions
 		rules.add( new SingleLineRule("/*", "*/", token));
-		// Add generic whitespace rule.
-
-		//rules.add(new WhitespaceRule(new WhitespaceDetector()));
-
-	
 		
-//		Token token = new Token(new TextAttribute(manager.getColor(new RGB(255, 255,
-//				255)),manager.getColor(new RGB(0, 0,0)), SWT.BOLD));
-//		WordRule wordRule = new WordRule(new WordDetector(), token);
-//		wordRule.addWord("class".toCharArray(), token);
-//		rules.add(wordRule);
-//		
+		////////////////////////////////////////////////////
+		//Add generic whitespace rule.
+		//rules.add(new WhitespaceRule(new WhitespaceDetector()));
+		////////////////////////////////////////////////////
+		
+		////////////////////////////////////////////////////
 		token = new Token(new TextAttribute(manager.getColor(ColorConstants.NUMBER)));
 		RuleNumber numberRule = new RuleNumber(token);
 		rules.add(numberRule);
 		
+		////////////////////////////////////////////////////
 		token = new Token(new TextAttribute(manager.getColor(new RGB(0, 0,
 				0)),manager.getColor(new RGB(255, 0,0)), SWT.BOLD));
 		RuleBrace braceRule = new RuleBrace(token);
 		rules.add(braceRule);
 		
-		
-		
+		////////////////////////////////////////////////////	
 		IRule[] r= new IRule[rules.size()];
 		setRules(rules.toArray(r));
 	}
