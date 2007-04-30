@@ -24,6 +24,7 @@ public class cuml2svg {
 	static Diagram diagram=new Diagram("",Diagram.DiagramType.UML);
 	static String currentPackage="";
 	static String currentFileName="";
+	static String currentClassName="";
 	static boolean warningFlag= true;
 	static boolean noticeFlag= true;
 	static boolean errorFlag= true;
@@ -44,15 +45,17 @@ public class cuml2svg {
 			 exporter.export();
         
       	} catch (FileNotFoundException e1) {
-    		e1.printStackTrace();
-   		}catch (Exception e) {
-	        printError("fatal error",-1,-1);
-	        System.out.println(e.getMessage());
-	        e.printStackTrace();
-      	} 
-	    catch (Error e) {
+    		printError("inout file not found",-1,-1);
+    		
+   		}catch (ParseException e) {
+	        printError("parser error",-1,-1);
+	        System.err.println(e.getMessage());
+	        //e.printStackTrace();
+	        
+      	}catch (Error e) {
 	        printError("generic error",-1,-1);
-	        System.out.println(e.getMessage());
+	        System.err.println(e.getMessage());
+	        //e.printStackTrace();
 	    }
 	}
 	
@@ -148,6 +151,12 @@ TOKEN:{
 
 
 TOKEN:{
+	<COLLAPSE: "@collapse"> : COLLAPSE_STATE
+} 
+<COLLAPSE_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<COLLAPSE_STATE>  TOKEN : { <COLLAPSE_TYPE: "all" | "method" | "attribute" > : DEFAULT  }
+
+TOKEN:{
 	<LAYOUT: "@layout"> : LAYOUT_STATE
 } 
 <LAYOUT_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
@@ -200,7 +209,6 @@ void s() :  {Token t;}{
 		printNotice("starting parsing",-1,-1);
 	}
 	layout()
-	//TODO controllo semantico sullla consistenza delle relazioni
 	
 }
 
@@ -224,7 +232,7 @@ void import_definition():{
     		modelParser.model();
     		currentFileName=oldFileName;
     	} catch (FileNotFoundException e1) {
-    		e1.printStackTrace();
+    		printError("file not found \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
     	}
 	}
 	";"
@@ -255,7 +263,7 @@ void group_preference(Group currentGroup):{}{
 	
 	layout_preference(currentGroup)
 |	position_preference(currentGroup)
-//|	group_preference()
+|	collapse_preference(currentGroup)
 |	color_preference(currentGroup)
 
 
@@ -285,7 +293,25 @@ void layout_preference(Group currentGroup):{Token t;}{
 	{currentGroup.setProperty("layout",t.image);}
 }
 
+void collapse_preference(Group currentGroup):{Token t;}{
+	
+	<COLLAPSE> t=<COLLAPSE_TYPE> 
+	{
+		    if(t.image.compareTo("all")==0){
+    	currentGroup.setMethodsCollapsed(true);
+    	currentGroup.setAttributesCollapsed(true);
+    }else if(t.image.compareTo("methods")==0){
+
+    	currentGroup.setMethodsCollapsed(true);
+    }else if(t.image.compareTo("attributes")==0){
+
+    	currentGroup.setAttributesCollapsed(true);
+    }
+	}
+}
+
 void position_preference(Group currentGroup):{Token t;}{
+	//TODO la posizione è data per deprecata; se è così fare in modo di toglierla
 	t=<POSITION> coordinate() coordinate()
 	{printWarning("@position property deprecated, definition skipped",t.beginLine,t.beginColumn);}
 }
@@ -295,11 +321,12 @@ void position_preference(Group currentGroup):{Token t;}{
 
 
 void coordinate():{}{
+	//TODO tornare la coordinata o eliminarla per 
 	<SIZE>
-
 }
 
 void color_preference(Group currentGroup):{Token t;}{
+	//TODO il colore è data per deprecata; se è così fare in modo di toglierla
 	t=<COLOR> <HEX_COLOR>
 	{printWarning("@color property deprecated, definition skipped",t.beginLine,t.beginColumn);}
 	
@@ -333,6 +360,7 @@ void package_definition():{String packageName;}{
 	{this.currentPackage="";}
 	
 }
+
 String package_name():{Token packageName;}{
 	packageName=<VARIABLE> {return packageName.image; }
 }
@@ -353,13 +381,14 @@ void class_definition():{
 			className.image= this.currentPackage+"."+className.image;
 		}
 		
+		//TODO decommentare le proprietà
 		currentDefinition=new Class(className.image);
 		//currentDefinition.setVisibility(vis.image);
 		//currentDefinition.setType(type.image);
 		
 	} 
 	
-	"{" (relations())? (attributes(currentDefinition))? (methods(currentDefinition))? "}"
+	"{" (relations(currentDefinition))? (attributes(currentDefinition))? (methods(currentDefinition))? "}"
 	
 	{
 		if(isClassAlreadyDeclared(className.image)){
@@ -374,8 +403,8 @@ void class_definition():{
 
 /////////////////////////////////////////////////
 //RELATIONS → relations { RELATION_DEFINITIONS }
-void relations():{}{
-	<RELATIONS> "{" (relation())+ "}"
+void relations(Class currentDefinition):{}{
+	<RELATIONS> "{" (relation(currentDefinition))+ "}"
 }
 
 
@@ -383,9 +412,21 @@ void relations():{}{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
-void relation():{}{
+void relation(Class currentDefinition):{Token r;Token t;}{
 	//TODO forse al posto di variable sarebbe meglio classname
-	(<COMMENT>)? <RELATION_TYPE> <VARIABLE> (relation_cardinality())? ("," <VARIABLE> (relation_cardinality())? )* ";"
+	
+	(<COMMENT>)? t=<RELATION_TYPE> r=<VARIABLE>
+	{
+				//TODO aggiungere la classe alle relazioni
+		printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
+	}
+	
+	(relation_cardinality())? ("," r=<VARIABLE> 
+	{
+		//TODO aggiungere la classe alle relazioni
+		printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
+	}
+	 (relation_cardinality())? )* ";"
 }
 
 
@@ -393,6 +434,7 @@ void relation():{}{
 //RELATION_CARDINALITY → ε
 //RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
 void relation_cardinality():{}{
+	//TODO aggangiare la cardinalità in relation
 	"(" (cardinality())? "," (cardinality())? "," (cardinality())? ")"
 }
 
@@ -421,9 +463,10 @@ void attribute(Class currentDefinition):{
 	(vis=<VISIBILITY>)? 
 	(typed_attribute_name() | attribute_name() )
 	(default_value())? ";"
-	
+	//gli attributi non vengono aggiunti
 	//{currentDefinition.addAttribute()};
 }
+
 void attribute_name():{}{
 	<VARIABLE>
 }
@@ -432,6 +475,8 @@ void typed_attribute_name():{}{
 	<VARIABLE> <VARIABLE>
 }
 
+
+//TODO i valori di defaut non vengono aggiunti
 /////////////////////////
 //DEFAULT_VALUE → ε
 //DEFAULT_VALUE → EQUAL_TO
@@ -469,6 +514,7 @@ void method(Class currentDefinition):{
 }{
 	(<COMMENT>)? 
 	(vis=<VISIBILITY>)? 
+	//TODO gli argomenti dei metodi non sono gestiti
 	(name=typed_method() | name=method_name())
 	"(" (method_arg() ("," method_arg())* )? ")" ";"
 	{
