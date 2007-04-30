@@ -25,8 +25,5 @@ public class ColorManager {
 		}
 		return color;
 	}
-	public Color getColor(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }
