@@ -1,0 +1,25 @@
+import doc/sorgenti_test/test.u2sm;
+
+[
+	@layout 1x*
+	[class Class1]
+	[class Class2]
+	[
+		@layout 2x*
+		[class Class3]
+		[class Class4]
+		[class Class5]
+		[class Class6]
+		[class Class7]
+	]
+	[class Class8]
+	[class Class9]
+	[
+		@layout *x3
+		[class Class3]
+		[class Class4]
+		[class Class5]
+		[class Class6]
+		[class Class7]
+	]
+]
