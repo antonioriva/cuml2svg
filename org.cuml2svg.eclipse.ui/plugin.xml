@@ -10,22 +10,15 @@
             icon="icons/model.gif"
             contributorClass="org.cuml2svg.eclipse.ui.editors.ModelEditorContributor"
             class="org.cuml2svg.eclipse.ui.editors.ModelEditor"
-            id="org.cuml2svg.ui.editors.ModelEditor">
+            id="org.cuml2svg.eclipse.ui.editors.ModelEditor">
       </editor>
       <editor
             class="org.cuml2svg.eclipse.ui.editors.LayoutEditor"
             contributorClass="org.cuml2svg.eclipse.ui.editors.LayoutEditorContributor"
             extensions="u2sl"
             icon="icons/layout.gif"
-            id="org.cuml2svg.ui.editors.LayoutEditor"
+            id="org.cuml2svg.eclipse.ui.editors.LayoutEditor"
             name="cUml2Svg Layout Editor"/>
-      <editor
-            class="org.cuml2svg.eclipse.ui.editors.XMLEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            extensions="xml"
-            icon="icons/sample.gif"
-            id="org.cuml2svg.ui.editors.XMLEditor"
-            name="Sample XML Editor"/>
    </extension>
 
 </plugin>
