@@ -1,13 +1,13 @@
 package org.cuml2svg.model;
-
+ 
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
+ 
 import org.apache.velocity.VelocityContext;
 import org.cuml2svg.model.Diagram.OutputType;
-
+ 
 /**
  * Object used to group classes and packages in the layout
  * 
@@ -17,35 +17,35 @@ import org.cuml2svg.model.Diagram.OutputType;
  * 
  */
 public class Group extends Groupable implements Object, Renderable {
-
+ 
 	private static final int HORIZONTAL_SPACING = 10;
-
+ 
 	private static final int VERTICAL_SPACING = 10;
-
+ 
 	private static final int ROW_LAYOUT = 0;
-
+ 
 	private static final int COLUMN_LAYOUT = 1;
-
+ 
 	private static final int SQUARE_LAYOUT = 2;
-
+ 
 	private ArrayList<Object> objects;
-
+ 
 	private HashMap<String, String> properties;
-
+ 
 	private int layoutRows = -1;
-
+ 
 	private int layoutCols = -1;
-
+ 
 	/**
 	 * Initializes the group
 	 */
 	public Group() {
 		this.objects = new ArrayList<Object>();
 		this.properties = new HashMap<String, String>();
-
+ 
 		this.properties.put("layout", "*x*");
 	}
-
+ 
 	/**
 	 * Set the value for the given property
 	 * 
@@ -57,7 +57,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public void setProperty(String property, String value) {
 		this.properties.put(property, value);
 	}
-
+ 
 	/**
 	 * Get the value of the given property
 	 * 
@@ -68,7 +68,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public String getProperty(String property) {
 		return this.properties.get(property);
 	}
-
+ 
 	/**
 	 * Add an object to the group
 	 * 
@@ -78,7 +78,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public void addObject(Object object) {
 		this.objects.add(object);
 	}
-
+ 
 	/**
 	 * Remove an obhect from the group
 	 * 
@@ -88,7 +88,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public void removeObject(Object object) {
 		this.objects.remove(object);
 	}
-
+ 
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -112,7 +112,7 @@ public class Group extends Groupable implements Object, Renderable {
 				object.setXtran(this.getXtran());
 				object.setYtran(this.getYtran());
 				object.render(type, context, writer);
-
+ 
 				this.setXtran(this.getXtran() + object.computeWidth()
 						+ HORIZONTAL_SPACING);
 				if (((++current) % cols) == 0) {
@@ -130,11 +130,11 @@ public class Group extends Groupable implements Object, Renderable {
 				object.setXtran(this.getXtran());
 				object.setYtran(this.getYtran());
 				object.render(type, context, writer);
-
-				this.setYtran(this.getYtran() + this.computeHeight()
+ 
+				this.setYtran(this.getYtran() + object.computeHeight()
 						+ VERTICAL_SPACING);
 				if (((++current) % rows) == 0) {
-					this.setXtran(this.getXtran() + this.computeWidth()
+					this.setXtran(this.getXtran() + object.computeWidth()
 							+ HORIZONTAL_SPACING);
 					this.setYtran(origYtran);
 				}
@@ -150,11 +150,11 @@ public class Group extends Groupable implements Object, Renderable {
 				object.setXtran(this.getXtran());
 				object.setYtran(this.getYtran());
 				object.render(type, context, writer);
-
-				if(object.computeHeight() > maxHeight) {
+ 
+				if (object.computeHeight() > maxHeight) {
 					maxHeight = object.computeHeight();
 				}
-				this.setXtran(this.getXtran() + this.computeWidth()
+				this.setXtran(this.getXtran() + object.computeWidth()
 						+ HORIZONTAL_SPACING);
 				if (((++current) % cols) == 0) {
 					this.setYtran(this.getYtran() + maxHeight
@@ -166,7 +166,7 @@ public class Group extends Groupable implements Object, Renderable {
 		}
 		return true;
 	}
-
+ 
 	private int getLayout() {
 		String layout = this.getProperty("layout");
 		String params[] = layout.split("x");
@@ -180,7 +180,7 @@ public class Group extends Groupable implements Object, Renderable {
 		} else {
 			this.layoutCols = Integer.parseInt(params[1]);
 		}
-
+ 
 		if (this.layoutCols != -1 && this.layoutRows == -1) {
 			return COLUMN_LAYOUT;
 		}
@@ -189,7 +189,7 @@ public class Group extends Groupable implements Object, Renderable {
 		}
 		return SQUARE_LAYOUT;
 	}
-
+ 
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -197,18 +197,60 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	@Override
 	public int computeHeight() {
-		int height = 0;
 		int maxHeight = 0;
-		for (Iterator i = objects.iterator(); i.hasNext();) {
-			Groupable object = (Groupable) i.next();
-			height = object.computeHeight();
-			if (maxHeight < height) {
-				maxHeight = height;
+		int maxRowHeight = 0;
+		int layout = this.getLayout();
+		int rows;
+		int cols;
+		int current;
+		switch (layout) {
+		case ROW_LAYOUT:
+			cols = objects.size() / this.layoutRows;
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				if (maxRowHeight < object.computeHeight()) {
+					maxRowHeight = object.computeHeight();
+				}
+				if (((++current) % cols) == 0) {
+					maxHeight += maxRowHeight;
+					maxRowHeight = 0;
+				}
 			}
+			break;
+		case COLUMN_LAYOUT:
+			rows = objects.size() / this.layoutCols;
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				maxRowHeight += object.computeHeight();
+				if (((++current) % rows) == 0) {
+					if (maxHeight < maxRowHeight) {
+						maxHeight = maxRowHeight;
+						maxRowHeight = 0;
+					}
+				}
+			}
+			break;
+		case SQUARE_LAYOUT:
+			rows = (int) Math.ceil(Math.sqrt(objects.size()));
+			cols = rows;
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				if (object.computeHeight() > maxRowHeight) {
+					maxRowHeight = object.computeHeight();
+				}
+				if (((++current) % cols) == 0) {
+					maxHeight += maxRowHeight;
+					maxRowHeight = 0;
+				}
+			}
+			break;
 		}
-		return height;
+		return maxHeight + 2 * VERTICAL_SPACING;
 	}
-
+ 
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -216,15 +258,61 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	@Override
 	public int computeWidth() {
-		int width = 0;
 		int maxWidth = 0;
-		for (Iterator i = objects.iterator(); i.hasNext();) {
-			Groupable object = (Groupable) i.next();
-			width = object.computeWidth();
-			if (maxWidth < width) {
-				maxWidth = width;
+		int maxRowWidth = 0;
+		int layout = this.getLayout();
+		int rows;
+		int cols;
+		int current;
+		switch (layout) {
+		case ROW_LAYOUT:
+			cols = objects.size() / this.layoutRows;
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				maxRowWidth += object.computeWidth();
+				if (((++current) % cols) == 0) {
+					maxWidth += maxRowWidth;
+					maxRowWidth = 0;
+				}
 			}
+			break;
+		case COLUMN_LAYOUT:
+			rows = objects.size() / this.layoutCols;
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				if (((++current) % rows) == 0) {
+					maxWidth += object.computeWidth();
+				}
+			}
+			break;
+		case SQUARE_LAYOUT:
+			rows = (int) Math.ceil(Math.sqrt(objects.size()));
+			cols = rows;
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				maxRowWidth += object.computeWidth();
+				if (((++current) % cols) == 0) {
+					if (maxRowWidth > maxWidth) {
+						maxWidth = maxRowWidth;
+					}
+					maxRowWidth = 0;
+				}
+			}
+			break;
 		}
-		return width;
+		return maxWidth + 2 * HORIZONTAL_SPACING;
+	}
+
+	public void setMethodsCollapsed(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setAttributesCollapsed(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 }
