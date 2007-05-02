@@ -101,3 +101,4 @@ public class LayoutEditorContributor extends MultiPageEditorActionBarContributor
 		manager.add(sampleAction);
 	}
 }
+
