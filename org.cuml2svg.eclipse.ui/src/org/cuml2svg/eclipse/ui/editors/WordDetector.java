@@ -6,7 +6,7 @@ public class WordDetector implements IWordDetector {
 
 
 	public boolean isWordStart(char c) {
-		return Character.isJavaIdentifierStart(c);
+		return (Character.isJavaIdentifierStart(c)||c==("@".toCharArray()[0]));
 	}
 
 
