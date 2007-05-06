@@ -76,7 +76,7 @@ public class LayoutScanner extends RuleBasedScanner {
 		//gestione colore parentesi
 //		token = new Token(new TextAttribute(manager.getColor(new RGB(255, 0,
 //				0)),manager.getColor(new RGB(255, 255, 255)), SWT.BOLD));
-		token = new Token(new TextAttribute(manager.getColor(ColorConstants.BRACHET)));
+		token = new Token(new TextAttribute(manager.getColor(ColorConstants.BRACET)));
 		RuleBrace braceRule = new RuleBrace(token);
 		rules.add(braceRule);
 		
