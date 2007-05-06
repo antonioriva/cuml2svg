@@ -8,16 +8,16 @@
             name="cUml2Svg Model Editor"
             extensions="u2sm"
             icon="icons/model.gif"
-            contributorClass="org.cuml2svg.eclipse.ui.editors.ModelEditorContributor"
-            class="org.cuml2svg.eclipse.ui.editors.ModelEditor"
-            id="org.cuml2svg.eclipse.ui.editors.ModelEditor">
+            contributorClass="org.cuml2svg.eclipse.ui.editors.model.ModelEditorContributor"
+            class="org.cuml2svg.eclipse.ui.editors.model.ModelEditor"
+            id="org.cuml2svg.eclipse.ui.editors.model.ModelEditor">
       </editor>
       <editor
-            class="org.cuml2svg.eclipse.ui.editors.LayoutEditor"
-            contributorClass="org.cuml2svg.eclipse.ui.editors.LayoutEditorContributor"
+            class="org.cuml2svg.eclipse.ui.editors.layout.LayoutEditor"
+            contributorClass="org.cuml2svg.eclipse.ui.editors.layout.LayoutEditorContributor"
             extensions="u2sl"
             icon="icons/layout.gif"
-            id="org.cuml2svg.eclipse.ui.editors.LayoutEditor"
+            id="org.cuml2svg.eclipse.ui.editors.layout.LayoutEditor"
             name="cUml2Svg Layout Editor"/>
    </extension>
 
