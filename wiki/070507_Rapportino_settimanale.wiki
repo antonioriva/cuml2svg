@@ -4,7 +4,8 @@
 == Attività svolta ==
 
 ===Compilatore===
- * ...
+ * aggiunta la possibilità di gestire un margine nel gruppo
+ * eliminati alcuni elementi considerati deprecati
 
 ===Generazione Svg===
  * ...
@@ -15,7 +16,7 @@
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
 ===Compilatore===
-...
+nulla da segnalare
 
 ===Generazione Svg===
 ...
