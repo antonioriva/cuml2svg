@@ -105,9 +105,10 @@ public class Group extends Groupable implements Object, Renderable {
 		int rows = 0;
 		int cols = 0;
 		int current = 0;
-		int margin = getMargin();
-		int origXtran = this.getXtran() + margin;
-		int origYtran = this.getYtran() + margin;
+		int leftMargin = this.getLeftMargin();
+		int topMargin = this.getTopMargin();
+		int origXtran = this.getXtran() + leftMargin;
+		int origYtran = this.getYtran() + topMargin;
 		
 		//Add properties to the context
 		context.put("methodsCollapsed", this.methodsCollapsed);
@@ -120,8 +121,8 @@ public class Group extends Groupable implements Object, Renderable {
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran());
-				object.setYtran(this.getYtran());
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
 				object.render(type, context, writer);
  
 				this.setXtran(this.getXtran() + object.computeWidth()
@@ -139,8 +140,8 @@ public class Group extends Groupable implements Object, Renderable {
 			int maxColWidth = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran());
-				object.setYtran(this.getYtran());
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
 				object.render(type, context, writer);
  
 				this.setYtran(this.getYtran() + object.computeHeight()
@@ -164,8 +165,8 @@ public class Group extends Groupable implements Object, Renderable {
 			int maxHeight = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran());
-				object.setYtran(this.getYtran());
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
 				object.render(type, context, writer);
  
 				if (object.computeHeight() > maxHeight) {
@@ -185,16 +186,49 @@ public class Group extends Groupable implements Object, Renderable {
 	}
 
 	/**
-	 * @return
+	 * @return the margin of the group
 	 */
-	private int getMargin() {
+	private int getTopMargin() {
 		int margin = 0;
-		if(this.getProperty("margin") != "") {
-			margin = Integer.parseInt(this.getProperty("margin"));
+		if(this.getProperty("margin-top") != null) {
+			margin = Integer.parseInt(this.getProperty("margin-top"));
 		}
 		return margin;
 	}
  
+	/**
+	 * @return the margin of the group
+	 */
+	private int getRightMargin() {
+		int margin = 0;
+		if(this.getProperty("margin-right") != null) {
+			margin = Integer.parseInt(this.getProperty("margin-right"));
+		}
+		return margin;
+	}
+
+	/**
+	 * @return the margin of the group
+	 */
+	private int getBottomMargin() {
+		int margin = 0;
+		if(this.getProperty("margin-bottom") != null) {
+			margin = Integer.parseInt(this.getProperty("margin-bottom"));
+		}
+		return margin;
+	}
+
+	/**
+	 * @return the margin of the group
+	 */
+	private int getLeftMargin() {
+		int margin = 0;
+		if(this.getProperty("margin-left") != null) {
+			margin = Integer.parseInt(this.getProperty("margin-left"));
+		}
+		return margin;
+	}
+
 	private int getLayout() {
 		String layout = this.getProperty("layout");
 		String params[] = layout.split("x");
@@ -275,7 +309,8 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxHeight + 2 * VERTICAL_SPACING + 2 * this.getMargin();
+		return maxHeight + 2 * VERTICAL_SPACING + 
+			this.getTopMargin() + this.getBottomMargin();
 	}
  
 	/*
@@ -331,7 +366,8 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxWidth + 2 * HORIZONTAL_SPACING + 2 * this.getMargin();
+		return maxWidth + 2 * HORIZONTAL_SPACING + 
+			this.getLeftMargin() + this.getRightMargin();
 	}
 
 	/**
