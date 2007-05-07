@@ -32,6 +32,7 @@
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
 ## Render attributes
+#if(!$attributesCollapsed)
 #foreach( $attribute in $attributes)
   #set($ay = $ay + $fontSize + 10)
   <text
@@ -41,6 +42,7 @@
       $attribute.getAttributeName() : $attribute.getAttributeType()
   </text>
 #end
+#end
   <path
     #set($lx = $x + $width)
     #set($ly = $ay + 10)
@@ -48,6 +50,7 @@
      style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
   />
 ## Render methods
+#if(!$methodsCollapsed)
 #foreach( $method in $methods)
   #set($ay = $ay + $fontSize + 10)
   <text
@@ -60,5 +63,6 @@
         -$method.getMethodName()
       #end
   </text>
+#end
 #end
 </g>

@@ -198,7 +198,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 */
 	@Override
 	public int computeWidth() {
-		int maxLength = 28 * (this.className.length() + 4);
+		int maxLength = this.className.length();
 		if(!this.methodsCollapsed) {
 			for (Iterator i = methods.iterator(); i.hasNext();) {
 				Method method = (Method) i.next();
@@ -215,7 +215,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 				}
 			}
 		}
-		return 28 * (maxLength + 4);
+		return 18 * (maxLength + 4);
 	}
 
 	
@@ -225,10 +225,10 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	@Override
 	public int computeHeight() {
 		int numItems = 2;
-		if(this.methodsCollapsed) {
+		if(!this.methodsCollapsed) {
 			numItems += methods.size();
 		}
-		if(this.attributesCollapsed) {
+		if(!this.attributesCollapsed) {
 			numItems += attributes.size();
 		}
 		return 38 * numItems;
