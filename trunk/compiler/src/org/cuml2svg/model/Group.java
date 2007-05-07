@@ -105,8 +105,9 @@ public class Group extends Groupable implements Object, Renderable {
 		int rows = 0;
 		int cols = 0;
 		int current = 0;
-		int origXtran = this.getXtran();
-		int origYtran = this.getYtran();
+		int margin = getMargin();
+		int origXtran = this.getXtran() + margin;
+		int origYtran = this.getYtran() + margin;
 		
 		//Add properties to the context
 		context.put("methodsCollapsed", this.methodsCollapsed);
@@ -181,6 +182,17 @@ public class Group extends Groupable implements Object, Renderable {
 			break;
 		}
 		return true;
+	}
+
+	/**
+	 * @return
+	 */
+	private int getMargin() {
+		int margin = 0;
+		if(this.getProperty("margin") != "") {
+			margin = Integer.parseInt(this.getProperty("margin"));
+		}
+		return margin;
 	}
  
 	private int getLayout() {
@@ -263,7 +275,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxHeight + 2 * VERTICAL_SPACING;
+		return maxHeight + 2 * VERTICAL_SPACING + 2 * this.getMargin();
 	}
  
 	/*
@@ -319,7 +331,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxWidth + 2 * HORIZONTAL_SPACING;
+		return maxWidth + 2 * HORIZONTAL_SPACING + 2 * this.getMargin();
 	}
 
 	/**
