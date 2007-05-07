@@ -63,19 +63,14 @@ public class Package extends Groupable implements Object, Comparable<Package>{
 
 			return true;
 		} catch (ResourceNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseErrorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MethodInvocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;

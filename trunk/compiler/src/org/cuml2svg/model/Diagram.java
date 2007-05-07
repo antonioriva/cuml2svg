@@ -125,16 +125,12 @@ public class Diagram implements Renderable{
 				template.merge(context, writer);
 			}
 		} catch (ResourceNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseErrorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MethodInvocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;

@@ -39,7 +39,6 @@ public class Attribute implements Renderable {
 	 */
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

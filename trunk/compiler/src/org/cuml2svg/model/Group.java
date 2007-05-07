@@ -35,6 +35,10 @@ public class Group extends Groupable implements Object, Renderable {
 	private int layoutRows = -1;
  
 	private int layoutCols = -1;
+	
+	private boolean methodsCollapsed = false;
+	
+	private boolean attributesCollapsed = false;
  
 	/**
 	 * Initializes the group
@@ -103,6 +107,12 @@ public class Group extends Groupable implements Object, Renderable {
 		int current = 0;
 		int origXtran = this.getXtran();
 		int origYtran = this.getYtran();
+		
+		//Add properties to the context
+		context.put("methodsCollapsed", this.methodsCollapsed);
+		context.put("attributesCollapsed", this.attributesCollapsed);
+		
+		//Choose the rendering method depending on the selected layout
 		switch (layout) {
 		case ROW_LAYOUT:
 			cols = objects.size() / this.layoutRows;
@@ -306,13 +316,32 @@ public class Group extends Groupable implements Object, Renderable {
 		return maxWidth + 2 * HORIZONTAL_SPACING;
 	}
 
-	public void setMethodsCollapsed(boolean b) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * @return the collapseAttributes
+	 */
+	public boolean isAttributesCollapsed() {
+		return attributesCollapsed;
 	}
 
-	public void setAttributesCollapsed(boolean b) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * @param collapseAttributes the collapseAttributes to set
+	 */
+	public void setAttributesCollapsed(boolean collapseAttributes) {
+		this.attributesCollapsed = collapseAttributes;
 	}
+
+	/**
+	 * @return the collapseMethods
+	 */
+	public boolean isMethodsCollapsed() {
+		return methodsCollapsed;
+	}
+
+	/**
+	 * @param collapseMethods the collapseMethods to set
+	 */
+	public void setMethodsCollapsed(boolean collapseMethods) {
+		this.methodsCollapsed = collapseMethods;
+	}
+
 }
