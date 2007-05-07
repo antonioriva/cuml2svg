@@ -164,6 +164,11 @@ TOKEN:{
 <LAYOUT_STATE>  TOKEN : { <OVERLAPPED: "overlapped"> : DEFAULT}
 
 
+TOKEN:{
+	<MARGIN: "@margin">
+} 
+
+
 //riconosce i nomi delle classi come CLASS_NAME
 TOKEN:{
 	<CLASS_TYPE: "interface" | "class"> : CLASS_STATE
@@ -191,7 +196,7 @@ TOKEN:{
 }
 
 TOKEN:{
-	< SIZE:(["0"-"9"])+ (("cm")|("px"))? >	
+	<MARGIN_SIZE:(["0"-"9"])+ ("px")? >	
 |  	<NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
 |	<STRING: "\"" (~[])* "\"">
 |	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+>
@@ -262,7 +267,7 @@ void groups(Group parentGroup):{Group currentGroup;}{
 void group_preference(Group currentGroup):{}{
 	
 	layout_preference(currentGroup)
-|	position_preference(currentGroup)
+|	margin_preference(currentGroup)
 |	collapse_preference(currentGroup)
 |	color_preference(currentGroup)
 
@@ -310,20 +315,17 @@ void collapse_preference(Group currentGroup):{Token t;}{
 	}
 }
 
-void position_preference(Group currentGroup):{Token t;}{
+void margin_preference(Group currentGroup):{Token t;}{
 	//TODO la posizione è data per deprecata; se è così fare in modo di toglierla
-	t=<POSITION> coordinate() coordinate()
-	{printWarning("@position property deprecated, definition skipped",t.beginLine,t.beginColumn);}
+	<MARGIN> t=<MARGIN_SIZE>
+	{currentGroup.setProperty("margin",t.image.replaceAll("px","").trim());}
 }
 
 
 
 
 
-void coordinate():{}{
-	//TODO tornare la coordinata o eliminarla per 
-	<SIZE>
-}
+
 
 void color_preference(Group currentGroup):{Token t;}{
 	//TODO il colore è data per deprecata; se è così fare in modo di toglierla
