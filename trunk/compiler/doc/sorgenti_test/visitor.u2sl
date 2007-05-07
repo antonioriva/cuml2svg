@@ -1,10 +1,11 @@
 import doc/sorgenti_test/visitor.u2sm;
 import doc/sorgenti_test/visitor.u2sm;
-
+ 
 [
 		@layout *x1 
 		[
 			@layout *x*
+			@collapse all
 			[class visitor.Visitor]
 			[class visitor.ConcreteVisitor1]
 			[class visitor.Visitor]

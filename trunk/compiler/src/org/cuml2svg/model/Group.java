@@ -115,7 +115,7 @@ public class Group extends Groupable implements Object, Renderable {
 		//Choose the rendering method depending on the selected layout
 		switch (layout) {
 		case ROW_LAYOUT:
-			cols = objects.size() / this.layoutRows;
+			cols = (int) Math.ceil(objects.size() / (double)this.layoutRows);
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
@@ -133,8 +133,9 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		case COLUMN_LAYOUT:
-			rows = objects.size() / this.layoutCols;
+			rows = (int) Math.ceil(objects.size() / (double)this.layoutCols);
 			current = 0;
+			int maxColWidth = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				object.setXtran(this.getXtran());
@@ -143,10 +144,15 @@ public class Group extends Groupable implements Object, Renderable {
  
 				this.setYtran(this.getYtran() + object.computeHeight()
 						+ VERTICAL_SPACING);
+				int width = object.computeWidth();
+				if(width > maxColWidth) {
+					maxColWidth = width;
+				}
 				if (((++current) % rows) == 0) {
-					this.setXtran(this.getXtran() + object.computeWidth()
+					this.setXtran(this.getXtran() + maxColWidth
 							+ HORIZONTAL_SPACING);
 					this.setYtran(origYtran);
+					maxColWidth = 0;
 				}
 			}
 			break;
@@ -190,7 +196,6 @@ public class Group extends Groupable implements Object, Renderable {
 		} else {
 			this.layoutCols = Integer.parseInt(params[1]);
 		}
- 
 		if (this.layoutCols != -1 && this.layoutRows == -1) {
 			return COLUMN_LAYOUT;
 		}
@@ -276,7 +281,7 @@ public class Group extends Groupable implements Object, Renderable {
 		int current;
 		switch (layout) {
 		case ROW_LAYOUT:
-			cols = objects.size() / this.layoutRows;
+			cols = (int) Math.ceil(objects.size() / (double)this.layoutRows);
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
@@ -288,7 +293,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		case COLUMN_LAYOUT:
-			rows = objects.size() / this.layoutCols;
+			rows = (int) Math.ceil(objects.size() / (double)this.layoutCols);
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
@@ -298,9 +303,10 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		case SQUARE_LAYOUT:
-			rows = (int) Math.ceil(Math.sqrt(objects.size()));
+			rows = (int) Math.ceil(Math.sqrt((double)objects.size()));
 			cols = rows;
 			current = 0;
+			maxRowWidth = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				maxRowWidth += object.computeWidth();
