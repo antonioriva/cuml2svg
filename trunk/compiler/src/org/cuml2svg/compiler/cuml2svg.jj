@@ -318,7 +318,13 @@ void collapse_preference(Group currentGroup):{Token t;}{
 void margin_preference(Group currentGroup):{Token t;}{
 	//TODO la posizione è data per deprecata; se è così fare in modo di toglierla
 	<MARGIN> t=<MARGIN_SIZE>
-	{currentGroup.setProperty("margin",t.image.replaceAll("px","").trim());}
+	{currentGroup.setProperty("margin-top",t.image.replaceAll("px","").trim());}
+	t=<MARGIN_SIZE>
+	{currentGroup.setProperty("margin-right",t.image.replaceAll("px","").trim());}
+	t=<MARGIN_SIZE>
+	{currentGroup.setProperty("margin-bottom",t.image.replaceAll("px","").trim());}
+	t=<MARGIN_SIZE>
+	{currentGroup.setProperty("margin-left",t.image.replaceAll("px","").trim());}
 }
 
 
