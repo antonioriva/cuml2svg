@@ -154,7 +154,7 @@ TOKEN:{
 	<COLLAPSE: "@collapse"> : COLLAPSE_STATE
 } 
 <COLLAPSE_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
-<COLLAPSE_STATE>  TOKEN : { <COLLAPSE_TYPE: "all" | "method" | "attribute" > : DEFAULT  }
+<COLLAPSE_STATE>  TOKEN : { <COLLAPSE_TYPE: "all" | "methods" | "attributes" > : DEFAULT  }
 
 TOKEN:{
 	<LAYOUT: "@layout"> : LAYOUT_STATE
@@ -297,7 +297,7 @@ void collapse_preference(Group currentGroup):{Token t;}{
 	
 	<COLLAPSE> t=<COLLAPSE_TYPE> 
 	{
-		    if(t.image.compareTo("all")==0){
+	if(t.image.compareTo("all")==0){
     	currentGroup.setMethodsCollapsed(true);
     	currentGroup.setAttributesCollapsed(true);
     }else if(t.image.compareTo("methods")==0){
