@@ -8,7 +8,8 @@
  * eliminati alcuni elementi considerati deprecati
 
 ===Generazione Svg===
- * ...
+ * corretti dei bug nella gestione dei layout
+ * aggiunta la gestione dei margini per i gruppi
 
 ===Interfaccia grafica===
  * ...
@@ -19,7 +20,7 @@
 nulla da segnalare
 
 ===Generazione Svg===
-...
+nulla da segnalare
 
 ===Interfaccia grafica===
 ...
@@ -31,7 +32,7 @@ nulla da segnalare
 ...
 
 === Generazione Svg ===
-...
+pienamente nei tempi
 
 === Interfaccia grafica ===
 ...
