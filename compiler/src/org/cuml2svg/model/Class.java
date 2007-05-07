@@ -30,6 +30,10 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 
 	private static final int TYPE_INTERFACE = 1;
 	
+	private boolean methodsCollapsed = false;
+	
+	private boolean attributesCollapsed = false;
+	
 	/**
 	 * The name of the class
 	 */
@@ -77,6 +81,8 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
 		try {
+			this.methodsCollapsed = (Boolean) context.get("methodsCollapsed");
+			this.attributesCollapsed = (Boolean) context.get("attributesCollapsed");
 			Template template = Velocity.getTemplate(SVG_CLASS_TEMPLATE);
 			context.put("x",10);
 			context.put("y",10);
@@ -92,19 +98,14 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 			
 			return true;
 		} catch (ResourceNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParseErrorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MethodInvocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -197,17 +198,21 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 */
 	@Override
 	public int computeWidth() {
-		int maxLength = 0;
-		for (Iterator i = methods.iterator(); i.hasNext();) {
-			Method method = (Method) i.next();
-			if(method.getMethodName().length() > maxLength) {
-				maxLength = method.getMethodName().length();
+		int maxLength = 28 * (this.className.length() + 4);
+		if(!this.methodsCollapsed) {
+			for (Iterator i = methods.iterator(); i.hasNext();) {
+				Method method = (Method) i.next();
+				if(method.getMethodName().length() > maxLength) {
+					maxLength = method.getMethodName().length();
+				}
 			}
 		}
-		for (Iterator i = attributes.iterator(); i.hasNext();) {
-			Attribute attribute = (Attribute) i.next();
-			if(attribute.getAttributeName().length() > maxLength) {
-				maxLength = attribute.getAttributeName().length();
+		if(!this.attributesCollapsed) {
+			for (Iterator i = attributes.iterator(); i.hasNext();) {
+				Attribute attribute = (Attribute) i.next();
+				if(attribute.getAttributeName().length() > maxLength) {
+					maxLength = attribute.getAttributeName().length();
+				}
 			}
 		}
 		return 28 * (maxLength + 4);
@@ -219,8 +224,42 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 */
 	@Override
 	public int computeHeight() {
-		int numItems = methods.size() + attributes.size() + 2;
+		int numItems = 2;
+		if(this.methodsCollapsed) {
+			numItems += methods.size();
+		}
+		if(this.attributesCollapsed) {
+			numItems += attributes.size();
+		}
 		return 38 * numItems;
+	}
+
+	/**
+	 * @return the attributesCollapsed
+	 */
+	public boolean isAttributesCollapsed() {
+		return attributesCollapsed;
+	}
+
+	/**
+	 * @param attributesCollapsed the attributesCollapsed to set
+	 */
+	public void setAttributesCollapsed(boolean attributesCollapsed) {
+		this.attributesCollapsed = attributesCollapsed;
+	}
+
+	/**
+	 * @return the methodsCollapsed
+	 */
+	public boolean isMethodsCollapsed() {
+		return methodsCollapsed;
+	}
+
+	/**
+	 * @param methodsCollapsed the methodsCollapsed to set
+	 */
+	public void setMethodsCollapsed(boolean methodsCollapsed) {
+		this.methodsCollapsed = methodsCollapsed;
 	}
 	
 	
