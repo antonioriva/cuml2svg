@@ -59,6 +59,7 @@ public class SVGExporter {
 			writer.flush();
 			writer.close();
 			
+			GraphicsManager.getInstance().print();
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 		}
