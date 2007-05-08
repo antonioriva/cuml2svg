@@ -7,6 +7,7 @@ import java.util.Iterator;
  
 import org.apache.velocity.VelocityContext;
 import org.cuml2svg.model.Diagram.OutputType;
+import org.cuml2svg.svg.GraphicsManager;
  
 /**
  * Object used to group classes and packages in the layout
@@ -132,6 +133,7 @@ public class Group extends Groupable implements Object, Renderable {
 							+ VERTICAL_SPACING);
 					this.setXtran(origXtran);
 				}
+				GraphicsManager.getInstance().addObject(object);
 			}
 			break;
 		case COLUMN_LAYOUT:
@@ -156,6 +158,7 @@ public class Group extends Groupable implements Object, Renderable {
 					this.setYtran(origYtran);
 					maxColWidth = 0;
 				}
+				GraphicsManager.getInstance().addObject(object);
 			}
 			break;
 		case SQUARE_LAYOUT:
@@ -179,6 +182,7 @@ public class Group extends Groupable implements Object, Renderable {
 							+ VERTICAL_SPACING);
 					this.setXtran(origXtran);
 				}
+				GraphicsManager.getInstance().addObject(object);
 			}
 			break;
 		}
