@@ -56,6 +56,7 @@ public class GraphicsManager {
 	 * @return the array of objects
 	 */
 	public ArrayList<Rectangle> getObjects() {
+		System.out.println("getting "+this.objects.size()+" objects");
 		return this.objects;
 	}
 
