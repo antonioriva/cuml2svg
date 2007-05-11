@@ -18,6 +18,7 @@ import java.util.Iterator;
 import org.cuml2svg.model.*;
 import org.cuml2svg.svg.SVGExporter;
 import org.cuml2svg.model.Class;
+import org.cuml2svg.tools.RectDrawer;
 
 public class cuml2svg {
 	static ArrayList<Class> declaredClassList= new ArrayList<Class>();
@@ -29,20 +30,21 @@ public class cuml2svg {
 	static boolean noticeFlag= true;
 	static boolean errorFlag= true;
 	static boolean renderFlag= true;
-	
+	static cuml2svg parser;
 	
 	public cuml2svg(String input, String output,boolean warningFlag,boolean noticeFlag,boolean errorFlag){
 		this.warningFlag=warningFlag;
 		this.noticeFlag=noticeFlag;
 		this.errorFlag=errorFlag;
 		try {
-      		cuml2svg parser = new cuml2svg(new FileInputStream(input));
-    	 	currentFileName=input;
-    		parser.s();          
+      		 parser = new cuml2svg(new FileInputStream(input));
+    	 	 currentFileName=input;
+    		 parser.s();          
 		
 			 SVGExporter exporter = new SVGExporter(diagram,output);
 			 //SVGExporter exporter = new SVGExporter(diagram,output,renderFlag);
 			 exporter.export();
+			 RectDrawer.main(null);
         
       	} catch (FileNotFoundException e1) {
     		printError("inout file not found",-1,-1);
@@ -161,12 +163,24 @@ TOKEN:{
 } 
 <LAYOUT_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
 <LAYOUT_STATE>  TOKEN : { <LAYOUT_CARD: ((["1"-"9"])(["0"-"9"])* "x*") | ("*x" (["1"-"9"])(["0"-"9"])*) | ("*x*") > : DEFAULT  }
-<LAYOUT_STATE>  TOKEN : { <OVERLAPPED: "overlapped"> : DEFAULT}
+<LAYOUT_STATE>  TOKEN : { <OVERLAPPED: "overlapped"> : DEFAULT }
 
 
 TOKEN:{
-	<MARGIN: "@margin">
+	<MARGIN: "@margin">: MARGIN_STATE 
 } 
+<MARGIN_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE>  TOKEN : { <MARGIN_SIZE_TOP:(["0"-"9"])+ ("px")? > : MARGIN_STATE_1  }
+
+<MARGIN_STATE_1> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE_1>  TOKEN : { <MARGIN_SIZE_RIGHT:(["0"-"9"])+ ("px")? > : MARGIN_STATE_2  }
+
+<MARGIN_STATE_2> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE_2>  TOKEN : { <MARGIN_SIZE_BOTTOM:(["0"-"9"])+ ("px")? > : MARGIN_STATE_3  }
+
+<MARGIN_STATE_3> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE_3>  TOKEN : { <MARGIN_SIZE_LEFT:(["0"-"9"])+ ("px")? >  : DEFAULT }
+	
 
 
 //riconosce i nomi delle classi come CLASS_NAME
@@ -196,10 +210,9 @@ TOKEN:{
 }
 
 TOKEN:{
-	<MARGIN_SIZE:(["0"-"9"])+ ("px")? >	
-|  	<NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
+  	<NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
 |	<STRING: "\"" (~[])* "\"">
-|	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+>
+|	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*>
 |	<HEX_COLOR: ("#" (["0"-"9", "a"-"f", "A"-"F"]){3} (["0"-"9", "a"-"f", "A"-"F"]){3})>
 |	<CLASS_VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*>
 }
@@ -214,6 +227,7 @@ void s() :  {Token t;}{
 		printNotice("starting parsing",-1,-1);
 	}
 	layout()
+	 < EOF >
 	
 }
 
@@ -317,14 +331,17 @@ void collapse_preference(Group currentGroup):{Token t;}{
 
 void margin_preference(Group currentGroup):{Token t;}{
 	//TODO la posizione è data per deprecata; se è così fare in modo di toglierla
-	<MARGIN> t=<MARGIN_SIZE>
+	<MARGIN> t=<MARGIN_SIZE_TOP>
 	{currentGroup.setProperty("margin-top",t.image.replaceAll("px","").trim());}
-	t=<MARGIN_SIZE>
+	t=<MARGIN_SIZE_RIGHT>
 	{currentGroup.setProperty("margin-right",t.image.replaceAll("px","").trim());}
-	t=<MARGIN_SIZE>
+	t=<MARGIN_SIZE_BOTTOM>
 	{currentGroup.setProperty("margin-bottom",t.image.replaceAll("px","").trim());}
-	t=<MARGIN_SIZE>
+	t=<MARGIN_SIZE_LEFT>
 	{currentGroup.setProperty("margin-left",t.image.replaceAll("px","").trim());}
+	
+	
+	
 }
 
 
