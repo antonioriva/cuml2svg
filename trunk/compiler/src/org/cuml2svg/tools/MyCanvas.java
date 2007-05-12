@@ -38,11 +38,28 @@ public class MyCanvas extends JPanel {
 		pathStop=(int)Math.round( Math.random()*(rectangleArray.size()-1));
 		}while(pathStart==pathStop);
 		
-		System.out.println("generating path from: "+pathStart+" to: "+pathStop);
-		pathGenerator= new PathGenerator(this,rectangleArray,pathStart,pathStop);
-		pathGenerator.start();
+		changePath(pathStart,pathStop);
 		
 	}
+
+	public void changePath(int pathStart, int pathStop)
+	{
+		if(pathStart>=0 && pathStart<this.rectangleArray.size()){
+		
+		
+		
+		if(pathStop>=0 && pathStop<this.rectangleArray.size()){
+			this.pathStart= pathStart;
+			this.pathStop= pathStop;
+		
+		System.out.println("generating path from: "+pathStart+" to: "+pathStop);
+		pathGenerator= new PathGenerator(this,rectangleArray,pathStart,pathStop);
+		pathGenerator.start();}else{
+			System.err.println("Non esiste il punto di start indicato");
+		}}else{
+			System.err.println("Non esiste il punto di stop indicato");}
+	}
+	
 	
 	@Override
 	public void paintComponent(Graphics g) {
