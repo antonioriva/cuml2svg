@@ -1,6 +1,7 @@
 package org.cuml2svg.tools;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -32,10 +33,13 @@ public class MyCanvas extends JPanel {
 		rectangleArray= gr.getObjects();
 		
 		
-		pathStart=(int)Math.round( Math.random()*16);
-		pathStop=(int)Math.round( Math.random()*16);
+		pathStart=(int)Math.round( Math.random()*(rectangleArray.size()-1));
+		do{
+		pathStop=(int)Math.round( Math.random()*(rectangleArray.size()-1));
+		}while(pathStart==pathStop);
+		
 		System.out.println("generating path from: "+pathStart+" to: "+pathStop);
-		pathGenerator= new FirstStategy(this,rectangleArray,pathStart,pathStop);
+		pathGenerator= new PathGenerator(this,rectangleArray,pathStart,pathStop);
 		pathGenerator.start();
 		
 	}
@@ -54,13 +58,36 @@ public class MyCanvas extends JPanel {
 			if(i==pathStop){
 				g.setColor(new Color(0,255,255,255));
 			}
-			i++;
+			
 			g.drawRect((int)((r.x+xstart)/zoomLevel), (int)((r.y+ystart)/zoomLevel), (int)(r.width/zoomLevel), (int)(r.height/zoomLevel));
+			g.setFont(new Font("Arial",1,(int)(40/zoomLevel)));
+			g.drawString("id: "+i, (int)((r.x+10+xstart)/zoomLevel), (int)((r.y+50+ystart)/zoomLevel));
+			
+			g.setColor(new Color(200,200,200,255));
+			g.drawRect((int)((r.x-this.pathGenerator.defaultBorder+xstart)/zoomLevel), 
+					(int)((r.y-this.pathGenerator.defaultBorder+ystart)/zoomLevel), 
+					(int)((r.width+2*this.pathGenerator.defaultBorder)/zoomLevel),
+					(int)((r.height+2*this.pathGenerator.defaultBorder)/zoomLevel));
+			
 			g.setColor(new Color(0,0,0,255));
 			drawHandler(g, r);
+			//print collision border
+			
+			i++;
 		}
 		
 		ArrayList<Point> l = this.pathGenerator.currentPath;
+		drawPath(g, l);
+		
+		ArrayList<ArrayList<Point>> l1 = this.pathGenerator.storedPaths;
+		for (Iterator k = l1.iterator(); k.hasNext();) {
+			ArrayList<Point> element = (ArrayList<Point>) k.next();
+			drawPath(g, element);
+		}
+		
+	}
+
+	private void drawPath(Graphics g, ArrayList<Point> l) {
 		if (l.size()>1){
 			Point oldP;
 			Point newP=l.get(0);
@@ -74,8 +101,8 @@ public class MyCanvas extends JPanel {
 						(int)((newP.y+ystart)/zoomLevel));
 			}
 		}
-		
 	}
+	
 	
 	
 	

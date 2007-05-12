@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.awt.Point;
 
-import org.cuml2svg.tools.FirstStategy;
 import org.cuml2svg.tools.PathGenerator;
 import org.junit.Test;
 
