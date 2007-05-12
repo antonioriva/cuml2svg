@@ -133,6 +133,7 @@ public class Group extends Groupable implements Object, Renderable {
 							+ VERTICAL_SPACING);
 					this.setXtran(origXtran);
 				}
+				
 				GraphicsManager.getInstance().addObject(object);
 			}
 			break;
@@ -182,6 +183,7 @@ public class Group extends Groupable implements Object, Renderable {
 							+ VERTICAL_SPACING);
 					this.setXtran(origXtran);
 				}
+				
 				GraphicsManager.getInstance().addObject(object);
 			}
 			break;

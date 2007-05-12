@@ -40,7 +40,8 @@ public class GraphicsManager {
 	 *            the object to add to the array
 	 */
 	public void addObject(Object object) {
-		if (object instanceof Groupable) {
+		
+		if (object instanceof org.cuml2svg.model.Class) {
 			Rectangle rectangle = new Rectangle();
 			Groupable groupable = (Groupable) object;
 			rectangle.setLocation(groupable.getXtran(), groupable.getYtran());
