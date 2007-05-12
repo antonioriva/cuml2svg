@@ -18,7 +18,7 @@ public class PathGenerator extends Thread {
 	int pathStop=0;
 	
 	
-	int timing = 10;
+	int timing = 1;
 	
 	private int lastDirection=0;
 	
@@ -37,7 +37,7 @@ public class PathGenerator extends Thread {
 	public static final int LEFT_TOP=7;
 	
 	int defaultStepLenght=5;
-	int defaultBorder=20;
+	int defaultBorder=30;
 	int externalBoxMaxY;
 	int externalBoxMaxX;
 	int externalBoxMinY=-100;
@@ -45,7 +45,7 @@ public class PathGenerator extends Thread {
 	
 	ArrayList<Point> currentPath = new ArrayList<Point>();
 	ArrayList<ArrayList<Point>> storedPaths = new ArrayList<ArrayList<Point>>();
-	private int maxPathSize=500;
+	private int maxPathSize=1000;
 	
 	static int currentPathCost=0;
 	
@@ -58,8 +58,8 @@ public class PathGenerator extends Thread {
 		
 		
 		for (Rectangle r : rectangleArray) {
-			this.externalBoxMaxX=Math.max(externalBoxMaxX, r.x);
-			this.externalBoxMaxY=Math.max(externalBoxMaxY, r.y);
+			this.externalBoxMaxX=Math.max(externalBoxMaxX, r.x)+100;
+			this.externalBoxMaxY=Math.max(externalBoxMaxY, r.y)+100;
 		}
 		
 		
@@ -117,6 +117,7 @@ public class PathGenerator extends Thread {
 			return 1;
 		}
 		if(isOutOfExternalBox(p)){
+			System.out.println("Collide with externa box: x="+p.x+" y="+p.y);
 			return 1;
 		}
 		
