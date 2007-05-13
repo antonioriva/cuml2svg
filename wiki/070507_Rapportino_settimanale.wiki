@@ -13,7 +13,8 @@
  * implementazione del primo algoritmo automatico per la definizione dei percorsi delle linee delle relazione
 
 ===Interfaccia grafica===
- * ...
+ * risolto il problema di gestione delle parole che iniziano con caratteri speciali 
+ * corretti alcuni problemi
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
@@ -25,7 +26,7 @@ si è risolto cambiando stato ad ogni passaggio numerando i nuovi stati con un s
 nulla da segnalare
 
 ===Interfaccia grafica===
-...
+la risoluzione del problema con le parole che iniziano con caratteri speciali è stata trovata modificando la classe WordDetector;
  
 == Stato del progetto in relazione al Gantt presentato ==
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
