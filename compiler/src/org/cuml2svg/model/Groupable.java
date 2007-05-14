@@ -13,6 +13,8 @@ public abstract class Groupable implements Object, Renderable{
 	private int xtran = 0;
 
 	private int ytran = 0;
+	
+	protected int id = 0;
 
 	/**
 	 * @return the xtran
@@ -61,4 +63,20 @@ public abstract class Groupable implements Object, Renderable{
 	public int computeHeight() {
 		return 0;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Object#getId()
+	 */
+	public int getId() {
+		return this.id;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Object#setId(int)
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 }

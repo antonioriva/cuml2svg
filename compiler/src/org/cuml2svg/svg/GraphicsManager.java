@@ -1,10 +1,15 @@
 package org.cuml2svg.svg;
 
 import java.awt.Rectangle;
+import java.io.Writer;
 import java.util.ArrayList;
 
+import org.apache.velocity.VelocityContext;
+import org.cuml2svg.model.Class;
 import org.cuml2svg.model.Groupable;
 import org.cuml2svg.model.Object;
+import org.cuml2svg.model.Relation;
+import org.cuml2svg.model.Diagram.OutputType;
 
 /**
  * Class for handling graphics
@@ -17,10 +22,14 @@ import org.cuml2svg.model.Object;
 public class GraphicsManager {
 	private static GraphicsManager instance;
 
-	private ArrayList<Rectangle> objects;
+	private ArrayList<Rectangle> rectangles;
+
+	private ArrayList<Object> objects;
+
+	private ArrayList<Relation> relations;
 
 	private GraphicsManager() {
-		this.objects = new ArrayList<Rectangle>();
+		this.rectangles = new ArrayList<Rectangle>();
 	}
 
 	/**
@@ -40,14 +49,14 @@ public class GraphicsManager {
 	 *            the object to add to the array
 	 */
 	public void addObject(Object object) {
-		
+		this.objects.add(object);
 		if (object instanceof org.cuml2svg.model.Class) {
 			Rectangle rectangle = new Rectangle();
 			Groupable groupable = (Groupable) object;
 			rectangle.setLocation(groupable.getXtran(), groupable.getYtran());
 			rectangle.setSize(groupable.computeWidth(), groupable
 					.computeHeight());
-			this.objects.add(rectangle);
+			this.rectangles.add(rectangle);
 		}
 	}
 
@@ -56,9 +65,9 @@ public class GraphicsManager {
 	 * 
 	 * @return the array of objects
 	 */
-	public ArrayList<Rectangle> getObjects() {
-		System.out.println("getting "+this.objects.size()+" objects");
-		return this.objects;
+	public ArrayList<Rectangle> getRectangles() {
+		System.out.println("getting " + this.rectangles.size() + " objects");
+		return this.rectangles;
 	}
 
 	/**
@@ -68,13 +77,73 @@ public class GraphicsManager {
 	 *            the position of the object in the array
 	 * @return the object in the given position
 	 */
-	public Rectangle getObject(int pos) {
+	public Object getObject(int pos) {
 		return this.objects.get(pos);
 	}
-	
-	public void print() {
-		for (Rectangle rectangle : objects) {
-			System.out.printf("X: %d Y:%d W: %d H: %d \n", rectangle.x,rectangle.y, rectangle.width, rectangle.height);
+
+	/**
+	 * Get the rectangle of the object in the given position
+	 * 
+	 * @param pos
+	 *            the position of the object in the array
+	 * @return the object in the given position
+	 */
+	public Rectangle getRectangle(int pos) {
+		return this.rectangles.get(pos);
+	}
+
+	/**
+	 * Find a class given its className
+	 * 
+	 * @param className
+	 *            the name of the class
+	 * @return the class reference if found in the diagram, null otherwise
+	 */
+	public Class find(String className) {
+		for (Object object : objects) {
+			if (object instanceof Class) {
+				Class aClass = (Class) object;
+				if (aClass.getClassName().equals(className)) {
+					return aClass;
+				}
+			}
 		}
+		return null;
+	}
+
+	/**
+	 * Add a relation to the diagram
+	 * 
+	 * @param relation
+	 *            the new relation to add
+	 */
+	public void addRelation(Relation relation) {
+		this.relations.add(relation);
+	}
+
+	/**
+	 * @return the list of relations of the diagram
+	 */
+	public ArrayList<Relation> getRelations() {
+		return this.relations;
+	}
+
+	/**
+	 * Output the coordinate of the rectangles of the objects
+	 * JUST FOR DEBUG
+	 */
+	public void print() {
+		for (Rectangle rectangle : rectangles) {
+			System.out.printf("X: %d Y:%d W: %d H: %d \n", rectangle.x,
+					rectangle.y, rectangle.width, rectangle.height);
+		}
+	}
+
+	public void drawRelations(OutputType type, VelocityContext context,
+			Writer writer) {
+		for (Relation relation : relations) {
+			relation.render(type, context, writer);		
+		}
+		
 	}
 }

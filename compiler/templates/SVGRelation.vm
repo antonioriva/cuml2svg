@@ -1,0 +1,9 @@
+<g
+   style="stroke:#000000;stroke-opacity:1">
+  <path
+#foreach($point in $points)
+	#set($path = $path + " L " + $point.getX() + "," + $point.getY())
+#end
+     d="$path"
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"/>
+</g>

@@ -30,7 +30,7 @@ public class MyCanvas extends JPanel {
 	
 	public MyCanvas() {
 		GraphicsManager gr = GraphicsManager.getInstance();
-		rectangleArray= gr.getObjects();
+		rectangleArray= gr.getRectangles();
 		
 		
 		pathStart=(int)Math.round( Math.random()*(rectangleArray.size()-1));
