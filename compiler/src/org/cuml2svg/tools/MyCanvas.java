@@ -25,16 +25,15 @@ public class MyCanvas extends JPanel {
 	
 	int pathStart;
 	int pathStop;
-	final ArrayList<Rectangle> rectangleArray;
+	final ArrayList<Rectangle> rectangleArray=GraphicsManager.getInstance().getRectangles();
 	PathGenerator pathGenerator;
 	
 	public MyCanvas() {
-		GraphicsManager gr = GraphicsManager.getInstance();
-		rectangleArray= gr.getRectangles();
 	}
 
 	public void changePath(PathGenerator p ,int pathStart, int pathStop)
 	{
+		this.pathGenerator=p;
 		if(pathStart>=0 && pathStart<this.rectangleArray.size()){
 		
 		

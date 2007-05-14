@@ -45,14 +45,8 @@ import javax.swing.event.ChangeListener;
 */
 public class RectDrawer extends javax.swing.JFrame {
 	public MyCanvas myCanvas1;
-	private JButton computeButton;
-	private JTextField stopTextLayout;
-	private JLabel jLabel2;
-	private JLabel jLabel1;
-	private JTextField startTextLayout;
 	private JPanel jPanel1;
 	private JSlider jSlider1;
-	private JButton randomButton;
 
 	{
 		//Set Look & Feel
@@ -114,50 +108,6 @@ public class RectDrawer extends javax.swing.JFrame {
 						public void stateChanged(ChangeEvent evt) {
 
 							myCanvas1.setZoomLevel(jSlider1.getValue());
-						}
-					});
-				}
-				{
-					startTextLayout = new JTextField();
-					jPanel1.add(startTextLayout, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					startTextLayout.setSize(40, 40);
-					startTextLayout.setPreferredSize(new java.awt.Dimension(40, 40));
-					startTextLayout.setFont(new java.awt.Font("DejaVu Sans",0,14));
-				}
-				{
-					jLabel1 = new JLabel();
-					jPanel1.add(jLabel1, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(1, 0, 0, 1), 0, 0));
-					jLabel1.setText("Start");
-				}
-				{
-					jLabel2 = new JLabel();
-					jPanel1.add(jLabel2, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					jLabel2.setText("Stop");
-				}
-				{
-					stopTextLayout = new JTextField();
-					jPanel1.add(stopTextLayout, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					stopTextLayout.setSize(40, -1);
-					stopTextLayout.setPreferredSize(new java.awt.Dimension(40,40));
-					stopTextLayout.setFont(new java.awt.Font("DejaVu Sans",0,14));
-				}
-				{
-					computeButton = new JButton();
-					jPanel1.add(computeButton, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					computeButton.setText("Go!");
-					computeButton.addMouseListener(new MouseAdapter() {
-						public void mouseClicked(MouseEvent evt) {
-							computeButtonMouseClicked(evt);
-						}
-					});
-				}
-				{
-					randomButton = new JButton();
-					jPanel1.add(randomButton, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-					randomButton.setText("Rnd!");
-					randomButton.addMouseListener(new MouseAdapter() {
-						public void mouseClicked(MouseEvent evt) {
-							randomButtonMouseClicked(evt);
 						}
 					});
 				}

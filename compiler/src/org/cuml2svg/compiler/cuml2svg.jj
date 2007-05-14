@@ -440,7 +440,7 @@ void relation(Class currentDefinition):{Token r;Token t;}{
 	(<COMMENT>)? t=<RELATION_TYPE> r=<VARIABLE>
 	{
 				//TODO aggiungere la classe alle relazioni
-			currentDefinition.addRelation(new Relation(currentClassName,r.image,RelationType.valueOf(t.image)));
+			currentDefinition.addRelation(new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image)));
             	
 		printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 	}

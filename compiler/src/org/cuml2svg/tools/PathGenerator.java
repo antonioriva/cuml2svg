@@ -51,7 +51,7 @@ public class PathGenerator extends Thread {
 	private ArrayList<Integer> pathDirections= new ArrayList<Integer>();
 	
 	static int currentPathCost=0;
-	
+	RectDrawer inst=null;
 	MyCanvas canvas=null;
 	
 	
@@ -69,11 +69,18 @@ public class PathGenerator extends Thread {
 				currentPath= path;
 			}
 		}
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		inst.setVisible(false);
 		return currentPath;
 	}
 	public PathGenerator() {
 
-		final RectDrawer inst = new RectDrawer();
+		inst= new RectDrawer();
 		inst.setVisible(true);
         canvas=inst.myCanvas1;
 		
@@ -82,7 +89,6 @@ public class PathGenerator extends Thread {
 			this.externalBoxMaxX=Math.max(externalBoxMaxX, r.x)+100;
 			this.externalBoxMaxY=Math.max(externalBoxMaxY, r.y)+100;
 		}
-		
 		
 	}
 	
@@ -241,7 +247,7 @@ public class PathGenerator extends Thread {
 			//while(removeLoopFromPath()){Thread.sleep(500);}
 			//optimizePath();
 			//while(optimizePath()){Thread.sleep(500);}
-			collapsePath();Thread.sleep(2000);
+			collapsePath();
 			this.storedPaths.add(currentPath);
 			currentPath= new ArrayList<Point>();
 			pathDirections= new ArrayList<Integer>();
