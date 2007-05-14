@@ -11,7 +11,7 @@ public class PathGenerator extends Thread {
 	
 	
 	
-	MyCanvas canvas=null;
+	//MyCanvas canvas=null;
 	ArrayList<Rectangle> rectangleArray=null;
 	ArrayList<Point> visitedPoint = new ArrayList<Point>();
 	
@@ -65,12 +65,9 @@ public class PathGenerator extends Thread {
 		}
 		return currentPath;
 	}
+	public PathGenerator() {
 	
-	public PathGenerator(MyCanvas canvas, ArrayList<Rectangle> rectangleArray, int pathStart, int pathStop) {
-		this.canvas=canvas;
 		this.rectangleArray= rectangleArray;
-		this.pathStart= pathStart;
-		this.pathStop= pathStop;
 		
 		
 		for (Rectangle r : rectangleArray) {
@@ -146,7 +143,7 @@ public class PathGenerator extends Thread {
 						}
 						currentPath=tmp;
 						pathDirections=tmp1;
-						canvas.repaint();
+						//canvas.repaint();
 						return true;
 					}
 				}
@@ -410,7 +407,7 @@ public class PathGenerator extends Thread {
 		Point p1= new Point(x,y);
 		this.currentPath.add(p1);
 		this.pathDirections.add(direction);
-		this.canvas.repaint();
+		//this.canvas.repaint();
 		return p1;	
 	}
 	
@@ -424,7 +421,7 @@ public class PathGenerator extends Thread {
 //		}
 		
 		
-		this.canvas.repaint();
+		//this.canvas.repaint();
 	}
 	private boolean inRectangle(Point p ,Rectangle r){
 		return  inRectangle( p , r, this.defaultBorder);
