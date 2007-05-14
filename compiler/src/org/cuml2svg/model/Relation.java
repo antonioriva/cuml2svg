@@ -11,6 +11,7 @@ import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.cuml2svg.model.Diagram.OutputType;
 import org.cuml2svg.svg.GraphicsManager;
+import org.cuml2svg.tools.PathGenerator;
 
 /**
  * Object for class relation management
@@ -70,6 +71,9 @@ public class Relation implements Renderable {
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
 		try {
+			PathGenerator pathGenerator = new PathGenerator();
+			ArrayList<Point> points = pathGenerator.getPath(startId, endId);
+			this.addPoints(points);
 			Template template;
 			ArrayList<Point> pointsCopy = (ArrayList<Point>) points.clone();
 			Point point = pointsCopy.remove(0);

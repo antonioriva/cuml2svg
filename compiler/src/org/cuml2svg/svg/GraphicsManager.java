@@ -30,6 +30,8 @@ public class GraphicsManager {
 
 	private GraphicsManager() {
 		this.rectangles = new ArrayList<Rectangle>();
+		this.objects = new ArrayList<Object>();
+		this.relations = new ArrayList<Relation>();
 	}
 
 	/**
