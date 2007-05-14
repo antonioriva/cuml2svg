@@ -78,8 +78,10 @@ public class PathGenerator extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		storedPaths.clear();
 		return currentPath;
 	}
+	
 	private PathGenerator() {
 
 		inst= new RectDrawer();
