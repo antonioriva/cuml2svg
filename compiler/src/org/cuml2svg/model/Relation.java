@@ -60,6 +60,7 @@ public class Relation implements Renderable {
 		this.startClass = startClass;
 		this.endClass = endClass;
 		this.relationType = relationType;
+		System.out.println("STC: "+startClass + " ENC: "+endClass + " TYPE: "+relationType);
 	}
 
 	/*
@@ -72,16 +73,19 @@ public class Relation implements Renderable {
 			Writer writer) {
 		try {
 			PathGenerator pathGenerator = new PathGenerator();
-			ArrayList<Point> points = pathGenerator.getPath(startId, endId);
-			this.addPoints(points);
-			Template template;
-			ArrayList<Point> pointsCopy = (ArrayList<Point>) points.clone();
-			Point point = pointsCopy.remove(0);
-			String path = "M " + point.getX() + "," + point.getY();
-			context.put("points", pointsCopy);
-			context.put("path", path);
-			template = Velocity.getTemplate(RELATION_TEMPLATE);
-			template.merge(context, writer);
+			System.out.println("STID: "+getStartId() + "ENID: "+getEndId());
+			ArrayList<Point> points = pathGenerator.getPath(getStartId(), getEndId());
+			if(points != null) {
+				this.addPoints(points);
+				Template template;
+				ArrayList<Point> pointsCopy = (ArrayList<Point>) points.clone();
+				Point point = pointsCopy.remove(0);
+				String path = "M " + point.getX() + "," + point.getY();
+				context.put("points", pointsCopy);
+				context.put("path", path);
+				template = Velocity.getTemplate(RELATION_TEMPLATE);
+				template.merge(context, writer);
+			}
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
 		} catch (ParseErrorException e) {
