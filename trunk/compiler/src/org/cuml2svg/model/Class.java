@@ -87,8 +87,8 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 			this.methodsCollapsed = (Boolean) context.get("methodsCollapsed");
 			this.attributesCollapsed = (Boolean) context.get("attributesCollapsed");
 			Template template = Velocity.getTemplate(SVG_CLASS_TEMPLATE);
-			context.put("x",10);
-			context.put("y",10);
+			context.put("x",0);
+			context.put("y",0);
 			context.put("width",this.computeWidth());
 			context.put("height",this.computeHeight());
 			context.put("xtran", this.getXtran());
