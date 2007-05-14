@@ -38,8 +38,7 @@ il compilatore può considerarsi per lo più finito e collegato con la generazio
 pienamente nei tempi
 
 === Interfaccia grafica ===
-...
-
+lo sviluppo dell'interfaccia grafica risulta in ritardo rispetto ai tempi previsti
 ==Note e Commenti==
 
 Nulla da segnalare
