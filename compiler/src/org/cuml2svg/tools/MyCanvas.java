@@ -52,20 +52,22 @@ public class MyCanvas extends JPanel {
 			this.pathStart= pathStart;
 			this.pathStop= pathStop;
 		
-		System.out.println("generating path from: "+pathStart+" to: "+pathStop);
-		pathGenerator= new PathGenerator(this,rectangleArray,pathStart,pathStop);
-		pathGenerator.start();}else{
+//		System.out.println("generating path from: "+pathStart+" to: "+pathStop);
+//		pathGenerator= new PathGenerator();
+//		pathGenerator.start();
+		}else{
 			System.err.println("Non esiste il punto di start indicato");
-		}}else{
+		}
+		}else{
 			System.err.println("Non esiste il punto di stop indicato");}
 	}
 	
-	
+
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		
-		
+				
 		int i =0;
 		for (final Rectangle r : rectangleArray) {
 			
@@ -116,6 +118,7 @@ public class MyCanvas extends JPanel {
 						(int)((oldP.y+ystart)/zoomLevel), 
 						(int)((newP.x+xstart)/zoomLevel), 
 						(int)((newP.y+ystart)/zoomLevel));
+				g.fillOval((int)((newP.x+xstart)/zoomLevel)-1, (int)((newP.y+ystart)/zoomLevel)-1, 2, 2);
 			}
 		}
 	}
