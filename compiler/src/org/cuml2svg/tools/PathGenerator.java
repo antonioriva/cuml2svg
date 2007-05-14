@@ -3,10 +3,13 @@ package org.cuml2svg.tools;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.rmi.server.ExportException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.cuml2svg.svg.GraphicsManager;
+
+import sun.awt.windows.ThemeReader;
 
 public class PathGenerator extends Thread {
 	
@@ -38,8 +41,8 @@ public class PathGenerator extends Thread {
 	public static final int BOTTOM_LEFT=6;
 	public static final int LEFT_TOP=7;
 	
-	int defaultStepLenght=20;
-	int defaultBorder=30;
+	int defaultStepLenght=50;
+	int defaultBorder=50;
 	int externalBoxMaxY;
 	int externalBoxMaxX;
 	int externalBoxMinY=-100;
@@ -75,10 +78,9 @@ public class PathGenerator extends Thread {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		inst.setVisible(false);
 		return currentPath;
 	}
-	public PathGenerator() {
+	private PathGenerator() {
 
 		inst= new RectDrawer();
 		inst.setVisible(true);
@@ -91,12 +93,88 @@ public class PathGenerator extends Thread {
 		}
 		
 	}
+	private static class PathGeneratorSingletonHolder {
+	    private static PathGenerator instance = new PathGenerator();
+	  } 
+
+  public static PathGenerator getInstance() {
+    return PathGeneratorSingletonHolder.instance;
+  }
 	
 	protected boolean isOutOfExternalBox(Point p) {
 		if(p.x<externalBoxMinX || p.y<externalBoxMinY || p.x> externalBoxMaxX || p.y >externalBoxMaxY) return true;
 		return false;
 	}
 	
+	
+	private boolean removeStairsEffects(){
+		ArrayList<Integer> d = new ArrayList<Integer>();
+		d.add(-4);d.add(-3);d.add(-2);d.add(-1);
+		ArrayList<Integer> index= new ArrayList<Integer>();
+		index.add(-4);index.add(-3);index.add(-2);index.add(-1);
+		
+		for (int i = 0; i < pathDirections.size(); i++) {
+			
+			if(d.get(3)!=pathDirections.get(i)){
+				d.remove(0);//elimino il primo
+				index.remove(0);
+				d.add(pathDirections.get(i));//aggiungo il corrente
+				index.add(i);
+				if(d.get(0)==d.get(2)&&d.get(1)==d.get(3)){
+					//rilevata scaletta; creo lista di nuove direzioni
+					ArrayList<Integer> directions = new ArrayList<Integer>();
+					for (int j = 0; j < (index.get(3)-index.get(2)); j++) {
+						directions.add(d.get(0));
+					}
+
+					
+					for (int j = 0; j < (index.get(2)-index.get(1)+1); j++) {
+						directions.add(d.get(1));
+					}
+					ArrayList<Point> newPath = new ArrayList<Point>();
+					ArrayList<Integer> newDirection = new ArrayList<Integer>();
+					
+					for (int j = 0; j < index.get(1); j++) {
+						newPath.add(currentPath.get(j));
+						newDirection.add(pathDirections.get(j));
+					}
+					
+					for (int j = 0; j < directions.size()-1; j++) {
+						
+							try {
+								newPath.add(getMakeStepPoint(newPath.get(newPath.size()-1), directions.get(j)));
+								//TODO controllare che non collida
+								newDirection.add(directions.get(j));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							
+						
+					}
+					for (int j = newPath.size(); j < currentPath.size(); j++) {
+						newPath.add(currentPath.get(j));
+						newDirection.add(pathDirections.get(j));
+					}
+					if(isPathCollided(newPath)){
+						currentPath= newPath;
+						pathDirections= newDirection;
+					}
+					//storedPaths.add(newPath);
+					return true;
+				}
+			}	
+		}
+		return false;
+	}
+	
+	private boolean isPathCollided(ArrayList<Point> newPath) {
+		for (Point point : newPath) {
+			if(isCollided(point)){
+				return true;
+			}
+		}
+		return false;
+	}
 	private void collapsePath(){
 		ArrayList<Point> tmpPath= new ArrayList<Point>();
 		//ArrayList<Integer> tmpDirections= new ArrayList<Integer>();
@@ -111,7 +189,6 @@ public class PathGenerator extends Thread {
 				System.out.println("Cambio di direzione in: "+i);
 				tmpPath.add(currentPath.get(i-1));
 			}
-
 		}
 		tmpPath.add(currentPath.get(currentPath.size()-1));
 		//storedPaths.add(tmpPath);
@@ -244,6 +321,10 @@ public class PathGenerator extends Thread {
 		
 		if(isArrived(p)){
 			System.out.println("==== ARRIVED ====");
+			correctFinish();
+			
+			while(removeStairsEffects()){Thread.sleep(100);};
+			
 			//while(removeLoopFromPath()){Thread.sleep(500);}
 			//optimizePath();
 			//while(optimizePath()){Thread.sleep(500);}
@@ -344,6 +425,26 @@ public class PathGenerator extends Thread {
 		return 1;
 	}
 
+	
+	private void correctFinish() {
+		Point p1=currentPath.get(currentPath.size()-2);
+		Point p2=currentPath.get(currentPath.size()-1);
+		
+		int coord=rectangleArray.get(this.pathStop).x;
+		if(p1.x<coord&&p2.x>coord){p2.x=coord;System.out.println("arrivo da sx"); return;} //arriva da sx
+		
+		coord+=rectangleArray.get(this.pathStop).width;
+		if(p1.x>coord&&p2.x<coord){p2.x=coord;System.out.println("arrivo da dx"); return;} //arriva da dx
+		
+		coord=rectangleArray.get(this.pathStop).y;
+		if(p1.y<coord&&p2.y>coord){p2.y=coord;System.out.println("arrivo da sopra");return;} //arriva da sopra
+		
+		coord+=rectangleArray.get(this.pathStop).height;
+		if(p1.y>coord&&p2.y<coord){p2.y=coord;System.out.println("arrivo da sotto");return;} //arriva da sotto
+		//else{System.out.println("da dove cacchio arrivo"); System.exit(0);}
+	}
+	
+	
 	private void removeVisitedPoint(int n) {
 		for (int i = 0; i < n; i++) {
 			if(visitedPoint.size()>1){
@@ -403,6 +504,17 @@ public class PathGenerator extends Thread {
 	}
 	
 	protected Point makeStep(Point p, int direction,int stepLenght) throws Exception{
+		Point p1 = getMakeStepPoint(p, direction, stepLenght);
+		this.currentPath.add(p1);
+		this.pathDirections.add(direction);
+		this.canvas.repaint();
+		return p1;	
+	}
+	private Point getMakeStepPoint(Point p, int direction) throws Exception {
+		return getMakeStepPoint(p, direction, defaultStepLenght);
+	}
+	
+	private Point getMakeStepPoint(Point p, int direction, int stepLenght) throws Exception {
 		int x=p.x;
 		int y=p.y;
 		if(direction==TOP){ y-=stepLenght; }
@@ -419,10 +531,7 @@ public class PathGenerator extends Thread {
 		
 		else{ throw new Exception("not valid direction: "+direction);}
 		Point p1= new Point(x,y);
-		this.currentPath.add(p1);
-		this.pathDirections.add(direction);
-		this.canvas.repaint();
-		return p1;	
+		return p1;
 	}
 	
 	protected void removeStep(){
