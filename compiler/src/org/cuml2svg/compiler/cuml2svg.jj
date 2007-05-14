@@ -169,16 +169,16 @@ TOKEN:{
 TOKEN:{
 	<MARGIN: "@margin">: MARGIN_STATE 
 } 
-<MARGIN_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"| "\n"}
 <MARGIN_STATE>  TOKEN : { <MARGIN_SIZE_TOP:(["0"-"9"])+ ("px")? > : MARGIN_STATE_1  }
 
-<MARGIN_STATE_1> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE_1> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"| "\n"}
 <MARGIN_STATE_1>  TOKEN : { <MARGIN_SIZE_RIGHT:(["0"-"9"])+ ("px")? > : MARGIN_STATE_2  }
 
-<MARGIN_STATE_2> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE_2> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"| "\n"}
 <MARGIN_STATE_2>  TOKEN : { <MARGIN_SIZE_BOTTOM:(["0"-"9"])+ ("px")? > : MARGIN_STATE_3  }
 
-<MARGIN_STATE_3> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<MARGIN_STATE_3> SKIP:{	< ("//" (~["\n"])* ) > |" "|"\r"|"\t"| "\n"}
 <MARGIN_STATE_3>  TOKEN : { <MARGIN_SIZE_LEFT:(["0"-"9"])+ ("px")? >  : DEFAULT }
 	
 
@@ -339,9 +339,6 @@ void margin_preference(Group currentGroup):{Token t;}{
 	{currentGroup.setProperty("margin-bottom",t.image.replaceAll("px","").trim());}
 	t=<MARGIN_SIZE_LEFT>
 	{currentGroup.setProperty("margin-left",t.image.replaceAll("px","").trim());}
-	
-	
-	
 }
 
 
