@@ -273,7 +273,6 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 */
 	public void addRelation(Relation relation) {
 		this.relations.add(relation);
-		GraphicsManager.getInstance().addRelation(relation);
 	}
 	
 	/**
