@@ -2,6 +2,7 @@ package org.cuml2svg.tools;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -43,7 +44,7 @@ import javax.swing.event.ChangeListener;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class RectDrawer extends javax.swing.JFrame {
-	private MyCanvas myCanvas1;
+	public MyCanvas myCanvas1;
 	private JButton computeButton;
 	private JTextField stopTextLayout;
 	private JLabel jLabel2;
@@ -51,6 +52,7 @@ public class RectDrawer extends javax.swing.JFrame {
 	private JTextField startTextLayout;
 	private JPanel jPanel1;
 	private JSlider jSlider1;
+	private JButton randomButton;
 
 	{
 		//Set Look & Feel
@@ -89,13 +91,13 @@ public class RectDrawer extends javax.swing.JFrame {
 			{
 				myCanvas1 = new MyCanvas();
 				getContentPane().add(myCanvas1, BorderLayout.CENTER);
-				myCanvas1.setBorder(new LineBorder(new java.awt.Color(0,0,0), 1, false));
+				myCanvas1.setBorder(new LineBorder(new java.awt.Color(0,0,0), 3, false));
 			}
 			{
 				jPanel1 = new JPanel();
 				GridBagLayout jPanel1Layout = new GridBagLayout();
-				jPanel1Layout.rowWeights = new double[] {1.0, 0.01, 0.01, 0.01, 0.01, 0.01};
-				jPanel1Layout.rowHeights = new int[] {7, 7, 7, 20, 20, 20};
+				jPanel1Layout.rowWeights = new double[] {1.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01};
+				jPanel1Layout.rowHeights = new int[] {7, 7, 7, 20, 20, 20, 20};
 				jPanel1Layout.columnWeights = new double[] {0.01};
 				jPanel1Layout.columnWidths = new int[] {7};
 				jPanel1.setLayout(jPanel1Layout);
@@ -149,6 +151,16 @@ public class RectDrawer extends javax.swing.JFrame {
 						}
 					});
 				}
+				{
+					randomButton = new JButton();
+					jPanel1.add(randomButton, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+					randomButton.setText("Rnd!");
+					randomButton.addMouseListener(new MouseAdapter() {
+						public void mouseClicked(MouseEvent evt) {
+							randomButtonMouseClicked(evt);
+						}
+					});
+				}
 			}
 			pack();
 			setSize(800, 600);
@@ -163,8 +175,19 @@ public class RectDrawer extends javax.swing.JFrame {
 	
 	private void computeButtonMouseClicked(MouseEvent evt) {
 		try {
-			myCanvas1.changePath(Integer.parseInt(startTextLayout.getText()),
-					Integer.parseInt(stopTextLayout.getText()));
+			//myCanvas1.changePath(Integer.parseInt(startTextLayout.getText()),Integer.parseInt(stopTextLayout.getText()));
+		} catch (Exception e) {
+			System.err.println("Controlla l'input probabilmente non hai inserito un numero");
+		}		
+	}
+	private void randomButtonMouseClicked(MouseEvent evt) {
+		try {
+			int pathStart = (int)Math.round( Math.random()*(myCanvas1.rectangleArray.size()-1));
+			int pathStop;
+			do{
+			pathStop=(int)Math.round( Math.random()*(myCanvas1.rectangleArray.size()-1));
+			}while(pathStart==pathStop);
+			//myCanvas1.changePath(pathStart,pathStop);
 		} catch (Exception e) {
 			System.err.println("Controlla l'input probabilmente non hai inserito un numero");
 		}		

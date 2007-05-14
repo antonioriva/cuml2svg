@@ -6,6 +6,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.cuml2svg.svg.GraphicsManager;
+
 public class PathGenerator extends Thread {
 	
 	
@@ -50,11 +52,15 @@ public class PathGenerator extends Thread {
 	
 	static int currentPathCost=0;
 	
+	MyCanvas canvas=null;
+	
 	
 	public ArrayList<Point> getPath(int startId,int stopId){
+		System.out.println("Getting path");
+		canvas.changePath(this, startId, stopId);
 		this.pathStart= startId;
 		this.pathStop= stopId;
-		run();
+		this.run();
 		int minLenght= Integer.MAX_VALUE;
 		ArrayList<Point> currentPath=null;
 		for (ArrayList<Point> path : storedPaths) {
@@ -66,10 +72,12 @@ public class PathGenerator extends Thread {
 		return currentPath;
 	}
 	public PathGenerator() {
-	
-		this.rectangleArray= rectangleArray;
+
+		final RectDrawer inst = new RectDrawer();
+		inst.setVisible(true);
+        canvas=inst.myCanvas1;
 		
-		
+		this.rectangleArray = GraphicsManager.getInstance().getRectangles();
 		for (Rectangle r : rectangleArray) {
 			this.externalBoxMaxX=Math.max(externalBoxMaxX, r.x)+100;
 			this.externalBoxMaxY=Math.max(externalBoxMaxY, r.y)+100;
@@ -143,7 +151,7 @@ public class PathGenerator extends Thread {
 						}
 						currentPath=tmp;
 						pathDirections=tmp1;
-						//canvas.repaint();
+						canvas.repaint();
 						return true;
 					}
 				}
@@ -407,7 +415,7 @@ public class PathGenerator extends Thread {
 		Point p1= new Point(x,y);
 		this.currentPath.add(p1);
 		this.pathDirections.add(direction);
-		//this.canvas.repaint();
+		this.canvas.repaint();
 		return p1;	
 	}
 	
@@ -421,7 +429,7 @@ public class PathGenerator extends Thread {
 //		}
 		
 		
-		//this.canvas.repaint();
+		this.canvas.repaint();
 	}
 	private boolean inRectangle(Point p ,Rectangle r){
 		return  inRectangle( p , r, this.defaultBorder);
