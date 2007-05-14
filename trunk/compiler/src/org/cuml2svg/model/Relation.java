@@ -72,7 +72,7 @@ public class Relation implements Renderable {
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
 		try {
-			PathGenerator pathGenerator = new PathGenerator();
+			PathGenerator pathGenerator = PathGenerator.getInstance();
 			System.out.println("STID: "+getStartId() + " ENID: "+getEndId());
 			ArrayList<Point> points = pathGenerator.getPath(getStartId(), getEndId());
 			if(points != null) {

@@ -262,6 +262,8 @@ void import_definition():{
 void main_group():{Group mainGroup;}{
 	{
 		mainGroup=new Group();
+		mainGroup.setProperty("margin-left","100");
+		mainGroup.setProperty("margin-top","100");
 		diagram.addObject(mainGroup);
 	}
 	groups(mainGroup)
