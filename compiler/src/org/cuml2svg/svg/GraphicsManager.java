@@ -59,7 +59,7 @@ public class GraphicsManager {
 			rectangle.setSize(groupable.computeWidth(), groupable
 					.computeHeight());
 			this.rectangles.add(rectangle);
-			object.setId(this.rectangles.size());
+			object.setId(this.rectangles.size()-1);
 		}
 	}
 
