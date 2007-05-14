@@ -59,6 +59,7 @@ public class GraphicsManager {
 			rectangle.setSize(groupable.computeWidth(), groupable
 					.computeHeight());
 			this.rectangles.add(rectangle);
+			object.setId(this.rectangles.size());
 		}
 	}
 
@@ -131,8 +132,7 @@ public class GraphicsManager {
 	}
 
 	/**
-	 * Output the coordinate of the rectangles of the objects
-	 * JUST FOR DEBUG
+	 * Output the coordinate of the rectangles of the objects JUST FOR DEBUG
 	 */
 	public void print() {
 		for (Rectangle rectangle : rectangles) {
@@ -141,11 +141,21 @@ public class GraphicsManager {
 		}
 	}
 
+	/**
+	 * Draw relations of the diagram
+	 * 
+	 * @param type
+	 *            the output type
+	 * @param context
+	 *            the velocityContext object
+	 * @param writer
+	 *            the writer object
+	 */
 	public void drawRelations(OutputType type, VelocityContext context,
 			Writer writer) {
 		for (Relation relation : relations) {
-			relation.render(type, context, writer);		
+			relation.render(type, context, writer);
 		}
-		
+
 	}
 }
