@@ -12,6 +12,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.cuml2svg.model.Object;
+import org.cuml2svg.svg.GraphicsManager;
 
 /**
  * The model class for the diagram exporter
@@ -57,6 +58,8 @@ public class Diagram implements Renderable{
 	private String diagramName;
 
 	private List<org.cuml2svg.model.Object> diagramObjects;
+	
+	private int id = 0;
 
 	/**
 	 * Create a new Diagram object
@@ -83,6 +86,7 @@ public class Diagram implements Renderable{
 	public void addObject(Object object) {
 		// Add the object to the list
 		this.diagramObjects.add(object);
+		object.setId(++this.id);
 	}
 
 	/**
@@ -120,6 +124,8 @@ public class Diagram implements Renderable{
 					Object object = (Object) i.next();
 					object.render(type, context, writer);
 				}
+				
+				GraphicsManager.getInstance().drawRelations(type, context, writer);
 				
 				template = Velocity.getTemplate(SVG_TEMPLATE_FOOTER);
 				template.merge(context, writer);

@@ -13,6 +13,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.cuml2svg.model.Diagram.OutputType;
+import org.cuml2svg.svg.GraphicsManager;
 
 /**
  * The model for the Class object
@@ -33,6 +34,8 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	private boolean methodsCollapsed = false;
 	
 	private boolean attributesCollapsed = false;
+	
+	private ArrayList<Relation> relations = new ArrayList<Relation>();
 	
 	/**
 	 * The name of the class
@@ -96,6 +99,9 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 			context.put("methods", this.methods);
 			template.merge(context, writer);
 			
+			for (Relation relation : relations) {
+				GraphicsManager.getInstance().addRelation(relation);
+			}
 			return true;
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
@@ -262,5 +268,18 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		this.methodsCollapsed = methodsCollapsed;
 	}
 	
+	/**
+	 * @param relation the relation to add
+	 */
+	public void addRelation(Relation relation) {
+		this.relations.add(relation);
+	}
 	
+	/**
+	 * @param pos the position of the relation
+	 * @return the relation in the given position
+	 */
+	public Relation getRelation(int pos) {
+		return this.relations.get(pos);
+	}
 }
