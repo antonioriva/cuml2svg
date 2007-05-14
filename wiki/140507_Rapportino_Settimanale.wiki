@@ -1,0 +1,41 @@
+= Nome Progetto: cUml2svg =
+== Data Lezione: 02/04/2007 ==
+
+== Attività svolta ==
+
+===Compilatore===
+ * ...
+
+===Generazione Svg===
+ * Aggiunta la gestione delle relazioni fra le classi
+
+===Interfaccia grafica===
+ * ...
+
+== Problemi emersi e Soluzioni adottate (o ipotizzate) ==
+
+===Compilatore===
+...
+
+===Generazione Svg===
+ * Nessun problema riscontrato
+ * Uso dei template di SVG
+
+===Interfaccia grafica===
+...
+ 
+== Stato del progetto in relazione al Gantt presentato ==
+[http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
+
+===Compilatore===
+...
+
+=== Generazione Svg ===
+Siamo attualmente in leggero ritardo ma dovremmo rientrare comunque in relazione ai tempi globali.
+
+=== Interfaccia grafica ===
+...
+
+==Note e Commenti==
+
+Nulla da segnalare
