@@ -73,7 +73,7 @@ public class Relation implements Renderable {
 			Writer writer) {
 		try {
 			PathGenerator pathGenerator = PathGenerator.getInstance();
-			System.out.println("STID: "+getStartId() + " ENID: "+getEndId());
+			//System.out.println("STID: "+getStartId() + " ENID: "+getEndId());
 			ArrayList<Point> points = pathGenerator.getPath(getStartId(), getEndId());
 			if(points != null) {
 				this.addPoints(points);

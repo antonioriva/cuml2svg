@@ -59,7 +59,6 @@ public class PathGenerator extends Thread {
 	
 	
 	public ArrayList<Point> getPath(int startId,int stopId){
-		System.out.println("Getting path");
 		canvas.changePath(this, startId, stopId);
 		this.pathStart= startId;
 		this.pathStop= stopId;
@@ -188,7 +187,6 @@ public class PathGenerator extends Thread {
 			d2=pathDirections.get(i);
 			//trovato cambio di direzione
 			if(d1!=d2){
-				System.out.println("Cambio di direzione in: "+i);
 				tmpPath.add(currentPath.get(i-1));
 			}
 		}
@@ -433,16 +431,16 @@ public class PathGenerator extends Thread {
 		Point p2=currentPath.get(currentPath.size()-1);
 		
 		int coord=rectangleArray.get(this.pathStop).x;
-		if(p1.x<coord&&p2.x>coord){p2.x=coord;System.out.println("arrivo da sx"); return;} //arriva da sx
+		if(p1.x<coord&&p2.x>coord){p2.x=coord;return;} //arriva da sx
 		
 		coord+=rectangleArray.get(this.pathStop).width;
-		if(p1.x>coord&&p2.x<coord){p2.x=coord;System.out.println("arrivo da dx"); return;} //arriva da dx
+		if(p1.x>coord&&p2.x<coord){p2.x=coord;return;} //arriva da dx
 		
 		coord=rectangleArray.get(this.pathStop).y;
-		if(p1.y<coord&&p2.y>coord){p2.y=coord;System.out.println("arrivo da sopra");return;} //arriva da sopra
+		if(p1.y<coord&&p2.y>coord){p2.y=coord;return;} //arriva da sopra
 		
 		coord+=rectangleArray.get(this.pathStop).height;
-		if(p1.y>coord&&p2.y<coord){p2.y=coord;System.out.println("arrivo da sotto");return;} //arriva da sotto
+		if(p1.y>coord&&p2.y<coord){p2.y=coord;return;} //arriva da sotto
 		//else{System.out.println("da dove cacchio arrivo"); System.exit(0);}
 	}
 	
@@ -464,28 +462,24 @@ public class PathGenerator extends Thread {
 		int i = getAbsoluteDirectionToStopPoint4(this.getCenterOfRectangle(this.rectangleArray.get(this.pathStart)));
 		try {
 						
-			System.out.println("starting with point "+i);
 			this.currentPath.add(startPoint[i]);
 			this.pathDirections.add(i);
 			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
 			visitFrom(startPoint[i]);removeStep();removeStep();
 			
 			i=(i+1)%4; //prendo l'ancora a lato del più vicino
-			System.out.println("starting with point "+i);
 			this.currentPath.add(startPoint[i]);
 			this.pathDirections.add(i);
 			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
 			visitFrom(startPoint[i]);removeStep();removeStep();
 			
 			i=(i+2)%4; //prendo l'ancora a lato del più vicino
-			System.out.println("starting with point "+i);
 			this.currentPath.add(startPoint[i]);
 			this.pathDirections.add(i);
 			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
 			visitFrom(startPoint[i]);removeStep();removeStep();
 			
 			i=(i+3)%4;//prendo l'ancora opposta del più vicino
-			System.out.println("starting with point "+i);
 			this.currentPath.add(startPoint[i]);
 			this.pathDirections.add(i);
 			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
