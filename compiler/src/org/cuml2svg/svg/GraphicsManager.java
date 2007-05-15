@@ -69,7 +69,7 @@ public class GraphicsManager {
 	 * @return the array of objects
 	 */
 	public ArrayList<Rectangle> getRectangles() {
-		System.out.println("getting " + this.rectangles.size() + " objects");
+		//System.out.println("getting " + this.rectangles.size() + " objects");
 		return this.rectangles;
 	}
 
