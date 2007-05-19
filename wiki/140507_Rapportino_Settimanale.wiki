@@ -4,10 +4,12 @@
 == Attività svolta ==
 
 ===Compilatore===
- * ...
+ * bugfix
 
 ===Generazione Svg===
  * Aggiunta la gestione delle relazioni fra le classi
+ * Miglioramento dell'algoritmo di generazione frecce
+ * Integrazione dell'algoritmo con il con il generatore di SVG
 
 ===Interfaccia grafica===
  * ...
@@ -15,7 +17,7 @@
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
 ===Compilatore===
-...
+nulla da segnalare
 
 ===Generazione Svg===
  * Nessun problema riscontrato
@@ -28,7 +30,7 @@
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
 
 ===Compilatore===
-...
+Può considerarsi finito. Il lavoro che viene fatto è tutto di integrazione con il generatore SVG
 
 === Generazione Svg ===
 Siamo attualmente in leggero ritardo ma dovremmo rientrare comunque in relazione ai tempi globali.
