@@ -12,7 +12,8 @@
  * Integrazione dell'algoritmo con il con il generatore di SVG
 
 ===Interfaccia grafica===
- * ...
+ * creazione file jar
+ * sistemazione dei colori in stile editor java
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
@@ -24,7 +25,7 @@ nulla da segnalare
  * Uso dei template di SVG
 
 ===Interfaccia grafica===
-...
+ * nessun problema 
  
 == Stato del progetto in relazione al Gantt presentato ==
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
@@ -36,7 +37,7 @@ Può considerarsi finito. Il lavoro che viene fatto è tutto di integrazione con
 Siamo attualmente in leggero ritardo ma dovremmo rientrare comunque in relazione ai tempi globali.
 
 === Interfaccia grafica ===
-...
+Manca il collegamento tra l'editor ed il compilatore
 
 ==Note e Commenti==
 
