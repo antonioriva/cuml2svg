@@ -13,7 +13,7 @@
 
 ===Interfaccia grafica===
  * creazione file jar
- * sistemazione dei colori in stile editor java
+ * sistemazione dei colori in stile editor java di eclipse
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
