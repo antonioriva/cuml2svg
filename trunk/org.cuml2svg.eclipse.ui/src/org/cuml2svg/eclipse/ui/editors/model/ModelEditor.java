@@ -19,5 +19,4 @@ import org.eclipse.ui.editors.text.TextEditor;
 			colorManager.dispose();
 			super.dispose();
 		}
-
 	}
