@@ -1,0 +1,41 @@
+= Nome Progetto: cUml2svg =
+== Data Lezione: 02/04/2007 ==
+
+== Attività svolta ==
+
+===Compilatore===
+ * ...
+
+===Generazione Svg===
+ * Nuova gestione del bounding box del diagramma per l'impaginazione
+ * Ottimizzazione generale
+
+===Interfaccia grafica===
+ * ...
+
+== Problemi emersi e Soluzioni adottate (o ipotizzate) ==
+
+===Compilatore===
+...
+
+===Generazione Svg===
+ * Sfasamento nel disegno delle relazioni rispetto al grafico
+
+===Interfaccia grafica===
+...
+ 
+== Stato del progetto in relazione al Gantt presentato ==
+[http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
+
+===Compilatore===
+...
+
+=== Generazione Svg ===
+ * Siamo in leggero ritardo rispetto alla scaletta iniziale ma contiamo di finire nei tempi stabiliti l'intero progetto
+
+=== Interfaccia grafica ===
+...
+
+==Note e Commenti==
+
+Nulla da segnalare
