@@ -6,6 +6,7 @@ import java.io.File;
 
 public class Compiler {
 
+	private static boolean pathGui;
 	/**
 	 * Print a help text
 	 *
