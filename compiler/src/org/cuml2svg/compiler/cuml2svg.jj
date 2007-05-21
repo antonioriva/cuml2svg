@@ -487,20 +487,20 @@ void relations(Class currentDefinition):{}{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
-void relation(Class currentDefinition):{Token r;Token t;}{
+void relation(Class currentDefinition):{Token r;Token t;String[] cards;}{
 	//TODO forse al posto di variable sarebbe meglio classname
 	
 	(<COMMENT>)? t=<RELATION_TYPE> r=<VARIABLE>
 	{
-				//TODO aggiungere la classe alle relazioni
-			currentDefinition.addRelation(new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image)));
-            	
-		printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
-	}
+		}
 	
-	(relation_cardinality())? ("," r=<VARIABLE> 
+	(cards=relation_cardinality())? ("," r=<VARIABLE> 
 	{
-		//TODO aggiungere la classe alle relazioni
+		//TODO aggiungere la classe alle relazion
+		Relation rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));
+		//rel.setCardinality(cards);
+		currentDefinition.addRelation(rel);
+        printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 		printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 	}
 	 (relation_cardinality())? )* ";"
@@ -510,22 +510,16 @@ void relation(Class currentDefinition):{Token r;Token t;}{
 ////////////////////////////////////////////////////////////////
 //RELATION_CARDINALITY → ε
 //RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
-void relation_cardinality():{Token card;}{
-	{}
-	//TODO aggangiare la cardinalità in relation
-	"(" (card=cardinality())? 
-	{}
-	"," (card=cardinality())?
-	"," (card=cardinality())? ")"
+String[] relation_cardinality():{Token card;}{
+	{String[] cards= new String[3];}
+	"(" ((card=<STRING>){cards[0]=card.image;})? 
+	"," ((card=<STRING>){cards[0]=card.image;})? 
+	"," ((card=<STRING>){cards[0]=card.image;})? 
+	 ")"
+	{return cards;}
 	
 }
 
-//////////////////////
-//CARDINALITY → string
-//CARDINALITY → ε
-void cardinality():{}{
-	<STRING>
-}
 
 ////////////////////////////////////
 //ATTRIBUTES → ATTRIBUTE_DEFINITIONS
