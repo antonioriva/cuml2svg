@@ -4,7 +4,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
- 
+
 import org.apache.velocity.VelocityContext;
 import org.cuml2svg.model.Diagram.OutputType;
 import org.cuml2svg.svg.GraphicsManager;
@@ -82,6 +82,7 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public void addObject(Object object) {
 		this.objects.add(object);
+		GraphicsManager.getInstance().addObject(object);
 	}
  
 	/**
@@ -102,7 +103,7 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
-		int layout = this.getLayout();
+/*		int layout = this.getLayout();
 		int rows = 0;
 		int cols = 0;
 		int current = 0;
@@ -187,6 +188,15 @@ public class Group extends Groupable implements Object, Renderable {
 				GraphicsManager.getInstance().addObject(object);
 			}
 			break;
+		}
+*/
+		place();
+		//Add properties to the context
+		context.put("methodsCollapsed", this.methodsCollapsed);
+		context.put("attributesCollapsed", this.attributesCollapsed);
+		for (Iterator i = objects.iterator(); i.hasNext();) {
+			Groupable object = (Groupable) i.next();
+			object.render(type, context, writer);
 		}
 		return true;
 	}
@@ -402,6 +412,102 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public void setMethodsCollapsed(boolean collapseMethods) {
 		this.methodsCollapsed = collapseMethods;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Renderable#place()
+	 */
+	public void place() {
+		int layout = this.getLayout();
+		int rows = 0;
+		int cols = 0;
+		int current = 0;
+		int leftMargin = this.getLeftMargin();
+		int topMargin = this.getTopMargin();
+		int origXtran = this.getXtran() + leftMargin;
+		int origYtran = this.getYtran() + topMargin;
+		
+		//Choose the rendering method depending on the selected layout
+		switch (layout) {
+		case ROW_LAYOUT:
+			cols = (int) Math.ceil(objects.size() / (double)this.layoutRows);
+			current = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
+ 
+				this.setXtran(this.getXtran() + object.computeWidth()
+						+ HORIZONTAL_SPACING);
+				if (((++current) % cols) == 0) {
+					this.setYtran(this.getYtran() + object.computeHeight()
+							+ VERTICAL_SPACING);
+					this.setXtran(origXtran);
+				}
+				
+//				object.updateReference();
+//				GraphicsManager.getInstance().addObject(object);
+			}
+			break;
+		case COLUMN_LAYOUT:
+			rows = (int) Math.ceil(objects.size() / (double)this.layoutCols);
+			current = 0;
+			int maxColWidth = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
+ 
+				this.setYtran(this.getYtran() + object.computeHeight()
+						+ VERTICAL_SPACING);
+				int width = object.computeWidth();
+				if(width > maxColWidth) {
+					maxColWidth = width;
+				}
+				if (((++current) % rows) == 0) {
+					this.setXtran(this.getXtran() + maxColWidth
+							+ HORIZONTAL_SPACING);
+					this.setYtran(origYtran);
+					maxColWidth = 0;
+				}
+				
+//				object.updateReference();
+//				GraphicsManager.getInstance().addObject(object);
+			}
+			break;
+		case SQUARE_LAYOUT:
+			rows = (int) Math.ceil(Math.sqrt(objects.size()));
+			cols = rows;
+			current = 0;
+			int maxHeight = 0;
+			for (Iterator i = objects.iterator(); i.hasNext();) {
+				Groupable object = (Groupable) i.next();
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
+ 
+				if (object.computeHeight() > maxHeight) {
+					maxHeight = object.computeHeight();
+				}
+				this.setXtran(this.getXtran() + object.computeWidth()
+						+ HORIZONTAL_SPACING);
+				if (((++current) % cols) == 0) {
+					this.setYtran(this.getYtran() + maxHeight
+							+ VERTICAL_SPACING);
+					this.setXtran(origXtran);
+				}
+				
+//				object.updateReference();
+//				GraphicsManager.getInstance().addObject(object);
+			}
+			break;
+		}
+	}
+
+	public void updateReference() {
+		GraphicsManager.getInstance().addRectangle(this);
+//		for(Object object: objects) {
+//			object.updateReference();
+//		}
 	}
 
 }

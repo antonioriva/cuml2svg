@@ -22,4 +22,9 @@ public interface Renderable {
 	 */
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer);
+	
+	/**
+	 * Place objects for rendering
+	 */
+	public void place();
 }

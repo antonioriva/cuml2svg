@@ -91,12 +91,14 @@ public class PathGenerator extends Thread {
 		inst.setVisible(true);
         canvas=inst.myCanvas1;
 		
-		this.rectangleArray = GraphicsManager.getInstance().getRectangles();
-		for (Rectangle r : rectangleArray) {
-			this.externalBoxMaxX=Math.max(externalBoxMaxX, r.x)+100;
-			this.externalBoxMaxY=Math.max(externalBoxMaxY, r.y)+100;
-		}
-		
+		Rectangle rectangle = GraphicsManager.getInstance().getBoundingBox();
+		rectangle.x -= 100;
+		rectangle.y -= 100;
+		rectangle.width += 200;
+		rectangle.height += 200;
+		this.rectangleArray = GraphicsManager.getInstance().getRectangles();		
+		this.externalBoxMaxX = rectangle.x + rectangle.width;
+		this.externalBoxMaxY = rectangle.y + rectangle.height;
 	}
 	private static class PathGeneratorSingletonHolder {
 	    private static PathGenerator instance = new PathGenerator();

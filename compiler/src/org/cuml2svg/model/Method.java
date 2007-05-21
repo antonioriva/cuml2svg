@@ -1,17 +1,7 @@
 package org.cuml2svg.model;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.exception.MethodInvocationException;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-import org.cuml2svg.model.Diagram.OutputType;
 
 /**
  * The method object
@@ -21,7 +11,7 @@ import org.cuml2svg.model.Diagram.OutputType;
  * @author Luca Cividini
  * 
  */
-public class Method implements Renderable {
+public class Method {
 	private static final String SVG_METHOD_TEMPLATE = "templates/SVGMethod.vm";
 	private static final String VISIBILITY_PUBLIC = "public";
 	private static final String VISIBILITY_PRIVATE = "private";
@@ -93,30 +83,6 @@ public class Method implements Renderable {
 	 */
 	public void removeParameter(Attribute parameter) {
 		this.parameters.remove(parameter);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.cuml2svg.model.Renderable#render(org.cuml2svg.model.Diagram.OutputType, org.apache.velocity.VelocityContext, java.io.Writer)
-	 */
-	public boolean render(OutputType type, VelocityContext context,
-			Writer writer) {
-		try {
-			Template template = Velocity.getTemplate(SVG_METHOD_TEMPLATE);
-			context.put("methodName", this.methodName);
-			template.merge(context, writer);
-			return true;
-		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
-		} catch (ParseErrorException e) {
-			e.printStackTrace();
-		} catch (MethodInvocationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 
 	/**

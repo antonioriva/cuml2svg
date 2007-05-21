@@ -12,6 +12,7 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.cuml2svg.model.Diagram.OutputType;
+import org.cuml2svg.svg.GraphicsManager;
 
 /**
  * The package object
@@ -83,4 +84,16 @@ public class Package extends Groupable implements Object, Comparable<Package>{
 		return this.packageName.compareTo(compared.packageName);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Renderable#place()
+	 */
+	public void place() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateReference() {
+		GraphicsManager.getInstance().addObject(this);
+		
+	}
 }

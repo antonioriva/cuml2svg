@@ -172,4 +172,12 @@ public class Relation implements Renderable {
 	public void addPoints(ArrayList<Point> points) {
 		this.points.addAll(points);
 	}
+
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Renderable#place()
+	 */
+	public void place() {
+		// TODO Auto-generated method stub
+		
+	}
 }
