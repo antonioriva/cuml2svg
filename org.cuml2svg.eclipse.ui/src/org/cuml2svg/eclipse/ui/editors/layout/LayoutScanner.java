@@ -9,6 +9,7 @@ import org.cuml2svg.eclipse.ui.editors.RuleNumber;
 import org.cuml2svg.eclipse.ui.editors.WordDetector;
 import org.eclipse.jface.text.TextAttribute;
 import org.eclipse.jface.text.rules.IRule;
+import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedScanner;
 import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
@@ -19,8 +20,8 @@ import org.eclipse.swt.graphics.RGB;
 public class LayoutScanner extends RuleBasedScanner {
 	
 	//TODO controllare tutte le keyword
-	//private static String[] keywordsimport= {};
-	private static String[] keywords= { "class","import","@layout"};
+	private static String[] keywordslayout= {"@layout"};
+	private static String[] keywords= { "class","import"};
 	
 	public LayoutScanner(ColorManager manager) {
 //		IToken procInstr =
@@ -32,12 +33,12 @@ public class LayoutScanner extends RuleBasedScanner {
 		
 		
 		Token token= new Token(new TextAttribute(
-				manager.getColor(new RGB(0, 0 ,255)), 		//parola
-				manager.getColor(new RGB(255,255,255)), 	//sfondo
+				manager.getColor(ColorConstants.KEYWORD), 	//parola
+				null, 										//sfondo
 				SWT.BOLD));
-		Token tokenimport= new Token(new TextAttribute(
-				manager.getColor(new RGB(225, 81,57)), 		//parola
-				manager.getColor(new RGB(255,255,255)), 	//sfondo
+		Token tokenlayout= new Token(new TextAttribute(
+				manager.getColor(ColorConstants.LAYOUT), 	//parola
+				null, 										//sfondo
 				SWT.BOLD));
 		
 		WordRule wordRule = new WordRule(new WordDetector());
@@ -46,17 +47,19 @@ public class LayoutScanner extends RuleBasedScanner {
 		for (int i = 0; i < keywords.length; i++) {
 			wordRule.addWord(keywords[i], token);
 		}
-//
-//		for (int i = 0; i < keywordsimport.length; i++) {
-//			wordRule.addWord(keywordsimport[i], tokenimport);
-//		}
+		for (int i = 0; i < keywordslayout.length; i++) {
+			wordRule.addWord(keywordslayout[i], tokenlayout);
+		}
+		
 		rules.add(wordRule);
 		
 
-		token = new Token(new TextAttribute(manager.getColor(ColorConstants.COMMENT)));
-		//Add rule for processing instructions
-		rules.add( new SingleLineRule("/*", "*/", token));
-		//rules.add( new SingleLineRule("@", "", token));
+		Token tokencomment = new Token(new TextAttribute(manager.getColor(ColorConstants.COMMENT)));
+		//Add rule for processing instructions		
+		rules.add( new SingleLineRule("//", "", tokencomment));
+		rules.add( new SingleLineRule("#", "", tokencomment));
+		rules.add( new MultiLineRule("/*", "*/", tokencomment));
+		
 		
 		// Add generic whitespace rule.
 		
@@ -75,9 +78,12 @@ public class LayoutScanner extends RuleBasedScanner {
 //		wordRule.addWord("class".toCharArray(), token);
 //		rules.add(wordRule);
 //		
-		token = new Token(new TextAttribute(manager.getColor(ColorConstants.NUMBER)));
-		RuleNumber numberRule = new RuleNumber(token);
-		rules.add(numberRule);
+		
+//		gestione dei numeri
+//		token = new Token(new TextAttribute(manager.getColor(ColorConstants.NUMBER)));
+//		RuleNumber numberRule = new RuleNumber(token);
+//		rules.add(numberRule);
+		
 		
 		//gestione colore parentesi
 //		token = new Token(new TextAttribute(manager.getColor(new RGB(255, 0,
