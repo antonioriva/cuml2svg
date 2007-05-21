@@ -1,8 +1,8 @@
 package org.cuml2svg.model;
 
+import java.awt.Rectangle;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.velocity.Template;
@@ -11,7 +11,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.cuml2svg.model.Object;
 import org.cuml2svg.svg.GraphicsManager;
 
 /**
@@ -116,12 +115,17 @@ public class Diagram implements Renderable{
 			Writer writer) {
 		try {
 			if (this.diagramType.equals(DiagramType.UML)) {
+				Rectangle bbox = GraphicsManager.getInstance().getBoundingBox();
+				System.out.println("BBOX: "+bbox.x+","+bbox.y+","+bbox.width+","+bbox.height);
 				context.put("diagramName", this.diagramName);
+				context.put("diagramX", bbox.x - 100);
+				context.put("diagramY", bbox.y - 100);
+				context.put("diagramWidth", bbox.width + 200);
+				context.put("diagramHeight", bbox.height + 200);
 				Template template = Velocity.getTemplate(SVG_TEMPLATE_HEADER);
 				template.merge(context, writer);
 				
-				for (Iterator i = this.diagramObjects.iterator(); i.hasNext();) {
-					Object object = (Object) i.next();
+				for (Object object: diagramObjects) {
 					object.render(type, context, writer);
 				}
 				
@@ -140,5 +144,10 @@ public class Diagram implements Renderable{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public void place() {
+		// TODO Auto-generated method stub
+		
 	}
 }

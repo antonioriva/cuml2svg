@@ -64,6 +64,21 @@ public class GraphicsManager {
 	}
 
 	/**
+	 * Add an object to the array
+	 * 
+	 * @param object
+	 *            the object to add to the array
+	 */
+	public void addRectangle(Object object) {
+		if (object instanceof org.cuml2svg.model.Class) {
+			Rectangle rectangle = new Rectangle();
+			Groupable groupable = (Groupable) object;
+			rectangle.setLocation(groupable.getXtran(), groupable.getYtran());
+			rectangle.setSize(groupable.computeWidth(), groupable
+					.computeHeight());
+			this.rectangles.add(rectangle);
+		}
+	}	/**
 	 * Get the object array
 	 * 
 	 * @return the array of objects
@@ -157,5 +172,52 @@ public class GraphicsManager {
 			relation.render(type, context, writer);
 		}
 
+	}
+	
+	/**
+	 * @return the bounding box of the diagram
+	 */
+	public Rectangle getBoundingBox(){
+		Rectangle bbox = new Rectangle();
+		updateRectangles();
+		if(rectangles.size() == 0) {
+			bbox.width = 1000;
+			bbox.height = 1000;
+			return bbox;
+		}
+		for (Rectangle rectangle : rectangles) {
+			if(rectangle.x < bbox.x) {
+				bbox.x = rectangle.x;
+			}
+			if(rectangle.y < bbox.y) {
+				bbox.y = rectangle.y;
+			}
+			
+			if((bbox.x + bbox.width) < (rectangle.x+rectangle.width)) {
+				bbox.width = (rectangle.x + rectangle.width)-bbox.x; 
+			}
+			if((bbox.y + bbox.height) < (rectangle.y + rectangle.height)) {
+				bbox.height = (rectangle.y + rectangle.height) - bbox.y;
+			}
+		}
+		return bbox;
+	}
+
+	private void updateRectangles() {
+		this.rectangles.clear();
+		for (Object object : objects) {
+			object.place();
+		}
+		for (Object object : objects) {
+			if (object instanceof org.cuml2svg.model.Class) {
+				Rectangle rectangle = new Rectangle();
+				Groupable groupable = (Groupable) object;
+				rectangle.setLocation(groupable.getXtran(), groupable.getYtran());
+				rectangle.setSize(groupable.computeWidth(), groupable
+						.computeHeight());
+				this.rectangles.add(rectangle);
+				object.setId(this.rectangles.size()-1);
+			}
+		}
 	}
 }

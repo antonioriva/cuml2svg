@@ -282,4 +282,14 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	public Relation getRelation(int pos) {
 		return this.relations.get(pos);
 	}
+
+	public void place() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void updateReference() {
+		GraphicsManager.getInstance().addRectangle(this);
+		
+	}
 }

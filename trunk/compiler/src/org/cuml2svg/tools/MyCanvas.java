@@ -73,6 +73,10 @@ public class MyCanvas extends JPanel {
 			g.drawString("id: "+i, (int)((r.x+10+xstart)/zoomLevel), (int)((r.y+50+ystart)/zoomLevel));
 			
 			g.setColor(new Color(200,200,200,255));
+			if(r == null)
+				System.out.println("CONTROL: R is NULL");
+			if(this.pathGenerator == null)
+				System.out.println("CONTROL: PathGenerator is NULL");
 			g.drawRect((int)((r.x-this.pathGenerator.defaultBorder+xstart)/zoomLevel), 
 					(int)((r.y-this.pathGenerator.defaultBorder+ystart)/zoomLevel), 
 					(int)((r.width+2*this.pathGenerator.defaultBorder)/zoomLevel),

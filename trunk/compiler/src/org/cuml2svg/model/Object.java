@@ -17,4 +17,6 @@ public interface Object extends Renderable{
 	 * @return the ID of the object
 	 */
 	public int getId();
+
+	public void updateReference();
 }

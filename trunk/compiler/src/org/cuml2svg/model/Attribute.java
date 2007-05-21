@@ -1,9 +1,5 @@
 package org.cuml2svg.model;
 
-import java.io.Writer;
-
-import org.apache.velocity.VelocityContext;
-import org.cuml2svg.model.Diagram.OutputType;
 
 /**
  * The attribute representation
@@ -13,7 +9,7 @@ import org.cuml2svg.model.Diagram.OutputType;
  * @author Luca Cividini
  * 
  */
-public class Attribute implements Renderable {
+public class Attribute {
 
 	/**
 	 * The name of the attribute
@@ -32,14 +28,6 @@ public class Attribute implements Renderable {
 	public Attribute(String attributeName) {
 		this.attributeName = attributeName;
 		this.attributeType = "";
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.cuml2svg.model.Renderable#render(org.cuml2svg.model.Diagram.OutputType, org.apache.velocity.VelocityContext, java.io.Writer)
-	 */
-	public boolean render(OutputType type, VelocityContext context,
-			Writer writer) {
-		return false;
 	}
 
 	/**
