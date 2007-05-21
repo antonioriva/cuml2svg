@@ -19,9 +19,13 @@ import org.cuml2svg.model.*;
 import org.cuml2svg.svg.SVGExporter;
 import org.cuml2svg.model.Class;
 import org.cuml2svg.tools.RectDrawer;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class cuml2svg {
 	static ArrayList<Class> declaredClassList= new ArrayList<Class>();
+	static ArrayList<Relation> declaredRelationList= new ArrayList<Relation>();
+	static ArrayList<Class> classInDiagram= new ArrayList<Class>();
 	static Diagram diagram=new Diagram("",Diagram.DiagramType.UML);
 	static String currentPackage="";
 	static String currentFileName="";
@@ -42,9 +46,7 @@ public class cuml2svg {
     		 parser.s();          
 		
 			 SVGExporter exporter = new SVGExporter(diagram,output);
-			 //SVGExporter exporter = new SVGExporter(diagram,output,renderFlag);
 			 exporter.export();
-			 //RectDrawer.main(null);
         
       	} catch (FileNotFoundException e1) {
     		printError("inout file not found",-1,-1);
@@ -73,6 +75,17 @@ public class cuml2svg {
 		  return false;
   	}
   
+  	public static boolean isClassInDiagram(Class c){
+  		for (Iterator iter = classInDiagram.iterator(); iter.hasNext();) {
+	          Class element =  (Class)iter.next();
+	          if(element.getClassName().compareTo(c.getClassName())==0){
+	        	  return true;
+	          }
+	          
+	       }
+		 return false;
+  	}
+  
 	public static Class getClassByClassName(String className){
 	  		for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
 	          Class element =  (Class)iter.next();
@@ -82,6 +95,19 @@ public class cuml2svg {
 	          
 	       }
 		return null;
+	}
+	
+	public static ArrayList<org.cuml2svg.model.Class> getClassByRegEx(String regex){
+		ArrayList<org.cuml2svg.model.Class>  l = new ArrayList<org.cuml2svg.model.Class>();
+			Pattern pattern =  Pattern.compile(regex);
+	  		for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
+	          Class element =  (Class)iter.next();
+	          Matcher matcher = pattern.matcher(element.getClassName());
+	            if (matcher.find()) {
+	            	l.add(element);
+	            }
+	       }
+		return l;
 	}
   
 	public static void printNotice(String message,int lineNumber,int columnNumber){
@@ -139,7 +165,6 @@ TOKEN:{
 //	<COMMENT: "//"(~["\n"])* | "#"(~["\n"])* |	"/*"(~[])*"*/" >
 
  	<COMMENT: ("#"(~["\n"])*)>
-|	<PACKAGE: "package">
 |	<RELATIONS: "relations">
 |	<ATTRIBUTES: "attributes">	
 |	<METHOD: "methods" >
@@ -150,6 +175,8 @@ TOKEN:{
 	<IMPORT: "import"> : IMPORT_STATE
 }
 <IMPORT_STATE>  TOKEN : { <FILE_NAME: (~[";"])* > : DEFAULT  }
+
+
 
 
 TOKEN:{
@@ -182,6 +209,10 @@ TOKEN:{
 <MARGIN_STATE_3>  TOKEN : { <MARGIN_SIZE_LEFT:(["0"-"9"])+ ("px")? >  : DEFAULT }
 	
 
+TOKEN:{<PACKAGE: "package">: PACKAGE_STATE}
+<PACKAGE_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<PACKAGE_STATE> TOKEN:{<PACKAGE_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*	("."(["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*)+> :DEFAULT}
+
 
 //riconosce i nomi delle classi come CLASS_NAME
 TOKEN:{
@@ -189,6 +220,7 @@ TOKEN:{
 }
 <CLASS_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
 <CLASS_STATE> TOKEN:{	<CLASS_NAME_WITH_PACKAGE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)+ > :DEFAULT}
+<CLASS_STATE> TOKEN:{	<CLASS_RANGE_WITH_PACKAGE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*  (".*") > :DEFAULT}
 <CLASS_STATE> TOKEN:{	<CLASS_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+> :DEFAULT}
 
 
@@ -292,17 +324,39 @@ void group_preference(Group currentGroup):{}{
 
 void group_definition(Group currentGroup):{Token name;}{
 	
-	"[" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>) "]"
+	"[" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>|name=<CLASS_RANGE_WITH_PACKAGE>) "]"
 	
 	{	
-		Class c= this.getClassByClassName(name.image);
-		
-		if(c!=null){
-			printNotice("adding class named "+name.image+ " to the diagram",name.beginLine,name.beginColumn);
-    		currentGroup.addObject(c);
-    		
+		if(name.image.indexOf("*")>0){
+			//TODO need more test
+			String clist=name.image.replaceAll("\\.","\\\\.");
+			clist=clist.replaceAll("\\*","[^\\\\.]*\\$");
+			ArrayList<Class> l = this.getClassByRegEx(clist);
+			
+			for(Class c : l){
+				if(!isClassInDiagram(c)){
+					currentGroup.addObject(c);
+					classInDiagram.add(c);
+				}else{
+					printWarning("class named "+c.getClassName()+ " already in diagram, it will be not inserted",name.beginLine,name.beginColumn);
+				}
+			}
+			
 		}else{
-			printError("class named "+name.image+ " doesn't exist",name.beginLine,name.beginColumn);
+			Class c= this.getClassByClassName(name.image);
+			
+			if(c!=null){
+				printNotice("adding class named "+name.image+ " to the diagram",name.beginLine,name.beginColumn);
+	    		if(!isClassInDiagram(c)){
+					currentGroup.addObject(c);
+					classInDiagram.add(c);
+				}else{
+					printWarning("class named "+c.getClassName()+ " already in diagram, it will be not inserted",name.beginLine,name.beginColumn);
+				}
+	    		
+			}else{
+				printError("class named "+name.image+ " doesn't exist",name.beginLine,name.beginColumn);
+			}
 		}
 	}
 
@@ -376,18 +430,15 @@ void model() :  {}
 
 ///////////////////////////////////////////////////////////////////
 //PACKAGE_DEFINITION → package package_name { CLASS_DEFINITIONS }
-void package_definition():{String packageName;}{
+void package_definition():{Token packageName;}{
+	
 	<PACKAGE> 
-	packageName=package_name(){this.currentPackage=packageName;} 
+	packageName=<PACKAGE_NAME>{this.currentPackage=packageName.image;} 
 	
 	"{" (class_definition())+ "}" 
 	{this.currentPackage="";}
-	
 }
 
-String package_name():{Token packageName;}{
-	packageName=<VARIABLE> {return packageName.image; }
-}
 
 
 
@@ -459,9 +510,14 @@ void relation(Class currentDefinition):{Token r;Token t;}{
 ////////////////////////////////////////////////////////////////
 //RELATION_CARDINALITY → ε
 //RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
-void relation_cardinality():{}{
+void relation_cardinality():{Token card;}{
+	{}
 	//TODO aggangiare la cardinalità in relation
-	"(" (cardinality())? "," (cardinality())? "," (cardinality())? ")"
+	"(" (card=cardinality())? 
+	{}
+	"," (card=cardinality())?
+	"," (card=cardinality())? ")"
+	
 }
 
 //////////////////////
@@ -489,6 +545,7 @@ void attribute(Class currentDefinition):{
 	(vis=<VISIBILITY>)? 
 	(typed_attribute_name() | attribute_name() )
 	(default_value())? ";"
+	//TODO manca il controllo semantico sulla duppliazione degli attributi
 	//gli attributi non vengono aggiunti
 	//{currentDefinition.addAttribute()};
 }

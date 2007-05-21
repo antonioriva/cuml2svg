@@ -13,7 +13,15 @@ import sun.awt.windows.ThemeReader;
 
 public class PathGenerator extends Thread {
 	
-	
+	//tweak settings
+	int timing = 0;
+	int defaultStepLenght=20;
+	int maxStepBeforeFail=10000/defaultStepLenght;
+	int defaultBorder=50;
+	int externalBoxMaxY;
+	int externalBoxMaxX;
+	int externalBoxMinY=-100;
+	int externalBoxMinX=-100;
 	
 	
 	//MyCanvas canvas=null;
@@ -23,12 +31,10 @@ public class PathGenerator extends Thread {
 	
 	int pathStart=0;
 	int pathStop=0;
-	
-	
-	int timing = 10;
+	int currentStepNumber=0;
 
-	private double lastDistance=Double.MAX_VALUE;
-	private double currentDistance=Double.MAX_VALUE;
+	private double lastDistance;
+	private double currentDistance;
 	
 	//enum Direction {TOP, RIGHT, BOTTOM, LEFT;
 	public static final int TOP=0;
@@ -41,12 +47,8 @@ public class PathGenerator extends Thread {
 	public static final int BOTTOM_LEFT=6;
 	public static final int LEFT_TOP=7;
 	
-	int defaultStepLenght=50;
-	int defaultBorder=50;
-	int externalBoxMaxY;
-	int externalBoxMaxX;
-	int externalBoxMinY=-100;
-	int externalBoxMinX=-100;
+
+	
 	
 	ArrayList<Point> currentPath = new ArrayList<Point>();
 	ArrayList<ArrayList<Point>> storedPaths = new ArrayList<ArrayList<Point>>();
@@ -56,6 +58,7 @@ public class PathGenerator extends Thread {
 	static int currentPathCost=0;
 	RectDrawer inst=null;
 	MyCanvas canvas=null;
+	private boolean reverseFlag;
 	
 	
 	public ArrayList<Point> getPath(int startId,int stopId){
@@ -82,7 +85,8 @@ public class PathGenerator extends Thread {
 	}
 	
 	private PathGenerator() {
-
+		
+		
 		inst= new RectDrawer();
 		inst.setVisible(true);
         canvas=inst.myCanvas1;
@@ -139,29 +143,51 @@ public class PathGenerator extends Thread {
 						newPath.add(currentPath.get(j));
 						newDirection.add(pathDirections.get(j));
 					}
-					
+					boolean collided=false;
+					Point newPoint;
 					for (int j = 0; j < directions.size()-1; j++) {
 						
 							try {
-								newPath.add(getMakeStepPoint(newPath.get(newPath.size()-1), directions.get(j)));
-								//TODO controllare che non collida
-								newDirection.add(directions.get(j));
+								newPoint=getMakeStepPoint(newPath.get(newPath.size()-1), directions.get(j));
+								if(isCollided(newPoint)){
+									collided=true;
+//									TODO rimuovere una volta testato
+									System.err.println("Rilevata collisione;" +
+											"\nTODO questa cosa non è testata; non so se funziona ma non " +
+											"so neanche come generare un caso di test: " +
+											"controlla di non essere in un loop infinito e sfrutta il caso " +
+											"per test più approfonditi.");
+									break;
+								}else{
+									newPath.add(newPoint);
+									newDirection.add(directions.get(j));
+								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 							
 						
 					}
-					for (int j = newPath.size(); j < currentPath.size(); j++) {
-						newPath.add(currentPath.get(j));
-						newDirection.add(pathDirections.get(j));
+					//TODO questa cosa non è testata; non so se funziona ma non so neanche come generare un caso di test
+					if(!collided){
+						for (int j = newPath.size(); j < currentPath.size(); j++) {
+							newPath.add(currentPath.get(j));
+							newDirection.add(pathDirections.get(j));
+						}
+						if(isPathCollided(newPath)){
+							currentPath= newPath;
+							pathDirections= newDirection;
+						}
+						//storedPaths.add(newPath);
+						return true;
+					}else{
+//						TODO rimuovere una volta testato
+						System.err.println("Rilevata collisione;" +
+								"\nTODO questa cosa non è testata; non so se funziona ma non " +
+								"so neanche come generare un caso di test: " +
+								"controlla di non essere in un loop infinito e sfrutta il caso " +
+								"per test più approfonditi.");
 					}
-					if(isPathCollided(newPath)){
-						currentPath= newPath;
-						pathDirections= newDirection;
-					}
-					//storedPaths.add(newPath);
-					return true;
 				}
 			}	
 		}
@@ -307,32 +333,32 @@ public class PathGenerator extends Thread {
 	 * @throws Exception
 	 */
 	public int visitFrom(Point p) throws Exception{
+		currentStepNumber++;
+		if(currentStepNumber>maxStepBeforeFail){
+			//System.out.println("==== FALIED: Max steps number reached ====");
+			return -1;
+		}
 		
 		lastDistance= currentDistance;
 		currentDistance= getDistanceToStopPoint(p);
 		
 		if(currentPath.size()>maxPathSize){
-			System.out.println("==== FALIED: Max lenght reached ====");
-			currentPath= new ArrayList<Point>();
-			pathDirections= new ArrayList<Integer>();
-			visitedPoint.clear();
+			//System.out.println("==== FALIED: Max lenght reached ====");
 			return -1;
 		}
 		
 		if(isArrived(p)){
-			System.out.println("==== ARRIVED ====");
+			//System.out.println("==== ARRIVED ====");
 			correctFinish();
 			
-			while(removeStairsEffects()){Thread.sleep(100);};
+			while(removeStairsEffects()){Thread.sleep(this.timing);};
 			
 			//while(removeLoopFromPath()){Thread.sleep(500);}
 			//optimizePath();
 			//while(optimizePath()){Thread.sleep(500);}
 			collapsePath();
+			if(reverseFlag){reversePath();}
 			this.storedPaths.add(currentPath);
-			currentPath= new ArrayList<Point>();
-			pathDirections= new ArrayList<Integer>();
-			visitedPoint.clear();
 			return 0;
 		}
 		
@@ -342,7 +368,7 @@ public class PathGenerator extends Thread {
 			return 1;
 		}
 		if(isOutOfExternalBox(p)){
-			System.out.println("Collide with externa box: x="+p.x+" y="+p.y);
+			//System.out.println("Collide with externa box: x="+p.x+" y="+p.y);
 			return 1;
 		}
 		
@@ -365,61 +391,70 @@ public class PathGenerator extends Thread {
 					pathDirections.get(pathDirections.size()-3)
 			};
 			if((d[0] !=d[1])&&(d[1]!=d[2])&&(d[2]!=d[0])){
+				//il valore giusto è 1 ma con 2 sembra funzionare meglio
+				//mettendo 2 si tolgono alcune possibilità ma si evita che torni sui suoi passi
+				//da 3 in poi peggiora riconsiderando punti già esplorati
 				removeVisitedPoint(2);
 				return 3;
 			}
 		}
 		
-		//verifico che non ci sia l'effetto scaletta
-//		if(pathDirections.size()>3){
-//			int[] d = {
-//					pathDirections.get(pathDirections.size()-1),
-//					pathDirections.get(pathDirections.size()-2),
-//					pathDirections.get(pathDirections.size()-3),
-//					pathDirections.get(pathDirections.size()-4)
-//			};
-//			if((d[0] ==d[2])&&(d[1]==d[3])){
-//				removeVisitedPoint(1);
-//				return 1;
+		
+//		//se non diminuisce la distanza assoluta uso l'ultima direzione
+//		boolean useLastDirection=false;
+//		if(currentDistance < lastDistance){
+//			useLastDirection=true;
+//			//uso l'ultima direzione
+//			Thread.sleep(timing);
+//			next=makeStep(p, pathDirections.get(pathDirections.size()-1));
+//			int s=visitFrom(next);
+//			if(s<=0){
+//				return s;
+//			}else{
+//				if(s>1){
+//					removeStep();
+//					return (s-1);
+//				}
 //			}
+//			removeStep();
 //		}
 		
+//		metto in ordine le direzioni in base alla posizione del punto finale
+		directions=getAbsoluteDirectionListToStopPoint4(p);
+		//promuovo la direzione precedente a prima scelta
 		if(currentDistance < lastDistance){
-			//uso l'ultima direzione
-			Thread.sleep(timing);
-			next=makeStep(p, pathDirections.get(pathDirections.size()-1));
-			int s=visitFrom(next);
-			if(s<=0){
-				return s;
-			}else{
-				if(s>1){
-					removeStep();
-					return (s-1);
+			int[] tmpDirections = new int[4];
+			int toPromote=pathDirections.get(pathDirections.size()-1);
+			tmpDirections[0]=toPromote;
+			int j=1;
+			for (int i = 0; i < directions.length; i++) {
+				if(directions[i]!=toPromote){
+					tmpDirections[j]=directions[i];
+					j++;
 				}
 			}
-			removeStep();
+			directions=tmpDirections;
 		}
 		
 		
-		
-		//prendo la direzione più opportuna in base alla direzione della destinazione
-		directions=getAbsoluteDirectionListToStopPoint4(p);
+		if((directions[0]+directions[1]+directions[2]+directions[3])==10){
+			System.out.println("bad direction: "+directions[0]+" "+directions[1]+" "+directions[2]+" "+directions[3]);
+		}
 		for (int i = 0; i < directions.length; i++) {
 			
-			
-			Thread.sleep(timing);
-			next=makeStep(p, directions[i]);
-			int s=visitFrom(next);
-			if(s<=0){
-				return s;
-			}else{
-				//posso tornare un s>0 e scalerò di 2 passo
-				if(s>1){
-					removeStep();
-					return (s-1);
+				Thread.sleep(timing);
+				next=makeStep(p, directions[i]);
+				int s=visitFrom(next);
+				if(s<=0){
+					return s;
+				}else{
+					//posso tornare un s>0 e scalerò di 2 passo
+					if(s>1){
+						removeStep();
+						return (s-1);
+					}
 				}
-			}
-			removeStep();
+				removeStep();
 		}
 		
 		return 1;
@@ -457,44 +492,81 @@ public class PathGenerator extends Thread {
 
 	@Override
 	public void run() {
-		Point[] startPoint=this.getStartPoint();
-		
-		int i = getAbsoluteDirectionToStopPoint4(this.getCenterOfRectangle(this.rectangleArray.get(this.pathStart)));
 		try {
-						
-			this.currentPath.add(startPoint[i]);
-			this.pathDirections.add(i);
-			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
-			visitFrom(startPoint[i]);removeStep();removeStep();
+			//effettuo il calcolo diretto
+			Point[] startPoint=this.getStartPoint();
+			int i = getAbsoluteDirectionToStopPoint4(this.getCenterOfRectangle(this.rectangleArray.get(this.pathStart)));
+			reverseFlag=false;
+
+			
+			
+			runFromStartPoint(startPoint, i);
 			
 			i=(i+1)%4; //prendo l'ancora a lato del più vicino
-			this.currentPath.add(startPoint[i]);
-			this.pathDirections.add(i);
-			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
-			visitFrom(startPoint[i]);removeStep();removeStep();
+			runFromStartPoint(startPoint, i);
 			
 			i=(i+2)%4; //prendo l'ancora a lato del più vicino
-			this.currentPath.add(startPoint[i]);
-			this.pathDirections.add(i);
-			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
-			visitFrom(startPoint[i]);removeStep();removeStep();
+			runFromStartPoint(startPoint, i);
 			
 			i=(i+3)%4;//prendo l'ancora opposta del più vicino
-			this.currentPath.add(startPoint[i]);
-			this.pathDirections.add(i);
-			startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
-			visitFrom(startPoint[i]);removeStep();removeStep();
+			runFromStartPoint(startPoint, i);
+			
+			//////////////////////////////////////////////////////////////////////////////
+			//provo dalla fine all'inizio
+			int tmp = pathStart;
+			pathStart= pathStop;
+			pathStop=tmp;
+			reverseFlag=true;
+			
+			startPoint=this.getStartPoint();
+			i = getAbsoluteDirectionToStopPoint4(this.getCenterOfRectangle(this.rectangleArray.get(this.pathStart)));
+			
+			runFromStartPoint(startPoint, i);
+			
+			i=(i+1)%4; //prendo l'ancora a lato del più vicino
+			runFromStartPoint(startPoint, i);
+			
+			i=(i+2)%4; //prendo l'ancora a lato del più vicino
+			runFromStartPoint(startPoint, i);
+			
+			i=(i+3)%4;//prendo l'ancora opposta del più vicino
+			runFromStartPoint(startPoint, i);
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}	
+		
+	}
+
+	private void runFromStartPoint(Point[] startPoint, int i) throws Exception {
+		currentStepNumber=0;
+		lastDistance=Double.MAX_VALUE;
+		currentDistance=Double.MAX_VALUE;
+		this.currentPath.add(startPoint[i]);
+		this.pathDirections.add(i);
+		startPoint[i]=makeStep(startPoint[i], i,this.defaultBorder+defaultStepLenght);
+		if(visitFrom(startPoint[i])==-1){
+			removeStep();removeStep();
 		}
-		removeStep();		
+		currentPath= new ArrayList<Point>();
+		pathDirections= new ArrayList<Integer>();
+		visitedPoint.clear();
+		canvas.repaint();
 		
 	}
 	
 
 	
+
+	private void reversePath() {
+		ArrayList<Point> tmp2= new ArrayList<Point>();
+		for (int i = (currentPath.size()-1); i >=0 ; i--) {
+			tmp2.add(currentPath.get(i));	
+		}
+		currentPath=tmp2;
+	}
+
 	protected Point makeStep(Point p, int direction) throws Exception{
 		return makeStep( p,  direction, this.defaultStepLenght);
 	}
