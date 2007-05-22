@@ -120,7 +120,7 @@ public class RectDrawer extends javax.swing.JFrame {
 	}
 	
 	private void rootWindowClosed(WindowEvent evt) {
-		this.myCanvas1.pathGenerator.stop();
+		//this.myCanvas1.pathGenerator.stop();
 	}
 	
 	private void computeButtonMouseClicked(MouseEvent evt) {
