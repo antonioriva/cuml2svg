@@ -16,49 +16,59 @@ import org.cuml2svg.svg.GraphicsManager;
 
 /**
  * The package object
+ * 
  * @author Antonio Riva
  * @author Fabio Marini
  * @author Luca Cividini
- *
+ * 
  */
-public class Package extends Groupable implements Object, Comparable<Package>{
+public class Package extends Groupable implements Object, Comparable<Package> {
 
 	private static final String SVG_PACKAGE_HEADER_TEMPLATE = "templates/SVGPackage_header.vm";
+
 	private static final String SVG_PACKAGE_FOOTER_TEMPLATE = "templates/SVGPackage_footer.vm";
+
 	/**
 	 * The name of the package
 	 */
 	private String packageName;
-	
+
 	private ArrayList<Class> classes;
-	
+
 	/**
 	 * Initialize a new Package object
-	 * @param packageName The name of the package
+	 * 
+	 * @param packageName
+	 *            The name of the package
 	 */
 	public Package(String packageName) {
 		this.packageName = packageName;
-		
+
 		this.classes = new ArrayList<Class>();
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.cuml2svg.model.Renderable#render(org.cuml2svg.model.Diagram.OutputType, org.apache.velocity.VelocityContext, java.io.Writer)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.cuml2svg.model.Renderable#render(org.cuml2svg.model.Diagram.OutputType,
+	 *      org.apache.velocity.VelocityContext, java.io.Writer)
 	 */
-	public boolean render(OutputType type, VelocityContext context, Writer writer) {
+	public boolean render(OutputType type, VelocityContext context,
+			Writer writer) {
 		try {
-			Template template = Velocity.getTemplate(SVG_PACKAGE_HEADER_TEMPLATE);
-			
+			Template template = Velocity
+					.getTemplate(SVG_PACKAGE_HEADER_TEMPLATE);
+
 			context.put("xtran", this.getXtran());
 			context.put("ytran", this.getYtran());
-			
+
 			template.merge(context, writer);
-			
+
 			for (Iterator i = this.classes.iterator(); i.hasNext();) {
 				Class object = (Class) i.next();
 				object.render(type, context, writer);
 			}
-			
+
 			template = Velocity.getTemplate(SVG_PACKAGE_FOOTER_TEMPLATE);
 			template.merge(context, writer);
 
@@ -77,23 +87,27 @@ public class Package extends Groupable implements Object, Comparable<Package>{
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Package compared) {
 		return this.packageName.compareTo(compared.packageName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Renderable#place()
 	 */
 	public void place() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void updateReference() {
 		GraphicsManager.getInstance().addObject(this);
-		
+
 	}
 }
