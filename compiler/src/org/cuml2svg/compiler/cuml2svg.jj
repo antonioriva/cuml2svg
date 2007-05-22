@@ -21,10 +21,12 @@ import org.cuml2svg.model.Class;
 import org.cuml2svg.tools.RectDrawer;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.TreeMap;
+import java.util.Set;
 
 public class cuml2svg {
 	static ArrayList<Class> declaredClassList= new ArrayList<Class>();
-	static ArrayList<Relation> declaredRelationList= new ArrayList<Relation>();
+    static ArrayList<RelationRef> declaredRelationList= new ArrayList<RelationRef>();
 	static ArrayList<Class> classInDiagram= new ArrayList<Class>();
 	static Diagram diagram=new Diagram("",Diagram.DiagramType.UML);
 	static String currentPackage="";
@@ -54,12 +56,12 @@ public class cuml2svg {
    		}catch (ParseException e) {
 	        printError("parser error",-1,-1);
 	        System.err.println(e.getMessage());
-	        //e.printStackTrace();
+	        e.printStackTrace();
 	        
       	}catch (Error e) {
 	        printError("generic error",-1,-1);
 	        System.err.println(e.getMessage());
-	        //e.printStackTrace();
+	        e.printStackTrace();
 	    }
 	}
 	
@@ -132,9 +134,26 @@ public class cuml2svg {
 		}
 	}
 
+    public static void checkRelationsClasses(){
+            for (Iterator iter = declaredRelationList.iterator(); iter.hasNext();) {
+				RelationRef r = (RelationRef) iter.next();
+				if(!isClassAlreadyDeclared(r.getR().getStartClass())){
+                    printError("class named "+r.getR().getStartClass()+ " never declared",r.getFileName(),r.getLine(),r.getColumn());
+	            }
+	            if(!isClassAlreadyDeclared(r.getR().getEndClass())){
+	                    printError("class named "+r.getR().getEndClass()+ " never declared",r.getFileName(),r.getLine(),r.getColumn());
+	            }
+			}    
+        	
+
+        }
+
 	public static void printError(String message,int lineNumber,int columnNumber){
+		printError(message,currentFileName,lineNumber,columnNumber);
+	}
+	public static void printError(String message,String filename, int lineNumber,int columnNumber){
 		if(errorFlag){
-			System.err.print("ERROR: "+message+" in file: \""+currentFileName+"\"");
+			System.err.print("ERROR: "+message+" in file: \""+filename+"\"");
 			if(lineNumber >= 0 &&columnNumber >= 0){
 				System.err.println(" at line "+lineNumber+ " at column "+columnNumber);
 			}else{
@@ -223,11 +242,27 @@ TOKEN:{
 <CLASS_STATE> TOKEN:{	<CLASS_RANGE_WITH_PACKAGE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*  (".*") > :DEFAULT}
 <CLASS_STATE> TOKEN:{	<CLASS_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+> :DEFAULT}
 
+TOKEN:{ <RELATION_TYPE: "use" | "extend" |"associate"| "include"| "composed"| "realize"| "depend" > : RELATION_STATE}
+<RELATION_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<RELATION_STATE> TOKEN:{	<RELATION_CLASS_NAME_WITH_PACKAGE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)+ > :RELATION_CONTROL_STATE}
+<RELATION_STATE> TOKEN:{	<RELATION_CLASS_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+> :RELATION_CONTROL_STATE}
+
+
+
+<RELATION_CONTROL_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<RELATION_CONTROL_STATE> TOKEN:{<CARDINALITY_START:"("> : RELATION_CARDINALITY_STATE}
+<RELATION_CONTROL_STATE> TOKEN:{ <RELATION_COMMA: ",">: RELATION_STATE}
+<RELATION_CONTROL_STATE> TOKEN:{ <RELATION_END: ";">: DEFAULT}
+
+<RELATION_CARDINALITY_STATE> TOKEN:{ <CARDINALITY: "\"" (~["\""])* "\"">:RELATION_CARDINALITY_STATE}
+<RELATION_CARDINALITY_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
+<RELATION_CARDINALITY_STATE> TOKEN:{ <RELATION_CARDINALITY_COMMA: ",">: RELATION_CARDINALITY_STATE}
+<RELATION_CARDINALITY_STATE> TOKEN:{ <CARDINALITY_STOP:")"> : RELATION_CONTROL_STATE} 
+
 
 
 TOKEN:{
 	<VISIBILITY: "private" | "public" | "protected">
-| 	<RELATION_TYPE: "use" | "extend" |"associate"| "include"| "composed"| "realize"| "depend" >
 |	<EQUAL:"=">
 }
 
@@ -243,7 +278,7 @@ TOKEN:{
 
 TOKEN:{
   	<NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>
-|	<STRING: "\"" (~[])* "\"">
+|	<STRING: "\"" (~["\""])* "\"">
 |	<VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*>
 |	<HEX_COLOR: ("#" (["0"-"9", "a"-"f", "A"-"F"]){3} (["0"-"9", "a"-"f", "A"-"F"]){3})>
 |	<CLASS_VARIABLE: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+ ("." (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )+)*>
@@ -259,6 +294,7 @@ void s() :  {Token t;}{
 		printNotice("starting parsing",-1,-1);
 	}
 	layout()
+	{checkRelationsClasses();}
 	 < EOF >
 	
 }
@@ -290,6 +326,8 @@ void import_definition():{
 	
 	
 }
+
+
 
 void main_group():{Group mainGroup;}{
 	{
@@ -450,6 +488,7 @@ void class_definition():{
 	Class currentDefinition;
 	
 }{	
+	
 	(<COMMENT>)? (vis=<VISIBILITY>)? type=<CLASS_TYPE> className=<CLASS_NAME>
 	{
 		if(this.currentPackage.length()>0){
@@ -462,6 +501,7 @@ void class_definition():{
 		//currentDefinition.setType(type.image);
 		
 	} 
+	
 	
 	"{" (relations(currentDefinition))? (attributes(currentDefinition))? (methods(currentDefinition))? "}"
 	
@@ -479,7 +519,8 @@ void class_definition():{
 /////////////////////////////////////////////////
 //RELATIONS → relations { RELATION_DEFINITIONS }
 void relations(Class currentDefinition):{}{
-	<RELATIONS> "{" (relation(currentDefinition))+ "}"
+	<RELATIONS> "{" 
+	(relation(currentDefinition))+ "}"
 }
 
 
@@ -487,23 +528,40 @@ void relations(Class currentDefinition):{}{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
-void relation(Class currentDefinition):{Token r;Token t;String[] cards;}{
+void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation rel;}{
 	//TODO forse al posto di variable sarebbe meglio classname
 	
-	(<COMMENT>)? t=<RELATION_TYPE> r=<VARIABLE>
-	{
-		}
+	(<COMMENT>)? t=<RELATION_TYPE> ((r=<RELATION_CLASS_NAME>)|(r=<RELATION_CLASS_NAME_WITH_PACKAGE>))
 	
-	(cards=relation_cardinality())? ("," r=<VARIABLE> 
+	
+	(cards=relation_cardinality())? 
 	{
 		//TODO aggiungere la classe alle relazion
-		Relation rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));
+		
+	
+		rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));
 		//rel.setCardinality(cards);
 		currentDefinition.addRelation(rel);
+        declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName));
         printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
-		printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
+		}
+	
+	(<RELATION_COMMA> 
+	
+	((r=<RELATION_CLASS_NAME>)|(r=<RELATION_CLASS_NAME_WITH_PACKAGE>))
+	
+	(cards=relation_cardinality())? 
+	{
+		//TODO aggiungere la classe alle relazion
+		rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));
+		//rel.setCardinality(cards);
+		currentDefinition.addRelation(rel);
+        
+        declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName));
+         printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 	}
-	 (relation_cardinality())? )* ";"
+	
+	 )* <RELATION_END>
 }
 
 
@@ -512,10 +570,11 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;}{
 //RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
 String[] relation_cardinality():{Token card;}{
 	{String[] cards= new String[3];}
-	"(" ((card=<STRING>){cards[0]=card.image;})? 
-	"," ((card=<STRING>){cards[0]=card.image;})? 
-	"," ((card=<STRING>){cards[0]=card.image;})? 
-	 ")"
+	<CARDINALITY_START>
+	card=<CARDINALITY> {cards[0]=card.image; }
+	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[1]=card.image; } 
+	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[2]=card.image;} 
+	<CARDINALITY_STOP>
 	{return cards;}
 	
 }
@@ -536,6 +595,7 @@ void attribute(Class currentDefinition):{
 	Token vis;
 }{
 	(<COMMENT>)? 
+	
 	(vis=<VISIBILITY>)? 
 	(typed_attribute_name() | attribute_name() )
 	(default_value())? ";"
@@ -561,17 +621,12 @@ void default_value():{}{
 	<EQUAL> equal_to()
 }
 
-
-
-
 /////////////////////////
 //EQUAL_TO →  value
 void equal_to():{}{
 	<NUMBER>
 | 	<STRING>
 }
-
-
 
 //////////////////////////
 //METHODS → METHOD_DEFINITION
@@ -628,6 +683,7 @@ void arg_name():{}{
 void typed_arg():{}{
 	<VARIABLE> <VARIABLE>
 }
+
 
 
 
