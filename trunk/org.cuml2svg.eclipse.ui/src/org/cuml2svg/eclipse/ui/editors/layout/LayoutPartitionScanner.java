@@ -4,6 +4,7 @@ import org.eclipse.jface.text.rules.IPredicateRule;
 import org.eclipse.jface.text.rules.IToken;
 import org.eclipse.jface.text.rules.MultiLineRule;
 import org.eclipse.jface.text.rules.RuleBasedPartitionScanner;
+import org.eclipse.jface.text.rules.SingleLineRule;
 import org.eclipse.jface.text.rules.Token;
 
 public class LayoutPartitionScanner extends RuleBasedPartitionScanner {
@@ -17,10 +18,12 @@ public class LayoutPartitionScanner extends RuleBasedPartitionScanner {
 		IToken comment = new Token(MODEL_COMMENT);
 		IToken string = new Token(MODEL_STRING);
 
-		IPredicateRule[] rules = new IPredicateRule[2];
+		IPredicateRule[] rules = new IPredicateRule[4];
 
 		rules[0] = new MultiLineRule("/*", "*/", comment);
-		rules[1] = new MultiLineRule("\"", "\"", string);
+		rules[1] = new SingleLineRule("//", "\n", comment);
+		rules[2] = new SingleLineRule("#", "\n", comment);
+		rules[3] = new MultiLineRule("\"", "\"", string);
 
 		setPredicateRules(rules);
 	}
