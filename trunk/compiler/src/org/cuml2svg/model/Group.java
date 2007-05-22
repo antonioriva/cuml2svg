@@ -1,5 +1,5 @@
 package org.cuml2svg.model;
- 
+
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Iterator;
 import org.apache.velocity.VelocityContext;
 import org.cuml2svg.model.Diagram.OutputType;
 import org.cuml2svg.svg.GraphicsManager;
- 
+
 /**
  * Object used to group classes and packages in the layout
  * 
@@ -18,39 +18,39 @@ import org.cuml2svg.svg.GraphicsManager;
  * 
  */
 public class Group extends Groupable implements Object, Renderable {
- 
+
 	private static final int HORIZONTAL_SPACING = 10;
- 
+
 	private static final int VERTICAL_SPACING = 10;
- 
+
 	private static final int ROW_LAYOUT = 0;
- 
+
 	private static final int COLUMN_LAYOUT = 1;
- 
+
 	private static final int SQUARE_LAYOUT = 2;
- 
+
 	private ArrayList<Object> objects;
- 
+
 	private HashMap<String, String> properties;
- 
+
 	private int layoutRows = -1;
- 
+
 	private int layoutCols = -1;
-	
+
 	private boolean methodsCollapsed = false;
-	
+
 	private boolean attributesCollapsed = false;
- 
+
 	/**
 	 * Initializes the group
 	 */
 	public Group() {
 		this.objects = new ArrayList<Object>();
 		this.properties = new HashMap<String, String>();
- 
+
 		this.properties.put("layout", "*x*");
 	}
- 
+
 	/**
 	 * Set the value for the given property
 	 * 
@@ -62,7 +62,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public void setProperty(String property, String value) {
 		this.properties.put(property, value);
 	}
- 
+
 	/**
 	 * Get the value of the given property
 	 * 
@@ -73,7 +73,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public String getProperty(String property) {
 		return this.properties.get(property);
 	}
- 
+
 	/**
 	 * Add an object to the group
 	 * 
@@ -84,7 +84,7 @@ public class Group extends Groupable implements Object, Renderable {
 		this.objects.add(object);
 		GraphicsManager.getInstance().addObject(object);
 	}
- 
+
 	/**
 	 * Remove an obhect from the group
 	 * 
@@ -94,7 +94,7 @@ public class Group extends Groupable implements Object, Renderable {
 	public void removeObject(Object object) {
 		this.objects.remove(object);
 	}
- 
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -103,95 +103,60 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public boolean render(OutputType type, VelocityContext context,
 			Writer writer) {
-/*		int layout = this.getLayout();
-		int rows = 0;
-		int cols = 0;
-		int current = 0;
-		int leftMargin = this.getLeftMargin();
-		int topMargin = this.getTopMargin();
-		int origXtran = this.getXtran() + leftMargin;
-		int origYtran = this.getYtran() + topMargin;
-		
-		//Add properties to the context
-		context.put("methodsCollapsed", this.methodsCollapsed);
-		context.put("attributesCollapsed", this.attributesCollapsed);
-		
-		//Choose the rendering method depending on the selected layout
-		switch (layout) {
-		case ROW_LAYOUT:
-			cols = (int) Math.ceil(objects.size() / (double)this.layoutRows);
-			current = 0;
-			for (Iterator i = objects.iterator(); i.hasNext();) {
-				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran() + leftMargin);
-				object.setYtran(this.getYtran() + topMargin);
-				object.render(type, context, writer);
- 
-				this.setXtran(this.getXtran() + object.computeWidth()
-						+ HORIZONTAL_SPACING);
-				if (((++current) % cols) == 0) {
-					this.setYtran(this.getYtran() + object.computeHeight()
-							+ VERTICAL_SPACING);
-					this.setXtran(origXtran);
-				}
-				
-				GraphicsManager.getInstance().addObject(object);
-			}
-			break;
-		case COLUMN_LAYOUT:
-			rows = (int) Math.ceil(objects.size() / (double)this.layoutCols);
-			current = 0;
-			int maxColWidth = 0;
-			for (Iterator i = objects.iterator(); i.hasNext();) {
-				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran() + leftMargin);
-				object.setYtran(this.getYtran() + topMargin);
-				object.render(type, context, writer);
- 
-				this.setYtran(this.getYtran() + object.computeHeight()
-						+ VERTICAL_SPACING);
-				int width = object.computeWidth();
-				if(width > maxColWidth) {
-					maxColWidth = width;
-				}
-				if (((++current) % rows) == 0) {
-					this.setXtran(this.getXtran() + maxColWidth
-							+ HORIZONTAL_SPACING);
-					this.setYtran(origYtran);
-					maxColWidth = 0;
-				}
-				GraphicsManager.getInstance().addObject(object);
-			}
-			break;
-		case SQUARE_LAYOUT:
-			rows = (int) Math.ceil(Math.sqrt(objects.size()));
-			cols = rows;
-			current = 0;
-			int maxHeight = 0;
-			for (Iterator i = objects.iterator(); i.hasNext();) {
-				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran() + leftMargin);
-				object.setYtran(this.getYtran() + topMargin);
-				object.render(type, context, writer);
- 
-				if (object.computeHeight() > maxHeight) {
-					maxHeight = object.computeHeight();
-				}
-				this.setXtran(this.getXtran() + object.computeWidth()
-						+ HORIZONTAL_SPACING);
-				if (((++current) % cols) == 0) {
-					this.setYtran(this.getYtran() + maxHeight
-							+ VERTICAL_SPACING);
-					this.setXtran(origXtran);
-				}
-				
-				GraphicsManager.getInstance().addObject(object);
-			}
-			break;
-		}
-*/
-		//place();
-		//Add properties to the context
+		/*
+		 * int layout = this.getLayout(); int rows = 0; int cols = 0; int
+		 * current = 0; int leftMargin = this.getLeftMargin(); int topMargin =
+		 * this.getTopMargin(); int origXtran = this.getXtran() + leftMargin;
+		 * int origYtran = this.getYtran() + topMargin;
+		 * 
+		 * //Add properties to the context context.put("methodsCollapsed",
+		 * this.methodsCollapsed); context.put("attributesCollapsed",
+		 * this.attributesCollapsed);
+		 * 
+		 * //Choose the rendering method depending on the selected layout switch
+		 * (layout) { case ROW_LAYOUT: cols = (int) Math.ceil(objects.size() /
+		 * (double)this.layoutRows); current = 0; for (Iterator i =
+		 * objects.iterator(); i.hasNext();) { Groupable object = (Groupable)
+		 * i.next(); object.setXtran(this.getXtran() + leftMargin);
+		 * object.setYtran(this.getYtran() + topMargin); object.render(type,
+		 * context, writer);
+		 * 
+		 * this.setXtran(this.getXtran() + object.computeWidth() +
+		 * HORIZONTAL_SPACING); if (((++current) % cols) == 0) {
+		 * this.setYtran(this.getYtran() + object.computeHeight() +
+		 * VERTICAL_SPACING); this.setXtran(origXtran); }
+		 * 
+		 * GraphicsManager.getInstance().addObject(object); } break; case
+		 * COLUMN_LAYOUT: rows = (int) Math.ceil(objects.size() /
+		 * (double)this.layoutCols); current = 0; int maxColWidth = 0; for
+		 * (Iterator i = objects.iterator(); i.hasNext();) { Groupable object =
+		 * (Groupable) i.next(); object.setXtran(this.getXtran() + leftMargin);
+		 * object.setYtran(this.getYtran() + topMargin); object.render(type,
+		 * context, writer);
+		 * 
+		 * this.setYtran(this.getYtran() + object.computeHeight() +
+		 * VERTICAL_SPACING); int width = object.computeWidth(); if(width >
+		 * maxColWidth) { maxColWidth = width; } if (((++current) % rows) == 0) {
+		 * this.setXtran(this.getXtran() + maxColWidth + HORIZONTAL_SPACING);
+		 * this.setYtran(origYtran); maxColWidth = 0; }
+		 * GraphicsManager.getInstance().addObject(object); } break; case
+		 * SQUARE_LAYOUT: rows = (int) Math.ceil(Math.sqrt(objects.size()));
+		 * cols = rows; current = 0; int maxHeight = 0; for (Iterator i =
+		 * objects.iterator(); i.hasNext();) { Groupable object = (Groupable)
+		 * i.next(); object.setXtran(this.getXtran() + leftMargin);
+		 * object.setYtran(this.getYtran() + topMargin); object.render(type,
+		 * context, writer);
+		 * 
+		 * if (object.computeHeight() > maxHeight) { maxHeight =
+		 * object.computeHeight(); } this.setXtran(this.getXtran() +
+		 * object.computeWidth() + HORIZONTAL_SPACING); if (((++current) % cols) ==
+		 * 0) { this.setYtran(this.getYtran() + maxHeight + VERTICAL_SPACING);
+		 * this.setXtran(origXtran); }
+		 * 
+		 * GraphicsManager.getInstance().addObject(object); } break; }
+		 */
+		// place();
+		// Add properties to the context
 		context.put("methodsCollapsed", this.methodsCollapsed);
 		context.put("attributesCollapsed", this.attributesCollapsed);
 		for (Object object : objects) {
@@ -205,18 +170,18 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	private int getTopMargin() {
 		int margin = 0;
-		if(this.getProperty("margin-top") != null) {
+		if (this.getProperty("margin-top") != null) {
 			margin = Integer.parseInt(this.getProperty("margin-top"));
 		}
 		return margin;
 	}
- 
+
 	/**
 	 * @return the margin of the group
 	 */
 	private int getRightMargin() {
 		int margin = 0;
-		if(this.getProperty("margin-right") != null) {
+		if (this.getProperty("margin-right") != null) {
 			margin = Integer.parseInt(this.getProperty("margin-right"));
 		}
 		return margin;
@@ -227,7 +192,7 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	private int getBottomMargin() {
 		int margin = 0;
-		if(this.getProperty("margin-bottom") != null) {
+		if (this.getProperty("margin-bottom") != null) {
 			margin = Integer.parseInt(this.getProperty("margin-bottom"));
 		}
 		return margin;
@@ -238,7 +203,7 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	private int getLeftMargin() {
 		int margin = 0;
-		if(this.getProperty("margin-left") != null) {
+		if (this.getProperty("margin-left") != null) {
 			margin = Integer.parseInt(this.getProperty("margin-left"));
 		}
 		return margin;
@@ -265,7 +230,7 @@ public class Group extends Groupable implements Object, Renderable {
 		}
 		return SQUARE_LAYOUT;
 	}
- 
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -315,7 +280,7 @@ public class Group extends Groupable implements Object, Renderable {
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				if (object.computeHeight() > maxRowHeight) {
-					maxRowHeight = object.computeHeight()+VERTICAL_SPACING;
+					maxRowHeight = object.computeHeight() + VERTICAL_SPACING;
 				}
 				if (((++current) % cols) == 0) {
 					maxHeight += maxRowHeight;
@@ -324,10 +289,10 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxHeight + 2 * VERTICAL_SPACING + 
-			this.getTopMargin() + this.getBottomMargin();
+		return maxHeight + 2 * VERTICAL_SPACING + this.getTopMargin()
+				+ this.getBottomMargin();
 	}
- 
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -343,7 +308,7 @@ public class Group extends Groupable implements Object, Renderable {
 		int current;
 		switch (layout) {
 		case ROW_LAYOUT:
-			cols = (int) Math.ceil(objects.size() / (double)this.layoutRows);
+			cols = (int) Math.ceil(objects.size() / (double) this.layoutRows);
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
@@ -355,7 +320,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		case COLUMN_LAYOUT:
-			rows = (int) Math.ceil(objects.size() / (double)this.layoutCols);
+			rows = (int) Math.ceil(objects.size() / (double) this.layoutCols);
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
@@ -365,7 +330,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		case SQUARE_LAYOUT:
-			rows = (int) Math.ceil(Math.sqrt((double)objects.size()));
+			rows = (int) Math.ceil(Math.sqrt((double) objects.size()));
 			cols = rows;
 			current = 0;
 			maxRowWidth = 0;
@@ -381,8 +346,8 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxWidth + 2 * HORIZONTAL_SPACING + 
-			this.getLeftMargin() + this.getRightMargin();
+		return maxWidth + 2 * HORIZONTAL_SPACING + this.getLeftMargin()
+				+ this.getRightMargin();
 	}
 
 	/**
@@ -393,7 +358,8 @@ public class Group extends Groupable implements Object, Renderable {
 	}
 
 	/**
-	 * @param collapseAttributes the collapseAttributes to set
+	 * @param collapseAttributes
+	 *            the collapseAttributes to set
 	 */
 	public void setAttributesCollapsed(boolean collapseAttributes) {
 		this.attributesCollapsed = collapseAttributes;
@@ -407,13 +373,16 @@ public class Group extends Groupable implements Object, Renderable {
 	}
 
 	/**
-	 * @param collapseMethods the collapseMethods to set
+	 * @param collapseMethods
+	 *            the collapseMethods to set
 	 */
 	public void setMethodsCollapsed(boolean collapseMethods) {
 		this.methodsCollapsed = collapseMethods;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Renderable#place()
 	 */
 	public void place() {
@@ -425,17 +394,17 @@ public class Group extends Groupable implements Object, Renderable {
 		int topMargin = this.getTopMargin();
 		int origXtran = this.getXtran() + leftMargin;
 		int origYtran = this.getYtran() + topMargin;
-		
-		//Choose the rendering method depending on the selected layout
+
+		// Choose the rendering method depending on the selected layout
 		switch (layout) {
 		case ROW_LAYOUT:
-			cols = (int) Math.ceil(objects.size() / (double)this.layoutRows);
+			cols = (int) Math.ceil(objects.size() / (double) this.layoutRows);
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				object.setXtran(this.getXtran() + leftMargin);
 				object.setYtran(this.getYtran() + topMargin);
- 
+
 				this.setXtran(this.getXtran() + object.computeWidth()
 						+ HORIZONTAL_SPACING);
 				if (((++current) % cols) == 0) {
@@ -443,24 +412,22 @@ public class Group extends Groupable implements Object, Renderable {
 							+ VERTICAL_SPACING);
 					this.setXtran(origXtran);
 				}
-				
-//				object.updateReference();
-//				GraphicsManager.getInstance().addObject(object);
+
 			}
 			break;
 		case COLUMN_LAYOUT:
-			rows = (int) Math.ceil(objects.size() / (double)this.layoutCols);
+			rows = (int) Math.ceil(objects.size() / (double) this.layoutCols);
 			current = 0;
 			int maxColWidth = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				object.setXtran(this.getXtran() + leftMargin);
 				object.setYtran(this.getYtran() + topMargin);
- 
+
 				this.setYtran(this.getYtran() + object.computeHeight()
 						+ VERTICAL_SPACING);
 				int width = object.computeWidth();
-				if(width > maxColWidth) {
+				if (width > maxColWidth) {
 					maxColWidth = width;
 				}
 				if (((++current) % rows) == 0) {
@@ -469,9 +436,7 @@ public class Group extends Groupable implements Object, Renderable {
 					this.setYtran(origYtran);
 					maxColWidth = 0;
 				}
-				
-//				object.updateReference();
-//				GraphicsManager.getInstance().addObject(object);
+
 			}
 			break;
 		case SQUARE_LAYOUT:
@@ -483,7 +448,7 @@ public class Group extends Groupable implements Object, Renderable {
 				Groupable object = (Groupable) i.next();
 				object.setXtran(this.getXtran() + leftMargin);
 				object.setYtran(this.getYtran() + topMargin);
- 
+
 				if (object.computeHeight() > maxHeight) {
 					maxHeight = object.computeHeight();
 				}
@@ -494,19 +459,19 @@ public class Group extends Groupable implements Object, Renderable {
 							+ VERTICAL_SPACING);
 					this.setXtran(origXtran);
 				}
-				
-//				object.updateReference();
-//				GraphicsManager.getInstance().addObject(object);
+
 			}
 			break;
 		}
+		this.setXtran(origXtran - leftMargin);
+		this.setYtran(origYtran - topMargin);
 	}
 
 	public void updateReference() {
 		GraphicsManager.getInstance().addRectangle(this);
-//		for(Object object: objects) {
-//			object.updateReference();
-//		}
+		// for(Object object: objects) {
+		// object.updateReference();
+		// }
 	}
 
 }

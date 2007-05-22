@@ -8,12 +8,12 @@ package org.cuml2svg.model;
  * @author Luca Cividini
  * 
  */
-public abstract class Groupable implements Object, Renderable{
+public abstract class Groupable implements Object, Renderable {
 
 	private int xtran = 0;
 
 	private int ytran = 0;
-	
+
 	protected int id = 0;
 
 	/**
@@ -64,19 +64,22 @@ public abstract class Groupable implements Object, Renderable{
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Object#getId()
 	 */
 	public int getId() {
 		return this.id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Object#setId(int)
 	 */
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	
+
 }

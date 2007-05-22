@@ -27,41 +27,49 @@ public class Relation implements Renderable {
 	private int startId;
 
 	private int endId;
-	
+
 	private RelationType relationType;
 
 	private String startClass;
 
 	private String endClass;
-	
+
 	private ArrayList<Point> points = new ArrayList<Point>();
 
 	//TODO aggiungere i campi della cardinalità
 	/**
 	 * Creates a new Relation object
 	 * 
-	 * @param startId the ID of the first class
-	 * @param endId the ID of the second class
-	 * @param relationType the type of the relation
+	 * @param startId
+	 *            the ID of the first class
+	 * @param endId
+	 *            the ID of the second class
+	 * @param relationType
+	 *            the type of the relation
 	 */
 	public Relation(int startId, int endId, RelationType relationType) {
 		this.startId = startId;
 		this.endId = endId;
 		this.relationType = relationType;
 	}
-	
+
 	/**
 	 * Creates a new Relation object
 	 * 
-	 * @param startClass the name of the first class
-	 * @param endClass the name of the second class
-	 * @param relationType the type of the relation
+	 * @param startClass
+	 *            the name of the first class
+	 * @param endClass
+	 *            the name of the second class
+	 * @param relationType
+	 *            the type of the relation
 	 */
-	public Relation(String startClass, String endClass, RelationType relationType) {
+	public Relation(String startClass, String endClass,
+			RelationType relationType) {
 		this.startClass = startClass;
 		this.endClass = endClass;
 		this.relationType = relationType;
-		System.out.println("STC: "+startClass + " ENC: "+endClass + " TYPE: "+relationType);
+		System.out.println("STC: " + startClass + " ENC: " + endClass
+				+ " TYPE: " + relationType);
 	}
 
 	/*
@@ -74,9 +82,10 @@ public class Relation implements Renderable {
 			Writer writer) {
 		try {
 			PathGenerator pathGenerator = PathGenerator.getInstance();
-			//System.out.println("STID: "+getStartId() + " ENID: "+getEndId());
-			ArrayList<Point> points = pathGenerator.getPath(getStartId(), getEndId());
-			if(points != null) {
+			// System.out.println("STID: "+getStartId() + " ENID: "+getEndId());
+			ArrayList<Point> points = pathGenerator.getPath(getStartId(),
+					getEndId());
+			if (points != null) {
 				this.addPoints(points);
 				Template template;
 				ArrayList<Point> pointsCopy = (ArrayList<Point>) points.clone();
@@ -102,9 +111,9 @@ public class Relation implements Renderable {
 	 * @return the endId
 	 */
 	public int getEndId() {
-		if(endId == 0){
+		if (endId == 0) {
 			Class aClass = GraphicsManager.getInstance().find(endClass);
-			if(aClass != null) {
+			if (aClass != null) {
 				this.endId = aClass.getId();
 			}
 		}
@@ -112,7 +121,8 @@ public class Relation implements Renderable {
 	}
 
 	/**
-	 * @param endId the endId to set
+	 * @param endId
+	 *            the endId to set
 	 */
 	public void setEndId(int endId) {
 		this.endId = endId;
@@ -126,7 +136,8 @@ public class Relation implements Renderable {
 	}
 
 	/**
-	 * @param relationType the relationType to set
+	 * @param relationType
+	 *            the relationType to set
 	 */
 	public void setRelationType(RelationType relationType) {
 		this.relationType = relationType;
@@ -136,9 +147,9 @@ public class Relation implements Renderable {
 	 * @return the startId
 	 */
 	public int getStartId() {
-		if(startId == 0){
+		if (startId == 0) {
 			Class aClass = GraphicsManager.getInstance().find(startClass);
-			if(aClass != null) {
+			if (aClass != null) {
 				this.startId = aClass.getId();
 			}
 		}
@@ -146,40 +157,46 @@ public class Relation implements Renderable {
 	}
 
 	/**
-	 * @param startId the startId to set
+	 * @param startId
+	 *            the startId to set
 	 */
 	public void setStartId(int startId) {
 		this.startId = startId;
 	}
 
 	/**
-	 * @param point the point to add
+	 * @param point
+	 *            the point to add
 	 */
 	public void addPoint(Point point) {
 		this.points.add(point);
 	}
-	
+
 	/**
-	 * @param pos the position of the point
+	 * @param pos
+	 *            the position of the point
 	 * @return the point in the given position
 	 */
 	public Point getPoint(int pos) {
 		return this.points.get(pos);
 	}
-	
+
 	/**
-	 * @param points an array of points to add
+	 * @param points
+	 *            an array of points to add
 	 */
 	public void addPoints(ArrayList<Point> points) {
 		this.points.addAll(points);
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Renderable#place()
 	 */
 	public void place() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public String getEndClass() {

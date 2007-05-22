@@ -21,7 +21,7 @@ import org.cuml2svg.svg.GraphicsManager;
  * @author Luca Cividini
  * 
  */
-public class Diagram implements Renderable{
+public class Diagram implements Renderable {
 	/**
 	 * The available diagram types
 	 */
@@ -43,6 +43,7 @@ public class Diagram implements Renderable{
 	}
 
 	private static final String SVG_TEMPLATE_HEADER = "templates/SVGDiagram_header.vm";
+
 	private static final String SVG_TEMPLATE_FOOTER = "templates/SVGDiagram_footer.vm";
 
 	/**
@@ -57,7 +58,7 @@ public class Diagram implements Renderable{
 	private String diagramName;
 
 	private List<org.cuml2svg.model.Object> diagramObjects;
-	
+
 	private int id = 0;
 
 	/**
@@ -116,7 +117,8 @@ public class Diagram implements Renderable{
 		try {
 			if (this.diagramType.equals(DiagramType.UML)) {
 				Rectangle bbox = GraphicsManager.getInstance().getBoundingBox();
-				System.out.println("BBOX: "+bbox.x+","+bbox.y+","+bbox.width+","+bbox.height);
+				System.out.println("BBOX: " + bbox.x + "," + bbox.y + ","
+						+ bbox.width + "," + bbox.height);
 				context.put("diagramName", this.diagramName);
 				context.put("diagramX", bbox.x - 100);
 				context.put("diagramY", bbox.y - 100);
@@ -124,13 +126,14 @@ public class Diagram implements Renderable{
 				context.put("diagramHeight", bbox.height + 200);
 				Template template = Velocity.getTemplate(SVG_TEMPLATE_HEADER);
 				template.merge(context, writer);
-				
-				for (Object object: diagramObjects) {
+
+				for (Object object : diagramObjects) {
 					object.render(type, context, writer);
 				}
-				
-				GraphicsManager.getInstance().drawRelations(type, context, writer);
-				
+
+				GraphicsManager.getInstance().drawRelations(type, context,
+						writer);
+
 				template = Velocity.getTemplate(SVG_TEMPLATE_FOOTER);
 				template.merge(context, writer);
 			}
@@ -148,6 +151,6 @@ public class Diagram implements Renderable{
 
 	public void place() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

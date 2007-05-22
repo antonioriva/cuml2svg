@@ -30,18 +30,18 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	private static final int TYPE_CLASS = 0;
 
 	private static final int TYPE_INTERFACE = 1;
-	
+
 	private boolean methodsCollapsed = false;
-	
+
 	private boolean attributesCollapsed = false;
-	
+
 	private ArrayList<Relation> relations = new ArrayList<Relation>();
-	
+
 	/**
 	 * The name of the class
 	 */
 	private String className;
-	
+
 	/**
 	 * Class or interface
 	 */
@@ -56,7 +56,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 * The list of methods of the class
 	 */
 	private List<Method> methods;
-	
+
 	/**
 	 * Create a new Class object
 	 * 
@@ -85,20 +85,21 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 			Writer writer) {
 		try {
 			this.methodsCollapsed = (Boolean) context.get("methodsCollapsed");
-			this.attributesCollapsed = (Boolean) context.get("attributesCollapsed");
+			this.attributesCollapsed = (Boolean) context
+					.get("attributesCollapsed");
 			Template template = Velocity.getTemplate(SVG_CLASS_TEMPLATE);
-			context.put("x",0);
-			context.put("y",0);
-			context.put("width",this.computeWidth());
-			context.put("height",this.computeHeight());
+			context.put("x", 0);
+			context.put("y", 0);
+			context.put("width", this.computeWidth());
+			context.put("height", this.computeHeight());
 			context.put("xtran", this.getXtran());
 			context.put("ytran", this.getYtran());
-			
-			context.put("className",this.className);
+
+			context.put("className", this.className);
 			context.put("attributes", this.attributes);
 			context.put("methods", this.methods);
 			template.merge(context, writer);
-			
+
 			for (Relation relation : relations) {
 				GraphicsManager.getInstance().addRelation(relation);
 			}
@@ -176,7 +177,9 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		this.methods.remove(method);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Class compared) {
@@ -185,6 +188,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 
 	/**
 	 * Get the type of the class
+	 * 
 	 * @return the type of the class
 	 */
 	public int getType() {
@@ -193,30 +197,34 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 
 	/**
 	 * Set the type of the class
-	 * @param type The type of the class TYPE_CLASS or TYPE_INTERFACE
+	 * 
+	 * @param type
+	 *            The type of the class TYPE_CLASS or TYPE_INTERFACE
 	 */
 	public void setType(int type) {
 		this.type = type;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Groupable#computeHeight()
 	 */
 	@Override
 	public int computeWidth() {
 		int maxLength = this.className.length();
-		if(!this.methodsCollapsed) {
+		if (!this.methodsCollapsed) {
 			for (Iterator i = methods.iterator(); i.hasNext();) {
 				Method method = (Method) i.next();
-				if(method.getMethodName().length() > maxLength) {
+				if (method.getMethodName().length() > maxLength) {
 					maxLength = method.getMethodName().length();
 				}
 			}
 		}
-		if(!this.attributesCollapsed) {
+		if (!this.attributesCollapsed) {
 			for (Iterator i = attributes.iterator(); i.hasNext();) {
 				Attribute attribute = (Attribute) i.next();
-				if(attribute.getAttributeName().length() > maxLength) {
+				if (attribute.getAttributeName().length() > maxLength) {
 					maxLength = attribute.getAttributeName().length();
 				}
 			}
@@ -224,17 +232,18 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		return 18 * (maxLength + 4);
 	}
 
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.cuml2svg.model.Groupable#computeWidth()
 	 */
 	@Override
 	public int computeHeight() {
 		int numItems = 2;
-		if(!this.methodsCollapsed) {
+		if (!this.methodsCollapsed) {
 			numItems += methods.size();
 		}
-		if(!this.attributesCollapsed) {
+		if (!this.attributesCollapsed) {
 			numItems += attributes.size();
 		}
 		return 38 * numItems;
@@ -248,7 +257,8 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	}
 
 	/**
-	 * @param attributesCollapsed the attributesCollapsed to set
+	 * @param attributesCollapsed
+	 *            the attributesCollapsed to set
 	 */
 	public void setAttributesCollapsed(boolean attributesCollapsed) {
 		this.attributesCollapsed = attributesCollapsed;
@@ -262,21 +272,24 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	}
 
 	/**
-	 * @param methodsCollapsed the methodsCollapsed to set
+	 * @param methodsCollapsed
+	 *            the methodsCollapsed to set
 	 */
 	public void setMethodsCollapsed(boolean methodsCollapsed) {
 		this.methodsCollapsed = methodsCollapsed;
 	}
-	
+
 	/**
-	 * @param relation the relation to add
+	 * @param relation
+	 *            the relation to add
 	 */
 	public void addRelation(Relation relation) {
 		this.relations.add(relation);
 	}
-	
+
 	/**
-	 * @param pos the position of the relation
+	 * @param pos
+	 *            the position of the relation
 	 * @return the relation in the given position
 	 */
 	public Relation getRelation(int pos) {
@@ -285,11 +298,11 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 
 	public void place() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void updateReference() {
 		GraphicsManager.getInstance().addRectangle(this);
-		
+
 	}
 }

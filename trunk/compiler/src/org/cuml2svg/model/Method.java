@@ -13,15 +13,18 @@ import java.util.List;
  */
 public class Method {
 	private static final String SVG_METHOD_TEMPLATE = "templates/SVGMethod.vm";
+
 	private static final String VISIBILITY_PUBLIC = "public";
+
 	private static final String VISIBILITY_PRIVATE = "private";
+
 	private static final String VISIBILITY_PROTECTED = "protected";
 
 	/**
 	 * The name of the method
 	 */
 	private String methodName;
-	
+
 	/**
 	 * The visibility of the method
 	 */
@@ -31,7 +34,6 @@ public class Method {
 	 * The list of parameters of the method
 	 */
 	private List<Attribute> parameters;
-	
 
 	/**
 	 * Create a new method object
@@ -87,6 +89,7 @@ public class Method {
 
 	/**
 	 * Get the visibility of the method
+	 * 
 	 * @return the visibility of the method
 	 */
 	public String getVisibility() {
@@ -95,7 +98,9 @@ public class Method {
 
 	/**
 	 * Set the visibility of the method
-	 * @param visibility The visibility level
+	 * 
+	 * @param visibility
+	 *            The visibility level
 	 */
 	public void setVisibility(String visibility) {
 		this.visibility = visibility;
