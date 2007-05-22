@@ -11,7 +11,7 @@ import org.cuml2svg.svg.GraphicsManager;
 
 import sun.awt.windows.ThemeReader;
 
-public class PathGenerator extends Thread {
+public class PathGenerator {
 	
 	//tweak settings
 	int timing = 0;
@@ -20,8 +20,8 @@ public class PathGenerator extends Thread {
 	int defaultBorder=50;
 	int externalBoxMaxY;
 	int externalBoxMaxX;
-	int externalBoxMinY=-100;
-	int externalBoxMinX=-100;
+	int externalBoxMinY;
+	int externalBoxMinX;
 	
 	
 	//MyCanvas canvas=null;
@@ -74,18 +74,11 @@ public class PathGenerator extends Thread {
 				currentPath= path;
 			}
 		}
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		storedPaths.clear();
 		return currentPath;
 	}
 	
 	private PathGenerator() {
-		
 		
 		inst= new RectDrawer();
 		inst.setVisible(true);
@@ -96,7 +89,9 @@ public class PathGenerator extends Thread {
 		rectangle.y -= 100;
 		rectangle.width += 200;
 		rectangle.height += 200;
-		this.rectangleArray = GraphicsManager.getInstance().getRectangles();		
+		this.rectangleArray = GraphicsManager.getInstance().getRectangles();
+		this.externalBoxMinX = rectangle.x;
+		this.externalBoxMinY = rectangle.y;
 		this.externalBoxMaxX = rectangle.x + rectangle.width;
 		this.externalBoxMaxY = rectangle.y + rectangle.height;
 	}
@@ -492,7 +487,6 @@ public class PathGenerator extends Thread {
 	
 
 
-	@Override
 	public void run() {
 		try {
 			//effettuo il calcolo diretto

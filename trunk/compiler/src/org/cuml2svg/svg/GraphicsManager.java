@@ -151,8 +151,13 @@ public class GraphicsManager {
 	 */
 	public void print() {
 		for (Rectangle rectangle : rectangles) {
-			System.out.printf("X: %d Y:%d W: %d H: %d \n", rectangle.x,
+			System.out.printf("RECT X: %d Y:%d W: %d H: %d \n", rectangle.x,
 					rectangle.y, rectangle.width, rectangle.height);
+		}
+		for (Object object : objects) {
+			Groupable groupable = (Groupable)object;
+			System.out.printf("OBJ X: %d Y:%d W: %d H: %d \n", groupable.getXtran(),
+					groupable.getYtran(), groupable.computeWidth(), groupable.computeHeight());
 		}
 	}
 

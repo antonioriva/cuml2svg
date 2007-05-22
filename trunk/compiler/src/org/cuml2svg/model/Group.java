@@ -190,12 +190,11 @@ public class Group extends Groupable implements Object, Renderable {
 			break;
 		}
 */
-		place();
+		//place();
 		//Add properties to the context
 		context.put("methodsCollapsed", this.methodsCollapsed);
 		context.put("attributesCollapsed", this.attributesCollapsed);
-		for (Iterator i = objects.iterator(); i.hasNext();) {
-			Groupable object = (Groupable) i.next();
+		for (Object object : objects) {
 			object.render(type, context, writer);
 		}
 		return true;
