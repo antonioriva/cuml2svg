@@ -29,8 +29,14 @@ public class ModelScanner extends RuleBasedScanner {
 //				new TextAttribute(
 //					manager.getColor(ColorConstants.DEFAULT)));
 		
+
 		ArrayList<IRule> rules= new ArrayList<IRule>();
 		
+		Token tokencomment = new Token(new TextAttribute(manager.getColor(ColorConstants.COMMENT)));
+		//Add rule for processing instructions
+		rules.add( new SingleLineRule("//", "\n", tokencomment));
+		rules.add( new SingleLineRule("#", "\n", tokencomment));
+		rules.add( new MultiLineRule("/*", "*/", tokencomment));
 		
 		/////////////////////////////////////////////////////
 		Token token= new Token(new TextAttribute(
@@ -45,16 +51,6 @@ public class ModelScanner extends RuleBasedScanner {
 		}
 		
 		rules.add(wordRule);
-		
-		////////////////////////////////////////////////////
-		
-		
-		Token tokencomment = new Token(new TextAttribute(manager.getColor(ColorConstants.COMMENT)));
-		//Add rule for processing instructions
-		rules.add( new SingleLineRule("//", "\n", tokencomment));
-		rules.add( new SingleLineRule("#", "\n", tokencomment));
-		rules.add( new MultiLineRule("/*", "*/", tokencomment));
-		
 		
 		////////////////////////////////////////////////////
 		//Add generic whitespace rule.

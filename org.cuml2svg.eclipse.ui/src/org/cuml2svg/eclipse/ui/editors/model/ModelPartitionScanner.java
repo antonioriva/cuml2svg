@@ -13,11 +13,14 @@ public class ModelPartitionScanner extends RuleBasedPartitionScanner {
 		IToken comment = new Token(MODEL_COMMENT);
 		IToken string = new Token(MODEL_STRING);
 
-		IPredicateRule[] rules = new IPredicateRule[2];
+		IPredicateRule[] rules = new IPredicateRule[4];
 
 		rules[0] = new MultiLineRule("/*", "*/", comment);
-		rules[1] = new MultiLineRule("\"", "\"", string);
+		rules[2] = new SingleLineRule("#", "\n", comment);
+		rules[1] = new SingleLineRule("//", "\n", comment);
+		rules[3] = new MultiLineRule("\"", "\"", string);
 
 		setPredicateRules(rules);
 	}
+
 }
