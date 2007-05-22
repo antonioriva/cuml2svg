@@ -36,6 +36,7 @@ public class Relation implements Renderable {
 	
 	private ArrayList<Point> points = new ArrayList<Point>();
 
+	//TODO aggiungere i campi della cardinalità
 	/**
 	 * Creates a new Relation object
 	 * 
@@ -172,12 +173,20 @@ public class Relation implements Renderable {
 	public void addPoints(ArrayList<Point> points) {
 		this.points.addAll(points);
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.cuml2svg.model.Renderable#place()
 	 */
 	public void place() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public String getEndClass() {
+		return endClass;
+	}
+
+	public String getStartClass() {
+		return startClass;
 	}
 }
