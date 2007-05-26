@@ -4,12 +4,13 @@
 == Attività svolta ==
 
 ===Compilatore===
- * aggiunto controlli semantici
+ * aggiunta controlli semantici
   # non è possibile re-dichiarare una classe
   # non è possibile re-dichiarare una metodo (stessa segnature) in una classe
   # non è possibile re-dichiarare una relazione in una classe
   # non è possibile re-dichiarare un attributo in una classe
   # non è possibile inserire la stessa classe in un diagramma
+ * progressiva integrazione degli elementi con la generazione dell'svg man mano gli oggetti diventano disponibili
 
 ===Generazione Svg===
  * Nuova gestione del bounding box del diagramma per l'impaginazione
