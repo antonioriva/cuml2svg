@@ -117,8 +117,7 @@ public class Diagram implements Renderable {
 		try {
 			if (this.diagramType.equals(DiagramType.UML)) {
 				Rectangle bbox = GraphicsManager.getInstance().getBoundingBox();
-				System.out.println("BBOX: " + bbox.x + "," + bbox.y + ","
-						+ bbox.width + "," + bbox.height);
+				//System.out.println("BBOX: " + bbox.x + "," + bbox.y + ","+ bbox.width + "," + bbox.height);
 				context.put("diagramName", this.diagramName);
 				context.put("diagramX", bbox.x - 100);
 				context.put("diagramY", bbox.y - 100);

@@ -14,6 +14,11 @@ public class Attribute {
 	 * The name of the attribute
 	 */
 	private String attributeName;
+	
+	/**
+	 * The default value of the attribute
+	 */
+	private String defaultValue;
 
 	/**
 	 * The attribute type
@@ -67,6 +72,14 @@ public class Attribute {
 	 */
 	public void setAttributeType(String attributeType) {
 		this.attributeType = attributeType;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 }

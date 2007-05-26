@@ -15,7 +15,7 @@ public class PathGenerator {
 	
 	//tweak settings
 	int timing = 0;
-	int defaultStepLenght=20;
+	int defaultStepLenght=40;
 	int maxStepBeforeFail=10000/defaultStepLenght;
 	int defaultBorder=50;
 	int externalBoxMaxY;
@@ -24,7 +24,6 @@ public class PathGenerator {
 	int externalBoxMinX;
 	
 	
-	//MyCanvas canvas=null;
 	ArrayList<Rectangle> rectangleArray=null;
 	ArrayList<Point> visitedPoint = new ArrayList<Point>();
 	
@@ -48,7 +47,7 @@ public class PathGenerator {
 	public static final int LEFT_TOP=7;
 	
 
-	
+	private static final boolean showGraphic=false;
 	
 	ArrayList<Point> currentPath = new ArrayList<Point>();
 	ArrayList<ArrayList<Point>> storedPaths = new ArrayList<ArrayList<Point>>();
@@ -57,12 +56,13 @@ public class PathGenerator {
 	
 	static int currentPathCost=0;
 	RectDrawer inst=null;
-	MyCanvas canvas=null;
+	MyCanvas canvas=new MyCanvas();
 	private boolean reverseFlag;
 	
 	
 	public ArrayList<Point> getPath(int startId,int stopId){
 		canvas.changePath(this, startId, stopId);
+		
 		this.pathStart= startId;
 		this.pathStop= stopId;
 		this.run();
@@ -80,9 +80,11 @@ public class PathGenerator {
 	
 	private PathGenerator() {
 		
+		if(PathGenerator.showGraphic){
 		inst= new RectDrawer();
 		inst.setVisible(true);
         canvas=inst.myCanvas1;
+        }
 		
 		Rectangle rectangle = GraphicsManager.getInstance().getBoundingBox();
 		rectangle.x -= 100;
@@ -257,7 +259,9 @@ public class PathGenerator {
 						}
 						currentPath=tmp;
 						pathDirections=tmp1;
+						if(PathGenerator.showGraphic){
 						canvas.repaint();
+						}
 						return true;
 					}
 				}
@@ -548,7 +552,8 @@ public class PathGenerator {
 		currentPath= new ArrayList<Point>();
 		pathDirections= new ArrayList<Integer>();
 		visitedPoint.clear();
-		canvas.repaint();
+		if(PathGenerator.showGraphic){
+		canvas.repaint();}
 		
 	}
 	
@@ -571,7 +576,8 @@ public class PathGenerator {
 		Point p1 = getMakeStepPoint(p, direction, stepLenght);
 		this.currentPath.add(p1);
 		this.pathDirections.add(direction);
-		this.canvas.repaint();
+		if(PathGenerator.showGraphic){
+		this.canvas.repaint();}
 		return p1;	
 	}
 	private Point getMakeStepPoint(Point p, int direction) throws Exception {
@@ -607,8 +613,8 @@ public class PathGenerator {
 //			this.pathDirections.remove(pathDirections.size()-1);
 //		}
 		
-		
-		this.canvas.repaint();
+		if(PathGenerator.showGraphic){
+		this.canvas.repaint();}
 	}
 	private boolean inRectangle(Point p ,Rectangle r){
 		return  inRectangle( p , r, this.defaultBorder);

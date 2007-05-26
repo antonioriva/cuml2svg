@@ -37,6 +37,8 @@ public class Relation implements Renderable {
 	private ArrayList<Point> points = new ArrayList<Point>();
 
 	//TODO aggiungere i campi della cardinalità
+	
+	
 	/**
 	 * Creates a new Relation object
 	 * 
@@ -68,8 +70,6 @@ public class Relation implements Renderable {
 		this.startClass = startClass;
 		this.endClass = endClass;
 		this.relationType = relationType;
-		System.out.println("STC: " + startClass + " ENC: " + endClass
-				+ " TYPE: " + relationType);
 	}
 
 	/*
@@ -205,5 +205,9 @@ public class Relation implements Renderable {
 
 	public String getStartClass() {
 		return startClass;
+	}
+
+	public void setCardinality(String[] cards) {
+		// TODO Auto-generated method stub
 	}
 }

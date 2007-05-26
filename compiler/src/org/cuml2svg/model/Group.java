@@ -19,9 +19,9 @@ import org.cuml2svg.svg.GraphicsManager;
  */
 public class Group extends Groupable implements Object, Renderable {
 
-	private static final int HORIZONTAL_SPACING = 10;
+	private static final int HORIZONTAL_SPACING = 50;
 
-	private static final int VERTICAL_SPACING = 10;
+	private static final int VERTICAL_SPACING = 50;
 
 	private static final int ROW_LAYOUT = 0;
 
@@ -40,6 +40,9 @@ public class Group extends Groupable implements Object, Renderable {
 	private boolean methodsCollapsed = false;
 
 	private boolean attributesCollapsed = false;
+
+	//TODO implementare il metodo che nasconde i parametri
+	private boolean hideArgs;
 
 	/**
 	 * Initializes the group
@@ -472,6 +475,11 @@ public class Group extends Groupable implements Object, Renderable {
 		// for(Object object: objects) {
 		// object.updateReference();
 		// }
+	}
+
+	public void setHideArgs(boolean b) {
+		this.hideArgs = b;
+		
 	}
 
 }

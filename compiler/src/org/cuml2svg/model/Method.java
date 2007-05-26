@@ -106,4 +106,8 @@ public class Method {
 		this.visibility = visibility;
 	}
 
+	public List<Attribute> getParameters() {
+		return parameters;
+	}
+
 }
