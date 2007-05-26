@@ -1,90 +1,124 @@
-
+package org.cc{
 	class Class1{
 		attributes{
-			public dsf;
+			public attributo1;
+			
+			//ERRORE attributo dupliucato
+			public attributo1;
 		}
 		methods{
-			public aa();
-			public dcd();
+			private metodo1(int arg1);
+			public metodo2(void arg);
+			
+			//ERRORE metodo dupplicato
+			public metodo2(void arg1);
+			
+			//ERRORE metodo con parametri con lo stesso nome
+			public metodo3(void arg1, void arg1);
 		}
 	}	
+	
+	//ERRORE dichiarazione di classe duplicata
+	class Class1{}
+	
 	class Class2{
+		relations{
+			extend org.cc.Class6 ("ddd" , "ssdfsd" , "");
+			//ERRORE classe già inserita nella dichiarazione
+			extend org.cc.Class6 ("ddd" , "ssdfsd" , "");
+			
+			
+			//ERRORE classe già inserita nella dichiarazione
+			use org.cc.Class7 ("ddd" , "ssdfsd" , ""),org.cc.Class7;
+			
+			//ERRORE classe inesistente
+			use org.cc.Class117;
+		}
 		attributes{
-			public dsf;
+			public attributo1;
 		}
 		methods{
-			public aa();
-			public dcd();
+			public metodo();
+			public metodo();
 		}
 	}
 	
 	class Class3{
 		attributes{
-			public rehtyjd;
+			public attributo1;
 		}
 		methods{
-			public ddddddddddddddddddddddddddddd();
-			public sssss();
+			public metodo_molto_lungo_lungo_lungo();
+			public metodo_corto();
 		}
 	}
 	
 	class Class4{
+		relations{
+			use org.cc.Class3 ,org.cc.Class2;
+		}
 		attributes{
-			public hthehhhhhhhhhhhhhhhh;
+			public attributo_molto_lungo_lungo_lungo;
 		}
 		methods{
-			public aaaaaaaa();
-			public bbb();
+			public metodo1();
+			public metodo2();
 		}
+
 	}
 	
 	class Class6{
 		attributes{
-			public cihao;
+			public a;
 		}
 		methods{
-			public reahsrtjsrhjsrjh();
-			public wegrgher();
+			public m1();
+			public m2();
 		}
 	}
 	
 	
 	class Class7{
 		attributes{
-			public dsf;
+			public int a=5;
+			public a1 = "string molto lunga molto lunga molto lunga";
 		}
 		methods{
-			public aa();
-			public dcd();
+			public m1();
+			public m2();
 		}
 	}
 	
 	class Class8{
 		attributes{
-			public rehtyjd;
+			public a1;
+			public a2;
+			public a3;
+			public a4;
 		}
 		methods{
-			public ddddddddddddddddddddddddddddd();
-			public sssss();
+			public m1(int arg1=10, arg2,arg3,arg4);
+			public m3();
 		}
 	}
 	
 	class Class9{
 		attributes{
-			public hthehhhhhhhhhhhhhhhh;
+			public attributo;
 		}
 		methods{
-			public aaaaaaaa();
-			public bbb();
+			public metodo();
+			public metodo1();
 		}
 	}
 	
 	class Class5{
 		attributes{
-			public cihao;
+			public atttr;
 		}
 		methods{
-			public reahsrtjsrhjsrjh();
-			public wegrgher();
+			public method();
+			public metodo();
 		}
 	}
+}
