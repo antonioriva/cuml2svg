@@ -69,6 +69,10 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		this.attributes = new ArrayList<Attribute>();
 		this.methods = new ArrayList<Method>();
 	}
+	
+	public List<Method> getMethods(){
+		return methods;
+	}
 
 	/**
 	 * Render the object to the output file
@@ -304,5 +308,14 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	public void updateReference() {
 		GraphicsManager.getInstance().addRectangle(this);
 
+	}
+
+	public void setVisibility(String image) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ArrayList<Relation> getRelations() {
+		return relations;
 	}
 }

@@ -1,8 +1,3 @@
-/**
- * JavaCC file
- */
-
-
 options {
   JDK_VERSION = "1.5";
   LOOKAHEAD=2;
@@ -66,10 +61,61 @@ public class cuml2svg {
 	}
 	
 	
+	     public static boolean isRelationAlreadyDeclared(Class c, Relation r){
+        	for (Iterator iter = c.getRelations().iterator(); iter.hasNext();) {
+        		Relation r1 =  (Relation)iter.next();
+                if((r1.getEndClass().compareTo(r.getEndClass())==0)
+                        && (r1.getStartClass().compareTo(r.getStartClass())==0)
+                        && (r1.getRelationType().compareTo(r.getRelationType())==0)){
+                        return true;
+                }
+
+             }
+        	return false;
+        }
+	
+	public static boolean isMethodAlreadyDeclared(Class c, Method m){
+            for (Iterator iter = c.getMethods().iterator(); iter.hasNext();) {
+            Method mtest =  (Method)iter.next();
+            if(mtest.getMethodName().compareTo(m.getMethodName())==0){
+            		if(mtest.getParameters().size()==m.getParameters().size()){
+            			boolean sameMethod=true;
+            			for (int i = 0; i < mtest.getParameters().size(); i++) {
+            				if(!((mtest.getParameters().get(i).getAttributeName()==
+            					m.getParameters().get(i).getAttributeName())&&
+            					(mtest.getParameters().get(i).getAttributeType()==
+                					m.getParameters().get(i).getAttributeType())
+            				)){
+            					sameMethod=false;
+            				}
+							
+						}
+            			if(sameMethod){
+            				return true;
+            			}
+            			
+	            	}
+            	}
+
+            }
+            return false;
+        }
+	
 	public static boolean isClassAlreadyDeclared(String className){
 		  for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
 	          Class element =  (Class)iter.next();
 	          if(element.getClassName().compareTo(className)==0){
+	        	  return true;
+	          }
+	          
+	       }
+		  return false;
+  	}
+  	
+  	public static boolean isAttributeAlreadyDeclared(ArrayList<Attribute> l,Attribute a){
+		  for (Iterator iter = l.iterator(); iter.hasNext();) {
+	          Attribute element =  (Attribute)iter.next();
+	          if(element.getAttributeName().compareTo(a.getAttributeName())==0){
 	        	  return true;
 	          }
 	          
@@ -112,7 +158,10 @@ public class cuml2svg {
 		return l;
 	}
   
-	public static void printNotice(String message,int lineNumber,int columnNumber){
+        public static void printNotice(String message,int lineNumber,int columnNumber){
+            printNotice(message,currentFileName,lineNumber, columnNumber);
+        }
+        public static void printNotice(String message,String fileName,int lineNumber,int columnNumber){
 		if(noticeFlag){
 			System.out.print("NOTICE: "+message+" in file: \""+currentFileName+"\"");
 			if(lineNumber >= 0 &&columnNumber >= 0){
@@ -138,11 +187,24 @@ public class cuml2svg {
             for (Iterator iter = declaredRelationList.iterator(); iter.hasNext();) {
 				RelationRef r = (RelationRef) iter.next();
 				if(!isClassAlreadyDeclared(r.getR().getStartClass())){
-                    printError("class named "+r.getR().getStartClass()+ " never declared",r.getFileName(),r.getLine(),r.getColumn());
-	            }
+                    printError("class "+r.getR().getStartClass()+ " never declared",r.getFileName(),r.getLine(),r.getColumn());
+		            
+	            }else{
 	            if(!isClassAlreadyDeclared(r.getR().getEndClass())){
-	                    printError("class named "+r.getR().getEndClass()+ " never declared",r.getFileName(),r.getLine(),r.getColumn());
+		                printError("class "+r.getR().getEndClass()+ " never declared",r.getFileName(),r.getLine(),r.getColumn());
+		            }else{
+		            	if(!isRelationAlreadyDeclared(r.getParentClass(),r.getR())){
+		            		r.getParentClass().addRelation(r.getR());
+		            		printNotice("adding relation of "+r.getR().getRelationType()+" from "+r.getR().getStartClass()+ " to "+r.getR().getEndClass()
+                                        ,r.getFileName(),r.getLine(),r.getColumn());
+		            		}else{
+		            		printError("relation of "+r.getR().getRelationType()+" from "+r.getR().getStartClass()+ " to "+r.getR().getEndClass()
+                                        +" already declared",r.getFileName(),r.getLine(),r.getColumn());
+		            
+		            	}
+		            }
 	            }
+	            
 			}    
         	
 
@@ -195,7 +257,9 @@ TOKEN:{
 }
 <IMPORT_STATE>  TOKEN : { <FILE_NAME: (~[";"])* > : DEFAULT  }
 
-
+TOKEN:{
+	<HIDE_ARGS: "@hide-args">
+} 
 
 
 TOKEN:{
@@ -355,7 +419,7 @@ void group_preference(Group currentGroup):{}{
 	layout_preference(currentGroup)
 |	margin_preference(currentGroup)
 |	collapse_preference(currentGroup)
-|	color_preference(currentGroup)
+|	args_preference(currentGroup)
 
 
 }
@@ -366,7 +430,8 @@ void group_definition(Group currentGroup):{Token name;}{
 	
 	{	
 		if(name.image.indexOf("*")>0){
-			//TODO need more test
+			{//TODO need more test
+			}
 			String clist=name.image.replaceAll("\\.","\\\\.");
 			clist=clist.replaceAll("\\*","[^\\\\.]*\\$");
 			ArrayList<Class> l = this.getClassByRegEx(clist);
@@ -376,7 +441,7 @@ void group_definition(Group currentGroup):{Token name;}{
 					currentGroup.addObject(c);
 					classInDiagram.add(c);
 				}else{
-					printWarning("class named "+c.getClassName()+ " already in diagram, it will be not inserted",name.beginLine,name.beginColumn);
+					printError("class named "+c.getClassName()+ " already in diagram, it will be not inserted",name.beginLine,name.beginColumn);
 				}
 			}
 			
@@ -389,7 +454,7 @@ void group_definition(Group currentGroup):{Token name;}{
 					currentGroup.addObject(c);
 					classInDiagram.add(c);
 				}else{
-					printWarning("class named "+c.getClassName()+ " already in diagram, it will be not inserted",name.beginLine,name.beginColumn);
+					printError("class named "+c.getClassName()+ " already in diagram, it will be not inserted",name.beginLine,name.beginColumn);
 				}
 	    		
 			}else{
@@ -423,8 +488,15 @@ void collapse_preference(Group currentGroup):{Token t;}{
 	}
 }
 
+void args_preference(Group currentGroup):{Token t;}{
+	
+	<HIDE_ARGS>
+	{
+	currentGroup.setHideArgs(true);
+	}
+}
+
 void margin_preference(Group currentGroup):{Token t;}{
-	//TODO la posizione è data per deprecata; se è così fare in modo di toglierla
 	<MARGIN> t=<MARGIN_SIZE_TOP>
 	{currentGroup.setProperty("margin-top",t.image.replaceAll("px","").trim());}
 	t=<MARGIN_SIZE_RIGHT>
@@ -434,21 +506,6 @@ void margin_preference(Group currentGroup):{Token t;}{
 	t=<MARGIN_SIZE_LEFT>
 	{currentGroup.setProperty("margin-left",t.image.replaceAll("px","").trim());}
 }
-
-
-
-
-
-
-
-void color_preference(Group currentGroup):{Token t;}{
-	//TODO il colore è data per deprecata; se è così fare in modo di toglierla
-	t=<COLOR> <HEX_COLOR>
-	{printWarning("@color property deprecated, definition skipped",t.beginLine,t.beginColumn);}
-	
-}
-
-	
 
 
 
@@ -484,7 +541,7 @@ void package_definition():{Token packageName;}{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //CLASS_DEFINITION → OPTIONAL_COMMENT VISIBILITY CLASS_TYPE class_name { RELATIONS ATTRIBUTES METHODS }
 void class_definition():{
-	Token className,vis,type;
+	Token className,type; Token vis=null;
 	Class currentDefinition;
 	
 }{	
@@ -495,10 +552,12 @@ void class_definition():{
 			className.image= this.currentPackage+"."+className.image;
 		}
 		
-		//TODO decommentare le proprietà
+		
 		currentDefinition=new Class(className.image);
-		//currentDefinition.setVisibility(vis.image);
-		//currentDefinition.setType(type.image);
+		if(vis!=null){currentDefinition.setVisibility(vis.image); }
+		if(type.image.compareTo("class")==0){
+                    currentDefinition.setType(0);}else if(type.image.compareTo("interface")==0){
+                        currentDefinition.setType(1);}
 		
 	} 
 	
@@ -507,7 +566,7 @@ void class_definition():{
 	
 	{
 		if(isClassAlreadyDeclared(className.image)){
-			printWarning("class "+className.image+" already exist, the new definition was skipped",className.beginLine,className.beginColumn);
+			printError("class "+className.image+" already exist, the new definition was skipped",className.beginLine,className.beginColumn);
 		}else{
 			this.declaredClassList.add(currentDefinition);
 		}
@@ -529,35 +588,36 @@ void relations(Class currentDefinition):{}{
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
 void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation rel;}{
-	//TODO forse al posto di variable sarebbe meglio classname
-	
-	(<COMMENT>)? t=<RELATION_TYPE> ((r=<RELATION_CLASS_NAME>)|(r=<RELATION_CLASS_NAME_WITH_PACKAGE>))
-	
-	
-	(cards=relation_cardinality())? 
 	{
-		//TODO aggiungere la classe alle relazion
-		
+	}
+	(<COMMENT>)? t=<RELATION_TYPE> 
+	((r=<RELATION_CLASS_NAME>)|(r=<RELATION_CLASS_NAME_WITH_PACKAGE>))
 	
-		rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));
-		//rel.setCardinality(cards);
-		currentDefinition.addRelation(rel);
-        declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName));
+	{rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));}
+	
+	(cards=relation_cardinality() 	
+		{rel.setCardinality(cards);}
+	)? 
+	{
+	
+		//currentDefinition.addRelation(rel);
+        declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName,currentDefinition));
         printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 		}
 	
+	//lista delle relazioni opzionale
 	(<RELATION_COMMA> 
 	
 	((r=<RELATION_CLASS_NAME>)|(r=<RELATION_CLASS_NAME_WITH_PACKAGE>))
 	
-	(cards=relation_cardinality())? 
-	{
-		//TODO aggiungere la classe alle relazion
-		rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));
-		//rel.setCardinality(cards);
-		currentDefinition.addRelation(rel);
-        
-        declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName));
+	{rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));}
+	
+	(cards=relation_cardinality() 	
+		{rel.setCardinality(cards);}
+	)? 
+	{	
+		//currentDefinition.addRelation(rel);
+     	 declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName,currentDefinition));
          printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 	}
 	
@@ -566,7 +626,6 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 
 
 ////////////////////////////////////////////////////////////////
-//RELATION_CARDINALITY → ε
 //RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
 String[] relation_cardinality():{Token card;}{
 	{String[] cards= new String[3];}
@@ -583,49 +642,67 @@ String[] relation_cardinality():{Token card;}{
 ////////////////////////////////////
 //ATTRIBUTES → ATTRIBUTE_DEFINITIONS
 //ATTRIBUTES → ε
-void attributes(Class currentDefinition):{}{
-	<ATTRIBUTES> "{" (attribute(currentDefinition))+ "}"
+void attributes(Class currentDefinition):{
+	ArrayList<Attribute> l;
+}{
+	{l=new ArrayList<Attribute>();}
+	<ATTRIBUTES> "{" (attribute(currentDefinition,l))+ "}"
 }
 
 
 
 ////////////////////////////////////////////////////////////////////////////
 //ATTRIBUTE → COMMENT VISIBILITY ATTRIBUTE_TYPE attribute_name DEFAULT_VALUE
-void attribute(Class currentDefinition):{
-	Token vis;
+void attribute(Class currentDefinition, ArrayList<Attribute> l):{
+	Token vis; Attribute a;String s;
 }{
 	(<COMMENT>)? 
 	
 	(vis=<VISIBILITY>)? 
-	(typed_attribute_name() | attribute_name() )
-	(default_value())? ";"
-	//TODO manca il controllo semantico sulla duppliazione degli attributi
-	//gli attributi non vengono aggiunti
-	//{currentDefinition.addAttribute()};
+	(a=typed_attribute_name() | a=attribute_name() )
+	
+	(s=default_value(){a.setDefaultValue(s);})? ";"
+	{
+		if(!isAttributeAlreadyDeclared(l,a)){
+			currentDefinition.addAttribute(a);
+			l.add(a);
+		}else{
+			//TODO ottenere il numero di linea e di colonna dal token
+			printError("attribute "+a.getAttributeName()+" already declared, this definition will be skipped",-1,-1);
+		}
+		}
+	
 }
 
-void attribute_name():{}{
-	<VARIABLE>
+Attribute attribute_name():{Token t;Attribute a;}{
+	t=<VARIABLE>
+	{a=new Attribute(t.image);
+	return a;}
 }
 
-void typed_attribute_name():{}{
-	<VARIABLE> <VARIABLE>
+Attribute typed_attribute_name():{Token t,t1;Attribute a;}{
+	t=<VARIABLE> t1=<VARIABLE>{
+	a = new Attribute(t1.image);
+	a.setAttributeType(t.image);
+	return a;
+	}
 }
 
 
-//TODO i valori di defaut non vengono aggiunti
+
 /////////////////////////
 //DEFAULT_VALUE → ε
 //DEFAULT_VALUE → EQUAL_TO
-void default_value():{}{	
-	<EQUAL> equal_to()
+String default_value():{String value;}{	
+	<EQUAL> value=equal_to()
+	{return value;}
 }
 
 /////////////////////////
 //EQUAL_TO →  value
-void equal_to():{}{
-	<NUMBER>
-| 	<STRING>
+String equal_to():{Token t;}{
+	(t=<NUMBER> | t=<STRING>)
+	{return t.image;}
 }
 
 //////////////////////////
@@ -642,15 +719,23 @@ void methods(Class currentDefinition):{}{
 //METHOD → OPTIONAL_COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
 //METHOD_TYPE → TYPE
 void method(Class currentDefinition):{
-	Token vis,name;
+	Token vis,name; Attribute a;
 }{
 	(<COMMENT>)? 
 	(vis=<VISIBILITY>)? 
-	//TODO gli argomenti dei metodi non sono gestiti
 	(name=typed_method() | name=method_name())
-	"(" (method_arg() ("," method_arg())* )? ")" ";"
 	{
-		currentDefinition.addMethod(new Method(name.image));
+		Method m=new Method(name.image);
+	}
+	"(" (a=method_arg(){m.addParameter(a);}
+	
+	("," a=method_arg(){m.addParameter(a);})* )? ")" ";"
+	{
+		if(!isMethodAlreadyDeclared(currentDefinition,m)){
+		currentDefinition.addMethod(m);
+		}else{
+			printError("method "+m.getMethodName()+" already declared; this definition will be skipped",-1,-1);
+		}
 	}
 }
 
@@ -671,17 +756,28 @@ Token method_name():{Token name;}{
 //////////////////////////////////////////////////////
 //METHOD_ARG → COMMENT ARG_TYPE arg_name DEFAULT_VALUE
 //ARG_TYPE → TYPE
-void method_arg():{}{
+Attribute method_arg():{Attribute a;String value;}{
 	(<COMMENT>)? 
-	(typed_arg() | arg_name())
-	(default_value())?
+	(a=typed_argument() | a=argument())
+	(value=default_value(){
+	a.setDefaultValue(value);
+	})?
+	{return a;}
 }
-void arg_name():{}{
-	<VARIABLE>
+Attribute argument():{Token t;}{
+	t=<VARIABLE>
+	{
+		return new Attribute(t.image);
+	}
 }
 
-void typed_arg():{}{
-	<VARIABLE> <VARIABLE>
+Attribute typed_argument():{Token t; Token a;}{
+	t=<VARIABLE> a=<VARIABLE>
+	{
+		Attribute arg=new Attribute(a.image);
+		arg.setAttributeType(t.image);
+		return arg;
+	}
 }
 
 

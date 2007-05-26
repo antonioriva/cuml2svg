@@ -31,25 +31,23 @@ public class MyCanvas extends JPanel {
 	public MyCanvas() {
 	}
 
-	public void changePath(PathGenerator p ,int pathStart, int pathStop)
-	{
-		this.pathGenerator=p;
-		if(pathStart>=0 && pathStart<this.rectangleArray.size()){
-		
-		
-		
-		if(pathStop>=0 && pathStop<this.rectangleArray.size()){
-			this.pathStart= pathStart;
-			this.pathStop= pathStop;
-		
-//		System.out.println("generating path from: "+pathStart+" to: "+pathStop);
-//		pathGenerator= new PathGenerator();
-//		pathGenerator.start();
-		}else{
-			System.err.println("Non esiste il punto di start indicato");
+	public void changePath(PathGenerator p, int pathStart, int pathStop) {
+		this.pathGenerator = p;
+		if (pathStart >= 0 && pathStart < this.rectangleArray.size()) {
+
+			if (pathStop >= 0 && pathStop < this.rectangleArray.size()) {
+				this.pathStart = pathStart;
+				this.pathStop = pathStop;
+
+// System.out.println("generating path from: "+pathStart+" to: "+pathStop);
+// pathGenerator= new PathGenerator();
+// pathGenerator.start();
+			} else {
+				System.err.println("Non esiste il punto di start indicato");
+			}
+		} else {
+			System.err.println("Non esiste il punto di stop indicato");
 		}
-		}else{
-			System.err.println("Non esiste il punto di stop indicato");}
 	}
 	
 
@@ -73,10 +71,6 @@ public class MyCanvas extends JPanel {
 			g.drawString("id: "+i, (int)((r.x+10+xstart)/zoomLevel), (int)((r.y+50+ystart)/zoomLevel));
 			
 			g.setColor(new Color(200,200,200,255));
-			if(r == null)
-				System.out.println("CONTROL: R is NULL");
-			if(this.pathGenerator == null)
-				System.out.println("CONTROL: PathGenerator is NULL");
 			g.drawRect((int)((r.x-this.pathGenerator.defaultBorder+xstart)/zoomLevel), 
 					(int)((r.y-this.pathGenerator.defaultBorder+ystart)/zoomLevel), 
 					(int)((r.width+2*this.pathGenerator.defaultBorder)/zoomLevel),
@@ -89,14 +83,17 @@ public class MyCanvas extends JPanel {
 			i++;
 		}
 		
-		ArrayList<Point> l = this.pathGenerator.currentPath;
-		drawPath(g, l);
 		
-		ArrayList<ArrayList<Point>> l1 = this.pathGenerator.storedPaths;
-		for (Iterator k = l1.iterator(); k.hasNext();) {
-			ArrayList<Point> element = (ArrayList<Point>) k.next();
-			drawPath(g, element);
-		}
+			ArrayList<Point> l = this.pathGenerator.currentPath;
+			drawPath(g, l);
+		
+		
+			ArrayList<ArrayList<Point>> l1 = this.pathGenerator.storedPaths;
+			for (Iterator k = l1.iterator(); k.hasNext();) {
+				ArrayList<Point> element = (ArrayList<Point>) k.next();
+				drawPath(g, element);
+			}
+		
 		
 	}
 
