@@ -4,7 +4,12 @@
 == Attività svolta ==
 
 ===Compilatore===
- * ...
+ * aggiunto controlli semantici
+  # non è possibile re-dichiarare una classe
+  # non è possibile re-dichiarare una metodo (stessa segnature) in una classe
+  # non è possibile re-dichiarare una relazione in una classe
+  # non è possibile re-dichiarare un attributo in una classe
+  # non è possibile inserire la stessa classe in un diagramma
 
 ===Generazione Svg===
  * Nuova gestione del bounding box del diagramma per l'impaginazione
@@ -16,7 +21,7 @@
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
 ===Compilatore===
-...
+In taluni casi è problematico utilizzare riferimenti a token ormai utilizzati da tempo (è il caso delle relazione che vengono valutate come ultima cosa). Si è risolto con una class RelationRef che oltre a contenere la Relation stessa si fa carico di trasportare le informazioni necessarie fino alla radice. 
 
 ===Generazione Svg===
  * Sfasamento nel disegno delle relazioni rispetto al grafico
@@ -28,7 +33,7 @@
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
 
 ===Compilatore===
-...
+L'integrazione dei componenti è completata, tutti i controlli semantici previsti sono stati effettuati; è ora prevista un'attività di bugfix.
 
 === Generazione Svg ===
  * Siamo in leggero ritardo rispetto alla scaletta iniziale ma contiamo di finire nei tempi stabiliti l'intero progetto
