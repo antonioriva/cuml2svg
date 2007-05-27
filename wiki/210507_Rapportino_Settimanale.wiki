@@ -17,7 +17,8 @@
  * Ottimizzazione generale
 
 ===Interfaccia grafica===
- * ...
+ * correzione di alcuni bug
+ * inizio della implementazione della compilazione
 
 == Problemi emersi e Soluzioni adottate (o ipotizzate) ==
 
@@ -28,7 +29,7 @@ In taluni casi è problematico utilizzare riferimenti a token ormai utilizzati d
  * Sfasamento nel disegno delle relazioni rispetto al grafico
 
 ===Interfaccia grafica===
-...
+ * per l'implementazione della compilazione si sta prendendo spunto da antlr per eclipse
  
 == Stato del progetto in relazione al Gantt presentato ==
 [http://www.antonioriva.net/download/files/gantt.html Gantt Diagram]
@@ -40,7 +41,7 @@ L'integrazione dei componenti è completata, tutti i controlli semantici previst
  * Siamo in leggero ritardo rispetto alla scaletta iniziale ma contiamo di finire nei tempi stabiliti l'intero progetto
 
 === Interfaccia grafica ===
-...
+ * in leggero ritardo
 
 ==Note e Commenti==
 
