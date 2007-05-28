@@ -148,8 +148,9 @@ public class Diagram implements Renderable {
 		return false;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Renderable#place()
+	 */
 	public void place() {
-		// TODO Auto-generated method stub
-
 	}
 }

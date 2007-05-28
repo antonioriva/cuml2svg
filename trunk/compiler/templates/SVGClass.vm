@@ -13,6 +13,21 @@
     y="${y}"
     style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
   />
+#if($classType == 1)
+  <text
+    x="$ax"
+    y="$ay"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+    <tspan
+      #set($title_x = $ax + $width / 2)
+      x="${title_x}"
+      y="${ay}"
+      #set($ay = $ay + $fontSize + 10)
+      style="font-size:${fontSize}px;text-align:center;text-anchor:middle;font-family:${fontFamily};font-style: italic;">
+      &lt;&lt;interface&gt;&gt;
+     </tspan>
+  </text>
+#end
   <text
     x="$ax"
     y="$ay"
@@ -39,7 +54,7 @@
     x="${ax}"
     y="${ay}"
     style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
-      $attribute.getAttributeName() : $attribute.getAttributeType()
+      $attribute.getAttributeName() #if(!$attribute.getAttributeType().equals("")): $attribute.getAttributeType()#end
   </text>
 #end
 #end
@@ -58,9 +73,9 @@
     y="${ay}"
     style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
       #if($method.getVisibility() == "public")
-      	+$method.getMethodName()
+      	+$method.getFullMethodName()
       #elseif($method.getVisibility() == "private")
-        -$method.getMethodName()
+        -$method.getFullMethodName()
       #end
   </text>
 #end

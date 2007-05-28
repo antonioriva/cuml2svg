@@ -6,4 +6,40 @@
 #end
      d="$path"
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#TriangleOutL);stroke-opacity:1"/>
+#if($cardinality.size() > 0)
+  <text
+    x="$cardinalityCoord.get(0).x"
+    y="$cardinalityCoord.get(0).y"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+    <tspan
+      x="$cardinalityCoord.get(0).x"
+      y="$cardinalityCoord.get(0).y"
+      style="font-size:${fontSize}px;text-align:${cardinalityAlign.get(0)};text-anchor:${cardinalityAlign.get(0)};font-family:${fontFamily};font-style: italic;">
+      $cardinality.get(0)
+     </tspan>
+  </text>
+  <text
+    transform="translate(${cardinalityCoord.get(1).x}, ${cardinalityCoord.get(1).y}) rotate(-90)"
+    x="0"
+    y="0"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+    <tspan
+      x="0"
+      y="0"
+      style="font-size:${fontSize}px;text-align:${cardinalityAlign.get(1)};text-anchor:${cardinalityAlign.get(1)};font-family:${fontFamily};font-style: italic;">
+      $cardinality.get(1)
+     </tspan>
+  </text>
+  <text
+    x="$cardinalityCoord.get(2).x"
+    y="$cardinalityCoord.get(2).y"
+    style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
+    <tspan
+      x="$cardinalityCoord.get(2).x"
+      y="$cardinalityCoord.get(2).y"
+      style="font-size:${fontSize}px;text-align:${cardinalityAlign.get(2)};text-anchor:${cardinalityAlign.get(2)};font-family:${fontFamily};font-style: italic;">
+      $cardinality.get(2)
+     </tspan>
+  </text>
+#end
 </g>
