@@ -630,9 +630,9 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 String[] relation_cardinality():{Token card;}{
 	{String[] cards= new String[3];}
 	<CARDINALITY_START>
-	card=<CARDINALITY> {cards[0]=card.image; }
-	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[1]=card.image; } 
-	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[2]=card.image;} 
+	card=<CARDINALITY> {cards[0]=card.image.substring(1,card.image.length()-2); }
+	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[1]=card.image.substring(1,card.image.length()-2); } 
+	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[2]=card.image.substring(1,card.image.length()-2);} 
 	<CARDINALITY_STOP>
 	{return cards;}
 	
@@ -759,9 +759,7 @@ Token method_name():{Token name;}{
 Attribute method_arg():{Attribute a;String value;}{
 	(<COMMENT>)? 
 	(a=typed_argument() | a=argument())
-	(value=default_value(){
-	a.setDefaultValue(value);
-	})?
+	(value=default_value(){a.setDefaultValue(value);})?
 	{return a;}
 }
 Attribute argument():{Token t;}{
