@@ -9,4 +9,5 @@ public final class ColorConstants {
 	public static RGB NUMBER = new RGB(0, 255, 128);
 	public static RGB BRACET = new RGB(255, 0, 0);
 	public static RGB DEFAULT = new RGB(0, 0, 0);
+	public static RGB LAYOUT = new RGB(0, 0, 0);
 }
