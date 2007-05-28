@@ -10,12 +10,14 @@ import java.io.InputStream;
 import java.util.ResourceBundle;
 
 import org.cuml2svg.eclipse.ui.Activator;
+import org.cuml2svg.eclipse.ui.view.ConsoleView;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.osgi.framework.internal.core.ConsoleMsg;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
@@ -42,13 +44,8 @@ public class cUml2SvgCompilerAction extends TextEditorAction {
 	private cUml2SvgCompilerAction() {
 		super(ResourceBundle.getBundle("org.cuml2svg.eclipse.ResourceMessage"),"CompilerAction.", null); //$NON-NLS-1$
 		update();
-
 	}
 
-	
-	
-	 
-	 
 	  private static class cUml2SvgCompilerActionHolder{ 
 	    private final static cUml2SvgCompilerAction instance = new cUml2SvgCompilerAction();
 	  }
@@ -143,7 +140,19 @@ public class cUml2SvgCompilerAction extends TextEditorAction {
 	 * Prints out the string represented by the string buffer
 	 */
 	protected void printResultInConsole(String output) {
-		System.out.println(output);
+		try {
+			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+			ConsoleView console = (ConsoleView)page.findView(ConsoleView.CONSOLE_ID);
+			
+			if (console!=null) {
+				console.setOutputText(output);
+			} else  {
+				page.showView(ConsoleView.CONSOLE_ID);
+				console = (ConsoleView)page.findView(ConsoleView.CONSOLE_ID);			
+				console.setOutputText(output);
+			}
+		} catch (PartInitException e) {
+			e.printStackTrace();}
 		
 	}
 
