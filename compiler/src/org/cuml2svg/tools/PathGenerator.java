@@ -16,6 +16,7 @@ public class PathGenerator {
 	//tweak settings
 	int timing = 0;
 	int defaultStepLenght=40;
+	int arrowDefaultBorder=10;
 	int maxStepBeforeFail=10000/defaultStepLenght;
 	int defaultBorder=50;
 	int externalBoxMaxY;
@@ -25,6 +26,7 @@ public class PathGenerator {
 	
 	
 	ArrayList<Rectangle> rectangleArray=null;
+	ArrayList<Rectangle> arrorRectangleArray = new ArrayList<Rectangle>();
 	ArrayList<Point> visitedPoint = new ArrayList<Point>();
 	
 	
@@ -47,7 +49,7 @@ public class PathGenerator {
 	public static final int LEFT_TOP=7;
 	
 
-	private static final boolean showGraphic=false;
+	private static final boolean showGraphic=true;
 	
 	ArrayList<Point> currentPath = new ArrayList<Point>();
 	ArrayList<ArrayList<Point>> storedPaths = new ArrayList<ArrayList<Point>>();
@@ -75,8 +77,39 @@ public class PathGenerator {
 			}
 		}
 		storedPaths.clear();
+		addPathRectangle(currentPath);
+		
 		return currentPath;
 	}
+	
+	private void addPathRectangle(ArrayList<Point> path) {
+		Point p1=null;
+		Point p2=null;
+		int x=0,y=0;
+		for (int i = 1; i < path.size(); i++) {
+			p1=p2;
+			p2=path.get(i);
+			if(p1!=null&&p2!=null){
+				if(p1.x<p2.x){
+					x=p1.x;
+				}else{
+					x=p2.x;
+				}
+				if(p1.y<p2.y){
+					y=p1.y;
+				}else{
+					y=p2.y;
+				}
+				arrorRectangleArray.add(new Rectangle(x,y,Math.abs(p1.x-p2.x),Math.abs(p1.y-p2.y)));
+				//canvas.repaint();
+	
+			}
+			
+			
+		}
+		
+	}
+
 	
 	private PathGenerator() {
 		
@@ -750,6 +783,16 @@ public class PathGenerator {
 				//System.out.println(k);
 				Rectangle r = (Rectangle) rectangleArray.get(i);
 				if(inRectangle(p, r)){
+					//System.out.println("Collided with number: "+i);
+					return true;
+				}
+			}
+		}
+		for (int i = 0; i < arrorRectangleArray.size(); i++) {
+			if(i!=pathStop ){//&& i!=pathStart){
+				//System.out.println(k);
+				Rectangle r = (Rectangle) arrorRectangleArray.get(i);
+				if(inRectangle(p, r,arrowDefaultBorder)&&inRectangle(currentPath.get(currentPath.size()-2), r,arrowDefaultBorder)){
 					//System.out.println("Collided with number: "+i);
 					return true;
 				}

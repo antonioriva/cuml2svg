@@ -70,7 +70,7 @@ public class MyCanvas extends JPanel {
 			g.setFont(new Font("Arial",1,(int)(40/zoomLevel)));
 			g.drawString("id: "+i, (int)((r.x+10+xstart)/zoomLevel), (int)((r.y+50+ystart)/zoomLevel));
 			
-			g.setColor(new Color(200,200,200,255));
+			g.setColor(new Color(100,100,100,255));
 			g.drawRect((int)((r.x-this.pathGenerator.defaultBorder+xstart)/zoomLevel), 
 					(int)((r.y-this.pathGenerator.defaultBorder+ystart)/zoomLevel), 
 					(int)((r.width+2*this.pathGenerator.defaultBorder)/zoomLevel),
@@ -83,6 +83,15 @@ public class MyCanvas extends JPanel {
 			i++;
 		}
 		
+		for (final Rectangle r : pathGenerator.arrorRectangleArray) {
+			g.setColor(new Color(0,200,200,255));
+			g.drawRect((int)((r.x-this.pathGenerator.arrowDefaultBorder+xstart)/zoomLevel), 
+					(int)((r.y-this.pathGenerator.arrowDefaultBorder+ystart)/zoomLevel), 
+					(int)((r.width+2*this.pathGenerator.arrowDefaultBorder)/zoomLevel),
+					(int)((r.height+2*this.pathGenerator.arrowDefaultBorder)/zoomLevel));
+			
+		}
+		g.setColor(new Color(0,0,0,255));
 		
 			ArrayList<Point> l = this.pathGenerator.currentPath;
 			drawPath(g, l);
