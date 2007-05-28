@@ -35,6 +35,8 @@ public class Package extends Groupable implements Object, Comparable<Package> {
 
 	private ArrayList<Class> classes;
 
+	private boolean hideArgs;
+
 	/**
 	 * Initialize a new Package object
 	 * 
@@ -43,6 +45,7 @@ public class Package extends Groupable implements Object, Comparable<Package> {
 	 */
 	public Package(String packageName) {
 		this.packageName = packageName;
+		this.hideArgs = false;
 
 		this.classes = new ArrayList<Class>();
 	}
@@ -102,12 +105,14 @@ public class Package extends Groupable implements Object, Comparable<Package> {
 	 * @see org.cuml2svg.model.Renderable#place()
 	 */
 	public void place() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void updateReference() {
 		GraphicsManager.getInstance().addObject(this);
 
+	}
+
+	public void setHideArgs(boolean hide) {
+		this.hideArgs = hide;
 	}
 }

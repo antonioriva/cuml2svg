@@ -31,6 +31,12 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 
 	private static final int TYPE_INTERFACE = 1;
 
+	private static final String VISIBILITY_PUBLIC = "public";
+
+	private static final String VISIBILITY_PRIVATE = "private";
+
+	private static final String VISIBILITY_PROTECTED = "protected";
+
 	private boolean methodsCollapsed = false;
 
 	private boolean attributesCollapsed = false;
@@ -46,6 +52,11 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 * Class or interface
 	 */
 	private int type;
+	
+	/**
+	 * Class visibility
+	 */
+	private String visibility;
 
 	/**
 	 * The list of attributes of the class
@@ -57,6 +68,8 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 */
 	private List<Method> methods;
 
+	private boolean hideArgs;
+
 	/**
 	 * Create a new Class object
 	 * 
@@ -65,6 +78,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 */
 	public Class(String className) {
 		this.className = className;
+		this.visibility  = VISIBILITY_PUBLIC;
 
 		this.attributes = new ArrayList<Attribute>();
 		this.methods = new ArrayList<Method>();
@@ -99,6 +113,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 			context.put("xtran", this.getXtran());
 			context.put("ytran", this.getYtran());
 
+			context.put("classType", this.type);
 			context.put("className", this.className);
 			context.put("attributes", this.attributes);
 			context.put("methods", this.methods);
@@ -168,6 +183,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	 *            the method to be added
 	 */
 	public void addMethod(Method method) {
+		method.setHideArgs(this.hideArgs);
 		this.methods.add(method);
 	}
 
@@ -220,8 +236,8 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		if (!this.methodsCollapsed) {
 			for (Iterator i = methods.iterator(); i.hasNext();) {
 				Method method = (Method) i.next();
-				if (method.getMethodName().length() > maxLength) {
-					maxLength = method.getMethodName().length();
+				if (method.getFullMethodName().length() > maxLength) {
+					maxLength = method.getFullMethodName().length();
 				}
 			}
 		}
@@ -244,6 +260,9 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 	@Override
 	public int computeHeight() {
 		int numItems = 2;
+		if (this.type == TYPE_INTERFACE) {
+			numItems++;
+		}
 		if (!this.methodsCollapsed) {
 			numItems += methods.size();
 		}
@@ -300,22 +319,38 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		return this.relations.get(pos);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Renderable#place()
+	 */
 	public void place() {
-		// TODO Auto-generated method stub
 
 	}
 
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Object#updateReference()
+	 */
 	public void updateReference() {
 		GraphicsManager.getInstance().addRectangle(this);
-
 	}
 
-	public void setVisibility(String image) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * @param visibility The visibility of the class
+	 */
+	public void setVisibility(String visibility) {
+		this.visibility = visibility;
 	}
 
+	/**
+	 * @return The relations of the class
+	 */
 	public ArrayList<Relation> getRelations() {
 		return relations;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.cuml2svg.model.Object#setHideArgs(boolean)
+	 */
+	public void setHideArgs(boolean hide) {
+		this.hideArgs = hide;
 	}
 }

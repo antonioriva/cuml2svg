@@ -36,9 +36,8 @@ public class Relation implements Renderable {
 
 	private ArrayList<Point> points = new ArrayList<Point>();
 
-	//TODO aggiungere i campi della cardinalità
-	
-	
+	private ArrayList<String> cardinalities = new ArrayList<String>();
+
 	/**
 	 * Creates a new Relation object
 	 * 
@@ -93,6 +92,55 @@ public class Relation implements Renderable {
 				String path = "M " + point.getX() + "," + point.getY();
 				context.put("points", pointsCopy);
 				context.put("path", path);
+				
+				if(points.size() > 0) {
+					ArrayList<Point> places = new ArrayList<Point>();
+					ArrayList<String> alignment = new ArrayList<String>();
+					Point cardPoint = (Point) points.get(0).clone();
+					if(points.size() > 1) {
+						Point cardPoint2 = (Point) points.get(1).clone();
+						if(cardPoint2.x > cardPoint.x) {
+							//Right line
+							alignment.add("start");
+						}else {
+							//Left line
+							alignment.add("end");
+						}
+					}
+					cardPoint.translate(10, -10);
+					places.add(cardPoint);
+
+					cardPoint = (Point) points.get(points.size()/2).clone();
+					if(points.size() > 1) {
+						Point cardPoint2 = (Point) points.get(points.size()/2 -1).clone();
+						alignment.add("middle");
+						int xtran = (cardPoint.x - cardPoint2.x) / 2;
+						int ytran = (cardPoint.y - cardPoint2.y) / 2;
+						cardPoint.translate(-xtran, -ytran);
+					}
+					cardPoint.translate(-10, 0);
+					places.add(cardPoint);
+
+					cardPoint = (Point) points.get(points.size() -1).clone();
+					if(points.size() > 1) {
+						Point cardPoint2 = (Point) points.get(points.size()-2).clone();
+						if(cardPoint2.x > cardPoint.x) {
+							//Right line
+							alignment.add("start");
+						}else {
+							//Left line
+							alignment.add("end");
+						}
+					}
+					cardPoint.translate(10, -10);
+					places.add(cardPoint);
+
+					context.put("cardinalityCoord",places);
+					context.put("cardinalityAlign",alignment);
+				}
+				if(cardinalities.size() > 0) {
+					context.put("cardinality", this.cardinalities);
+				}
 				template = Velocity.getTemplate(RELATION_TEMPLATE);
 				template.merge(context, writer);
 			}
@@ -195,8 +243,6 @@ public class Relation implements Renderable {
 	 * @see org.cuml2svg.model.Renderable#place()
 	 */
 	public void place() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public String getEndClass() {
@@ -208,6 +254,10 @@ public class Relation implements Renderable {
 	}
 
 	public void setCardinality(String[] cards) {
-		// TODO Auto-generated method stub
+		if(cards.length == 3) {
+			this.cardinalities.add(cards[0]);
+			this.cardinalities.add(cards[1]);
+			this.cardinalities.add(cards[2]);
+		}
 	}
 }

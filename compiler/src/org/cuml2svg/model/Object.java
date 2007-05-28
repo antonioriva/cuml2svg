@@ -21,4 +21,6 @@ public interface Object extends Renderable {
 	public int getId();
 
 	public void updateReference();
+	
+	public void setHideArgs(boolean hide);
 }

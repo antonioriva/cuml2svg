@@ -1,6 +1,7 @@
 package org.cuml2svg.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,6 +36,8 @@ public class Method {
 	 */
 	private List<Attribute> parameters;
 
+	private boolean hideArgs;
+
 	/**
 	 * Create a new method object
 	 * 
@@ -44,6 +47,7 @@ public class Method {
 	public Method(String methodName) {
 		this.methodName = methodName;
 		this.visibility = VISIBILITY_PUBLIC;
+		this.hideArgs = false;
 
 		this.parameters = new ArrayList<Attribute>();
 	}
@@ -108,6 +112,30 @@ public class Method {
 
 	public List<Attribute> getParameters() {
 		return parameters;
+	}
+	
+	/**
+	 * @return The fullName of the method populated with parameters
+	 */
+	public String getFullMethodName() {
+		String fullName = this.methodName + "(";
+		if(!this.hideArgs) {
+			Attribute parameter;
+			for (int i = 0; i < parameters.size()-1; i++) {
+				parameter = parameters.get(i);
+				fullName += parameter.getAttributeType() + " " + parameter.getAttributeName() + ",";
+			}
+			if(parameters.size() > 0) {
+				parameter = parameters.get(parameters.size()-1);
+				fullName += parameter.getAttributeType() + " " + parameter.getAttributeName();
+			}
+		}
+		fullName += ")";
+		return fullName;
+	}
+
+	public void setHideArgs(boolean hideArgs) {
+		this.hideArgs = hideArgs;
 	}
 
 }
