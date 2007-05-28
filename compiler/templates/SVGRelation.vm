@@ -19,7 +19,7 @@
      </tspan>
   </text>
   <text
-    transform="translate(${cardinalityCoord.get(1).x}, ${cardinalityCoord.get(1).y}) rotate(-90)"
+    transform="translate(${cardinalityCoord.get(1).x}, ${cardinalityCoord.get(1).y})#if($cardinalityRotate) rotate(-90)#end"
     x="0"
     y="0"
     style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">

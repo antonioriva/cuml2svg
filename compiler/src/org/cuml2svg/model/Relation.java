@@ -93,6 +93,8 @@ public class Relation implements Renderable {
 				context.put("points", pointsCopy);
 				context.put("path", path);
 				
+				//Handling cardinality text
+				//Start point
 				if(points.size() > 0) {
 					ArrayList<Point> places = new ArrayList<Point>();
 					ArrayList<String> alignment = new ArrayList<String>();
@@ -106,10 +108,18 @@ public class Relation implements Renderable {
 							//Left line
 							alignment.add("end");
 						}
+						if(cardPoint2.y > cardPoint.y) {
+							//Vertical top-down
+							cardPoint.translate(0, 30);
+						}else {
+							//Vertical bottom-up
+							cardPoint.translate(0, -10);
+						}
 					}
-					cardPoint.translate(10, -10);
+					cardPoint.translate(10, 0);
 					places.add(cardPoint);
 
+					//Mid point
 					cardPoint = (Point) points.get(points.size()/2).clone();
 					if(points.size() > 1) {
 						Point cardPoint2 = (Point) points.get(points.size()/2 -1).clone();
@@ -117,10 +127,12 @@ public class Relation implements Renderable {
 						int xtran = (cardPoint.x - cardPoint2.x) / 2;
 						int ytran = (cardPoint.y - cardPoint2.y) / 2;
 						cardPoint.translate(-xtran, -ytran);
+						context.put("cardinalityRotate",(ytran != 0));
 					}
 					cardPoint.translate(-10, 0);
 					places.add(cardPoint);
 
+					//End point
 					cardPoint = (Point) points.get(points.size() -1).clone();
 					if(points.size() > 1) {
 						Point cardPoint2 = (Point) points.get(points.size()-2).clone();
@@ -131,8 +143,15 @@ public class Relation implements Renderable {
 							//Left line
 							alignment.add("end");
 						}
+						if(cardPoint2.y > cardPoint.y) {
+							//Vertical top-down
+							cardPoint.translate(0, 30);
+						}else {
+							//Vertical bottom-up
+							cardPoint.translate(0, -10);
+						}
 					}
-					cardPoint.translate(10, -10);
+					cardPoint.translate(10, 0);
 					places.add(cardPoint);
 
 					context.put("cardinalityCoord",places);
