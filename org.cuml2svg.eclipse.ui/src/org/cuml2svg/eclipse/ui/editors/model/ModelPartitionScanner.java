@@ -16,8 +16,8 @@ public class ModelPartitionScanner extends RuleBasedPartitionScanner {
 		IPredicateRule[] rules = new IPredicateRule[4];
 
 		rules[0] = new MultiLineRule("/*", "*/", comment);
-		rules[2] = new SingleLineRule("#", "\n", comment);
-		rules[1] = new SingleLineRule("//", "\n", comment);
+		rules[2] = new SingleLineRule("#", "", comment);
+		rules[1] = new SingleLineRule("//", "", comment);
 		rules[3] = new MultiLineRule("\"", "\"", string);
 
 		setPredicateRules(rules);
