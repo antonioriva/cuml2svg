@@ -20,5 +20,17 @@
             id="org.cuml2svg.eclipse.ui.editors.layout.LayoutEditor"
             name="cUml2Svg Layout Editor"/>
    </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="cUml2Svg"
+            id="org.cuml2svg.eclipse.ui.editors"/>
+      <view
+            class="org.cuml2svg.eclipse.ui.view.ConsoleView"
+            icon=""
+            category="org.cuml2svg.eclipse.ui.editors"
+            name="cUml2SvgConsoleView"
+            id="org.cuml2svg.eclipse.ui.view.ConsoleView"/>
+   </extension>
 
 </plugin>
