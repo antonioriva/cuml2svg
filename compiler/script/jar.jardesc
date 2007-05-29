@@ -12,6 +12,6 @@
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
         <javaElement handleIdentifier="=cuml2svg/src"/>
-        <javaElement handleIdentifier="=cuml2svg/templates"/>
+        <folder path="/cuml2svg/templates"/>
     </selectedElements>
 </jardesc>

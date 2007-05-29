@@ -15,10 +15,10 @@ public class PathGenerator {
 	
 	//tweak settings
 	int timing = 0;
-	int defaultStepLenght=40;
-	int arrowDefaultBorder=10;
+	int defaultStepLenght=45;
+	int arrowDefaultBorder=40;
 	int maxStepBeforeFail=10000/defaultStepLenght;
-	int defaultBorder=50;
+	int defaultBorder=30;
 	int externalBoxMaxY;
 	int externalBoxMaxX;
 	int externalBoxMinY;
@@ -77,7 +77,9 @@ public class PathGenerator {
 			}
 		}
 		storedPaths.clear();
-		addPathRectangle(currentPath);
+		if(currentPath!=null){
+			addPathRectangle(currentPath);
+		}
 		
 		return currentPath;
 	}
@@ -85,8 +87,11 @@ public class PathGenerator {
 	private void addPathRectangle(ArrayList<Point> path) {
 		Point p1=null;
 		Point p2=null;
-		int x=0,y=0;
-		for (int i = 1; i < path.size(); i++) {
+		int start=0,x=0,y=0;
+		if(path.size()>2){
+			start=1;
+		}
+		for (int i = start; i < path.size(); i++) {
 			p1=p2;
 			p2=path.get(i);
 			if(p1!=null&&p2!=null){
@@ -792,7 +797,9 @@ public class PathGenerator {
 			if(i!=pathStop ){//&& i!=pathStart){
 				//System.out.println(k);
 				Rectangle r = (Rectangle) arrorRectangleArray.get(i);
-				if(inRectangle(p, r,arrowDefaultBorder)&&inRectangle(currentPath.get(currentPath.size()-2), r,arrowDefaultBorder)){
+				if(inRectangle(p, r,arrowDefaultBorder)
+						&&
+				   inRectangle(currentPath.get(currentPath.size()-2), r,arrowDefaultBorder)){
 					//System.out.println("Collided with number: "+i);
 					return true;
 				}
