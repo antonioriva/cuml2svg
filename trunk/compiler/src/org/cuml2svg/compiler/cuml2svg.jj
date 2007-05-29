@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.TreeMap;
 import java.util.Set;
+import java.io.File;
 
 public class cuml2svg {
 	static ArrayList<Class> declaredClassList= new ArrayList<Class>();
@@ -40,23 +41,22 @@ public class cuml2svg {
 		try {
       		 parser = new cuml2svg(new FileInputStream(input));
     	 	 currentFileName=input;
+    	 	 System.out.println(currentFileName);
     		 parser.s();          
 		
 			 SVGExporter exporter = new SVGExporter(diagram,output);
 			 exporter.export();
         
       	} catch (FileNotFoundException e1) {
-    		printError("inout file not found",-1,-1);
+    		printError("input file not found",-1,-1);
     		
    		}catch (ParseException e) {
 	        printError("parser error",-1,-1);
-	        System.err.println(e.getMessage());
-	        e.printStackTrace();
+	        System.out.println(e.getMessage());
 	        
       	}catch (Error e) {
 	        printError("generic error",-1,-1);
-	        System.err.println(e.getMessage());
-	        e.printStackTrace();
+	        System.out.println(e.getMessage());
 	    }
 	}
 	
@@ -213,13 +213,14 @@ public class cuml2svg {
 	public static void printError(String message,int lineNumber,int columnNumber){
 		printError(message,currentFileName,lineNumber,columnNumber);
 	}
+	
 	public static void printError(String message,String filename, int lineNumber,int columnNumber){
 		if(errorFlag){
 			System.err.print("ERROR: "+message+" in file: \""+filename+"\"");
 			if(lineNumber >= 0 &&columnNumber >= 0){
 				System.err.println(" at line "+lineNumber+ " at column "+columnNumber);
 			}else{
-				System.out.println("");
+				System.err.println("");
 			}
 		}
 	}
@@ -376,8 +377,9 @@ void import_definition():{
 	<IMPORT> 
 	n = <FILE_NAME> {
 		try{
+			
 			printNotice("importing model file \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
-			cuml2svg modelParser = new cuml2svg(new FileInputStream(n.image.trim()));
+			cuml2svg modelParser = new cuml2svg(new FileInputStream((new File(currentFileName)).getParent()+"/"+n.image.trim()));
 			oldFileName=currentFileName;
 			currentFileName=n.image.trim();
     		modelParser.model();
@@ -630,9 +632,9 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 String[] relation_cardinality():{Token card;}{
 	{String[] cards= new String[3];}
 	<CARDINALITY_START>
-	card=<CARDINALITY> {cards[0]=card.image.substring(1,card.image.length()-2); }
-	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[1]=card.image.substring(1,card.image.length()-2); } 
-	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[2]=card.image.substring(1,card.image.length()-2);} 
+	card=<CARDINALITY> {cards[0]=card.image.substring(1,card.image.length()-1); }
+	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[1]=card.image.substring(1,card.image.length()-1); } 
+	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[2]=card.image.substring(1,card.image.length()-1);} 
 	<CARDINALITY_STOP>
 	{return cards;}
 	

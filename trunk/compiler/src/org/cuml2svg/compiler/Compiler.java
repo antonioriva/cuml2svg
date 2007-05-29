@@ -1,6 +1,9 @@
 package org.cuml2svg.compiler;
 
 import java.io.File;
+import java.sql.Time;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 
 
@@ -33,6 +36,7 @@ public class Compiler {
 	 * @param args explained in the help function
 	 */
 	public static void main(String[] args) {
+		System.setErr(System.out);
 		//printHelp();
 		String input="";
 		String output="";
@@ -104,6 +108,11 @@ public class Compiler {
 			System.err.println("FATAL_ERROR: missing output file");
 			System.exit(1);
 		}
+		Calendar cal = new GregorianCalendar();
+		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+":"
+				+cal.get(Calendar.MINUTE)+":"
+				+cal.get(Calendar.SECOND)+"."
+				+cal.get(Calendar.MILLISECOND));
 		System.out.println("--------------------------------------------------\n");
 		
 		System.out.println("Launching compiler");
