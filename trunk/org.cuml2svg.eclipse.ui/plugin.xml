@@ -27,7 +27,7 @@
             id="org.cuml2svg.eclipse.ui.editors"/>
       <view
             class="org.cuml2svg.eclipse.ui.view.ConsoleView"
-            icon=""
+            icon="icons/model.gif"
             category="org.cuml2svg.eclipse.ui.editors"
             name="cUml2SvgConsoleView"
             id="org.cuml2svg.eclipse.ui.view.ConsoleView"/>
