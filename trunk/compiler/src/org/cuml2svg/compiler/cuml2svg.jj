@@ -32,31 +32,41 @@ public class cuml2svg {
 	static boolean noticeFlag= true;
 	static boolean errorFlag= true;
 	static boolean renderFlag= true;
+	static boolean checkLayout=false;
+	static boolean checkModel=false;
+	
 	static cuml2svg parser;
 	
-	public cuml2svg(String input, String output,boolean warningFlag,boolean noticeFlag,boolean errorFlag){
+	public cuml2svg(String input, String output,boolean warningFlag,boolean noticeFlag,boolean errorFlag,boolean checkModel,boolean checkLayout){
 		this.warningFlag=warningFlag;
 		this.noticeFlag=noticeFlag;
 		this.errorFlag=errorFlag;
+		this.checkLayout = checkLayout;
+		this.checkModel= checkModel;
 		try {
       		 parser = new cuml2svg(new FileInputStream(input));
     	 	 currentFileName=input;
     	 	 System.out.println(currentFileName);
-    		 parser.s();          
+    	 	 if(this.checkModel){
+    		 	parser.model();
+    		 }else{
+    		 	parser.s();
+    		 }   
 		
-			 SVGExporter exporter = new SVGExporter(diagram,output);
-			 exporter.export();
+			if(checkModel||checkLayout){
+				 SVGExporter exporter = new SVGExporter(diagram,output);
+				 exporter.export();
+			 }
         
       	} catch (FileNotFoundException e1) {
     		printError("input file not found",-1,-1);
     		
    		}catch (ParseException e) {
-	        printError("parser error",-1,-1);
-	        System.out.println(e.getMessage());
+	        printError("parser error: "+e.getMessage(),-1,-1);
 	        
       	}catch (Error e) {
-	        printError("generic error",-1,-1);
-	        System.out.println(e.getMessage());
+	        printError("generic error: "+e.getMessage(),-1,-1);
+	        
 	    }
 	}
 	
@@ -81,9 +91,10 @@ public class cuml2svg {
             		if(mtest.getParameters().size()==m.getParameters().size()){
             			boolean sameMethod=true;
             			for (int i = 0; i < mtest.getParameters().size(); i++) {
-            				if(!((mtest.getParameters().get(i).getAttributeName()==
-            					m.getParameters().get(i).getAttributeName())&&
-            					(mtest.getParameters().get(i).getAttributeType()==
+            				if(!(
+            				//(mtest.getParameters().get(i).getAttributeName()==
+            					//m.getParameters().get(i).getAttributeName())&&
+            					(mtest.getParameters().get(i).getAttributeType()!=
                 					m.getParameters().get(i).getAttributeType())
             				)){
             					sameMethod=false;
@@ -99,6 +110,19 @@ public class cuml2svg {
 
             }
             return false;
+        }
+	
+	public static boolean isDuplicatedArgsName(Method m){
+        	ArrayList<String> args = new ArrayList<String>();
+        	for (Attribute arg : m.getParameters()) {
+				for (Iterator iter = args.iterator(); iter.hasNext();) {
+					if(((String) iter.next()).compareTo(arg.getAttributeName())==0){
+						return true;
+					}
+				}
+				args.add(arg.getAttributeName());
+			}
+        	return false;
         }
 	
 	public static boolean isClassAlreadyDeclared(String className){
@@ -162,27 +186,40 @@ public class cuml2svg {
             printNotice(message,currentFileName,lineNumber, columnNumber);
         }
         public static void printNotice(String message,String fileName,int lineNumber,int columnNumber){
+			
 		if(noticeFlag){
-			System.out.print("NOTICE: "+message+" in file: \""+currentFileName+"\"");
+			System.out.print("NOTICE in file: \""+currentFileName+"\";");
 			if(lineNumber >= 0 &&columnNumber >= 0){
-				System.out.println(" at line "+lineNumber+ " at column "+columnNumber);
-			}else{
-				System.out.println("");
+				System.out.print("; at line "+lineNumber+ ", at column "+columnNumber+"; ");
 			}
+			System.out.println(message.replaceAll("\n", " "));
 		}
 	}
 
 	public static void printWarning(String message,int lineNumber,int columnNumber){
 		if(warningFlag){
-			System.out.print("WARNING: "+message+" in file: \""+currentFileName+"\"");
+			System.out.print("WARNING in file: \""+currentFileName+"\";");
 			if(lineNumber >= 0 &&columnNumber >= 0){
-				System.out.println(" at line "+lineNumber+ " at column "+columnNumber);
-			}else{
-				System.out.println("");
+				System.out.print("; at line "+lineNumber+ ", at column "+columnNumber+"; ");
 			}
+			System.out.println(message.replaceAll("\n", " "));
 		}
 	}
-
+public static void printError(String message,int lineNumber,int columnNumber){
+		printError(message,currentFileName,lineNumber,columnNumber);
+	}
+	
+	public static void printError(String message,String filename, int lineNumber,int columnNumber){
+		if(errorFlag){
+			System.err.print("ERROR in file: \""+currentFileName+"\";");
+			if(lineNumber >= 0 &&columnNumber >= 0){
+				System.err.print(" at line "+lineNumber+ ", at column "+columnNumber+"; ");
+			}
+			System.err.println(message.replaceAll("\n", " "));
+		}
+		
+		
+	}
     public static void checkRelationsClasses(){
             for (Iterator iter = declaredRelationList.iterator(); iter.hasNext();) {
 				RelationRef r = (RelationRef) iter.next();
@@ -210,20 +247,9 @@ public class cuml2svg {
 
         }
 
-	public static void printError(String message,int lineNumber,int columnNumber){
-		printError(message,currentFileName,lineNumber,columnNumber);
-	}
 	
-	public static void printError(String message,String filename, int lineNumber,int columnNumber){
-		if(errorFlag){
-			System.err.print("ERROR: "+message+" in file: \""+filename+"\"");
-			if(lineNumber >= 0 &&columnNumber >= 0){
-				System.err.println(" at line "+lineNumber+ " at column "+columnNumber);
-			}else{
-				System.err.println("");
-			}
-		}
-	}
+	
+	
 }
 
 	      	
@@ -365,6 +391,7 @@ void s() :  {Token t;}{
 }
 
 void layout():{}{
+	
 	(import_definition())+	
 	
 	main_group()
@@ -379,11 +406,18 @@ void import_definition():{
 		try{
 			
 			printNotice("importing model file \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
-			cuml2svg modelParser = new cuml2svg(new FileInputStream((new File(currentFileName)).getParent()+"/"+n.image.trim()));
-			oldFileName=currentFileName;
-			currentFileName=n.image.trim();
-    		modelParser.model();
-    		currentFileName=oldFileName;
+			File f = new File((new File(currentFileName).getParent())+"/"+n.image.trim());
+			if(f.isFile()){
+				if(!checkLayout){
+					cuml2svg modelParser = new cuml2svg(new FileInputStream(f));
+					oldFileName=currentFileName;
+					currentFileName=n.image.trim();
+		    		modelParser.model();
+		    		currentFileName=oldFileName;
+	    		}
+    		}else{
+    			printError("file not found \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
+    		}
     	} catch (FileNotFoundException e1) {
     		printError("file not found \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
     	}
@@ -656,36 +690,36 @@ void attributes(Class currentDefinition):{
 ////////////////////////////////////////////////////////////////////////////
 //ATTRIBUTE → COMMENT VISIBILITY ATTRIBUTE_TYPE attribute_name DEFAULT_VALUE
 void attribute(Class currentDefinition, ArrayList<Attribute> l):{
-	Token vis; Attribute a;String s;
+	Token vis; AttributeRef a;String s;
 }{
 	(<COMMENT>)? 
 	
 	(vis=<VISIBILITY>)? 
 	(a=typed_attribute_name() | a=attribute_name() )
 	
-	(s=default_value(){a.setDefaultValue(s);})? ";"
+	(s=default_value(){a.getAttribute().setDefaultValue(s);})? ";"
 	{
-		if(!isAttributeAlreadyDeclared(l,a)){
-			currentDefinition.addAttribute(a);
-			l.add(a);
+		if(!isAttributeAlreadyDeclared(l,a.getAttribute())){
+			currentDefinition.addAttribute(a.getAttribute());
+			l.add(a.getAttribute());
 		}else{
 			//TODO ottenere il numero di linea e di colonna dal token
-			printError("attribute "+a.getAttributeName()+" already declared, this definition will be skipped",-1,-1);
+			printError("attribute "+a.getAttribute().getAttributeName()+" already declared, this definition will be skipped",a.getLine(),a.getColumn());
 		}
 		}
 	
 }
 
-Attribute attribute_name():{Token t;Attribute a;}{
+AttributeRef attribute_name():{Token t;AttributeRef a;}{
 	t=<VARIABLE>
-	{a=new Attribute(t.image);
-	return a;}
+	{a = new AttributeRef(new Attribute(t.image),t.beginLine,t.beginColumn,this.currentFileName);
+    	return a;}
 }
 
-Attribute typed_attribute_name():{Token t,t1;Attribute a;}{
+AttributeRef typed_attribute_name():{Token t,t1;AttributeRef a;}{
 	t=<VARIABLE> t1=<VARIABLE>{
-	a = new Attribute(t1.image);
-	a.setAttributeType(t.image);
+	a = new AttributeRef(new Attribute(t.image),t.beginLine,t.beginColumn,this.currentFileName);
+    a.getAttribute().setAttributeType(t.image);
 	return a;
 	}
 }
@@ -721,37 +755,43 @@ void methods(Class currentDefinition):{}{
 //METHOD → OPTIONAL_COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
 //METHOD_TYPE → TYPE
 void method(Class currentDefinition):{
-	Token vis,name; Attribute a;
+	Token vis;MethodRef m; Attribute a;
 }{
 	(<COMMENT>)? 
 	(vis=<VISIBILITY>)? 
-	(name=typed_method() | name=method_name())
-	{
-		Method m=new Method(name.image);
-	}
-	"(" (a=method_arg(){m.addParameter(a);}
+	(m=typed_method() | m=method_name())
 	
-	("," a=method_arg(){m.addParameter(a);})* )? ")" ";"
+	"(" (a=method_arg(){m.getMethod().addParameter(a);}
+	
+	("," a=method_arg(){m.getMethod().addParameter(a);})* )? ")" ";"
 	{
-		if(!isMethodAlreadyDeclared(currentDefinition,m)){
-		currentDefinition.addMethod(m);
+		if(!isMethodAlreadyDeclared(currentDefinition,m.getMethod())){
+			if(!isDuplicatedArgsName(m.getMethod())){
+				currentDefinition.addMethod(m.getMethod());
+			}else{
+				printError("method "+m.getMethod().getMethodName()+" contain duplicated args name; this definition will be skipped",m.getLine(),m.getColumn());
+		
+			}
 		}else{
-			printError("method "+m.getMethodName()+" already declared; this definition will be skipped",-1,-1);
+			printError("method "+m.getMethod().getMethodName()+" already declared; this definition will be skipped",m.getLine(),m.getColumn());
 		}
 	}
 }
 
-Token typed_method():{Token name;}{
-	<VARIABLE> name=<VARIABLE> 
+MethodRef typed_method():{Token name,t;MethodRef m;}{
+	t=<VARIABLE> name=<VARIABLE> 
 	{
-		return name;
+		m= new MethodRef(new Method(name.image),name.beginLine,name.beginColumn,this.currentFileName);
+		m.getMethod().setType(t.image);
+		//TODO controllare il tipo del metodo
+		return m;
 	}
 }
 
-Token method_name():{Token name;}{
+MethodRef method_name():{Token name;MethodRef m;}{
 	name=<VARIABLE> 
-	{
-		return name;
+	{	m= new MethodRef(new Method(name.image),name.beginLine,name.beginColumn,this.currentFileName);
+		return m;
 	}
 }
 
