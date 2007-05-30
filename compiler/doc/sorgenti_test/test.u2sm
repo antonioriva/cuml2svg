@@ -1,3 +1,44 @@
+package org.cc.cc{
+	class ClassCC1{
+		attributes{
+			public attributo1;
+			
+			//ERRORE attributo dupliucato
+			public attributo1;
+		}
+
+		methods{
+			private metodo1(int arg1);
+			public metodo2(void arg);
+			
+			//ERRORE metodo dupplicato
+			public metodo2(void arg1);
+			
+			//ERRORE metodo con parametri con lo stesso nome
+			public metodo3(void arg1, void arg1);
+		}
+	}
+		class ClassCC2{
+		attributes{
+			public attributo1;
+			
+			//ERRORE attributo dupliucato
+			public attributo1;
+		}
+
+		methods{
+			private metodo1(int arg1);
+			public metodo2(void arg);
+			
+			//ERRORE metodo dupplicato
+			public metodo2(void arg1);
+			
+			//ERRORE metodo con parametri con lo stesso nome
+			public metodo3(void arg1, void arg1);
+		}
+	}	
+}
+
 package org.cc{
 	class Class1{
 		attributes{
@@ -6,6 +47,7 @@ package org.cc{
 			//ERRORE attributo dupliucato
 			public attributo1;
 		}
+
 		methods{
 			private metodo1(int arg1);
 			public metodo2(void arg);
@@ -23,13 +65,13 @@ package org.cc{
 	
 	class Class2{
 		relations{
-			extend org.cc.Class6 ("ddd" , "ssdfsd" , "");
+			extend org.cc.Class6 ("(1,*)" , "relazione di estensione" , "(1,1)");
 			//ERRORE classe già inserita nella dichiarazione
-			extend org.cc.Class6 ("ddd" , "ssdfsd" , "");
+			extend org.cc.Class6 ("(1,*)" , "relazione di estensione" , "(1,1)");
 			
 			
 			//ERRORE classe già inserita nella dichiarazione
-			use org.cc.Class7 ("ddd" , "ssdfsd" , ""),org.cc.Class7;
+			use org.cc.Class7("(1,*)" , "relazione di uso" , "(1,1)"),org.cc.Class7;
 			
 			//ERRORE classe inesistente
 			use org.cc.Class117;

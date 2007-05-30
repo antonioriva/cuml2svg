@@ -1,8 +1,11 @@
-import doc/sorgenti_test/test.u2sm;
+import test.u2sm;
 
 [
-	@layout *x1
-	//@align left
-	[class org.cc.*]
-		
+	[
+		@layout *x1
+		@hide-args
+		[class org.cc.*]
+	]
+	
+	
 ]
