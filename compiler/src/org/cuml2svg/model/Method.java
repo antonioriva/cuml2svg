@@ -138,4 +138,9 @@ public class Method {
 		this.hideArgs = hideArgs;
 	}
 
+	public void setType(String image) {
+		// TODO manca la gestione del tipo nei metodi
+		
+	}
+
 }

@@ -27,6 +27,8 @@ public class Compiler {
 		h+="\n --disable-error, -de\tdisable error messages";
 		h+="\n --disable-notice, -dn\tdisable notice mesages";
 		h+="\n ";
+		h+="\n --check, -c\tonly check syntax";
+		h+="\n ";
 		h+="\n --input, -i\t\tinput layout file path";
 		h+="\n --output, -o\t\toutput svg file path";
 
@@ -43,6 +45,7 @@ public class Compiler {
         boolean warningFlag= true;
         boolean noticeFlag= true;
         boolean errorFlag= true;
+    	boolean check=false,checkLayout=false,checkModel=false;
 		String arg;
         
 		for (int i = 0; i < args.length; i++) {
@@ -60,6 +63,9 @@ public class Compiler {
 			}
 			if((arg.compareTo("--disable-notice")==0)||(arg.compareTo("-dn")==0)){
 				noticeFlag=false;
+			}
+			if((arg.compareTo("--check")==0)||(arg.compareTo("-c")==0)){
+				check=true;
 			}
 
 			if(arg.indexOf("--input")==0){
@@ -104,9 +110,20 @@ public class Compiler {
 				output=args[i];
 			}
 		}
-		if(output.length()==0){
-			System.err.println("FATAL_ERROR: missing output file");
-			System.exit(1);
+		if(!check){
+			if(output.length()==0){
+				System.err.println("FATAL_ERROR: missing output file");
+				System.exit(1);
+			}
+		}else{
+			if(output.endsWith("u2sl")){
+				checkModel=false;
+				checkLayout=true;
+			}else{
+				checkLayout=false;
+				checkModel=true;
+			}
+			
 		}
 		Calendar cal = new GregorianCalendar();
 		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+":"
@@ -142,6 +159,6 @@ public class Compiler {
 		}
 		System.out.println("\n--------------------------------------------------\n");
 		
-		new cuml2svg(input,output,warningFlag, noticeFlag, errorFlag);
+		new cuml2svg(input,output,warningFlag, noticeFlag, errorFlag,checkModel,checkLayout);
 	}
 }
