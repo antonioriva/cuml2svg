@@ -7,6 +7,9 @@ package org.cuml2svg.eclipse.compiler;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 import org.cuml2svg.eclipse.ui.Activator;
@@ -14,8 +17,13 @@ import org.cuml2svg.eclipse.ui.view.ConsoleView;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.framework.internal.core.ConsoleMsg;
 import org.eclipse.swt.SWT;
@@ -35,23 +43,23 @@ import org.eclipse.ui.texteditor.TextEditorAction;
  * Class that defines the action of compiling the current C Sharp file
  */
 
-public class cUml2SvgCompilerAction extends TextEditorAction {
+public class LayoutCompilerAction extends TextEditorAction {
 
 
 	/**
 	 * Constructs and updates the action.
 	 */
-	private cUml2SvgCompilerAction() {
+	private LayoutCompilerAction() {
 		super(ResourceBundle.getBundle("org.cuml2svg.eclipse.ResourceMessage"),"CompilerAction.", null); //$NON-NLS-1$
 		update();
 	}
 
-	  private static class cUml2SvgCompilerActionHolder{ 
-	    private final static cUml2SvgCompilerAction instance = new cUml2SvgCompilerAction();
+	  private static class LayoutCompilerActionHolder{ 
+	    private final static LayoutCompilerAction instance = new LayoutCompilerAction();
 	  }
 	 
-	  public static cUml2SvgCompilerAction getInstance(){
-	    return cUml2SvgCompilerActionHolder.instance;
+	  public static LayoutCompilerAction getInstance(){
+	    return LayoutCompilerActionHolder.instance;
 	  }
 
 	/**
@@ -66,24 +74,23 @@ public class cUml2SvgCompilerAction extends TextEditorAction {
 			// should throw an exception
 			return;
 		}
-		System.out.println("compiling: "+fileToCompile.getName());
 		Runtime r = Runtime.getRuntime();
 
 		try {
 
-			String command = buildCommand(fileToCompile);
+			String[] command = buildCommand(fileToCompile);
 			
 			String filePath = fileToCompile.getLocation().toOSString();
 			String fileFolderPath =	filePath.substring(0, filePath.length() - fileToCompile.getName().length());			
 
 			// runs the command
-			Process p = r.exec(command.toString(), new String[] {}, new File(fileFolderPath));
+			Process p = r.exec(command);
 
 			// gets the input stream to have the post-compile-time information
-			InputStream stream = p.getInputStream();
+			//InputStream stream = p.getInputStream();
 
 			// and get the string from it
-			String compilerOutput = getStringFromStream(stream);
+			String compilerOutput = getStringFromStream(p);
 
 			// prints out the information
 			printResultInConsole(compilerOutput);
@@ -127,12 +134,41 @@ public class cUml2SvgCompilerAction extends TextEditorAction {
 	 * It uses the persistent properties of the file to know the
 	 * compile-time arguments.
 	 */
-	protected String buildCommand(IFile fileToCompile) {
+	protected String[] buildCommand(IFile fileToCompile) {
 		//StringBuffer command = new StringBuffer(getCSharpCompilerLocation());
 		
-		String command="java -cp /home/antonio/Progetti/cUml2Svg/cuml2svg/bin Compiler -i "+fileToCompile+" -o /home/antonio/Progetti/cUml2Svg/FirstStep.svg";
-		System.out.println(command);
-		return command.toString();
+		File f= new File("./");
+		System.out.println(f.getAbsolutePath());
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IWorkspaceRoot root = workspace.getRoot();
+		IPath location = root.getLocation();
+		URL platformInstalledURL = Platform.getInstallLocation().getURL();
+		
+		ArrayList<String> cmd= new ArrayList<String>();
+		
+		cmd.add("java");
+		cmd.add("-cp");
+		 
+		cmd.add(platformInstalledURL.getPath()+"plugins/cuml2svg/lib/commons-collections-3.2.jar:" +
+				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/commons-lang-2.3.jar:" +
+				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/jakarta-oro-2.0.8.jar:" +
+				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/velocity-1.5.jar:" +
+				platformInstalledURL.getPath()+"plugins/cuml2svg/cUml2Svg.jar" );
+		cmd.add("org.cuml2svg.compiler.Compiler");
+		
+//		cmd.add("-jar");
+//		cmd.add("/opt/development/eclipse/plugins/cUml2Svg.jar");
+		cmd.add("-i");
+		cmd.add(location+fileToCompile.getFullPath().toOSString());
+		cmd.add("-o");
+		cmd.add("/home/antonio/FirstStep.svg");
+		
+		for (Iterator iter = cmd.iterator(); iter.hasNext();) {
+			System.out.print(iter.next()+" ");
+		}
+		System.out.println("");
+		
+		return cmd.toArray(new String[cmd.size()]);
 	}
 	
 
@@ -159,16 +195,22 @@ public class cUml2SvgCompilerAction extends TextEditorAction {
 	/**
 	 * Creates a string buffer from the given input stream
 	 */
-	protected String getStringFromStream(InputStream stream) throws IOException {
+	protected String getStringFromStream(Process p) throws IOException {
+		InputStream out=p.getInputStream();
+		InputStream err= p.getErrorStream() ;
+			
+		
 		StringBuffer buffer = new StringBuffer();
 		byte[] b = new byte[100];
-		int finished = 0;
-		while (finished != -1) {
-			finished = stream.read(b);
-			if (finished != -1) {
-				String current = new String(b, 0, finished);
+		int finishedOut = 0;
+		
+		while (finishedOut != -1 ) {
+			finishedOut = out.read(b);
+			if (finishedOut != -1) {
+				String current = new String(b, 0, finishedOut);
 				buffer.append(current);
 			}
+			
 		}
 		return buffer.toString();
 	}
@@ -180,8 +222,8 @@ public class cUml2SvgCompilerAction extends TextEditorAction {
 		// first delete all the previous markers
 		file.deleteMarkers(IMarker.PROBLEM, false, 0);
 
-		//CompilerMessageParser lc_compilerMessageParser = getCompilerMessageParser();
-		//lc_compilerMessageParser.parseCompilerMessage(file, output);
+		CompilerMessageParser lc_compilerMessageParser = new MessageParser();
+		lc_compilerMessageParser.parseCompilerMessage(file, output);
 
 	}
 

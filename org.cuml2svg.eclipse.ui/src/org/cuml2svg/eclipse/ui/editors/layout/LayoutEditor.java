@@ -1,7 +1,7 @@
 package org.cuml2svg.eclipse.ui.editors.layout;
 
 
-import org.cuml2svg.eclipse.compiler.cUml2SvgCompilerAction;
+import org.cuml2svg.eclipse.compiler.LayoutCompilerAction;
 import org.cuml2svg.eclipse.ui.editors.ColorManager;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.IAction;
@@ -28,7 +28,7 @@ import org.eclipse.ui.texteditor.TextEditorAction;
 	    	super.doSave(monitor);
 	    
 	    	System.out.println("Starting compilation");
-	    	TextEditorAction a = cUml2SvgCompilerAction.getInstance();
+	    	TextEditorAction a = LayoutCompilerAction.getInstance();
 	    	a.setEditor(this);
     		if (a != null){
     			a.run();
