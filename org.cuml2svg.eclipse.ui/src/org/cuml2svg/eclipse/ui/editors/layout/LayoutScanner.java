@@ -20,8 +20,8 @@ import org.eclipse.swt.graphics.RGB;
 public class LayoutScanner extends RuleBasedScanner {
 	
 	//TODO controllare tutte le keyword
-	private static String[] keywordslayout= {"@layout"};
-	private static String[] keywords= { "class","import"};
+	private static String[] keywordslayout= {"@layout","@hide-args","@collapse","@margin"};
+	private static String[] keywords= { "class","import","interface"};
 	
 	public LayoutScanner(ColorManager manager) {
 //		IToken procInstr =
