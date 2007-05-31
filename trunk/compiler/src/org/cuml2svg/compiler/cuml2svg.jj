@@ -357,15 +357,13 @@ TOKEN:{
 |	<EQUAL:"=">
 }
 
-TOKEN:{
-	<STYLE: "@style">
-|	<POSITION: "@position">
-|	<GROUP: "@group">
-|	<BACKGROUND_COLOR: "@backgroud-color">
-|	<COLOR: "@color">
-
-
-}
+//TOKEN:{
+//	<STYLE: "@style">
+//|	<POSITION: "@position">
+//|	<GROUP: "@group">
+//|	<BACKGROUND_COLOR: "@backgroud-color">
+//|	<COLOR: "@color">
+//}
 
 TOKEN:{
   	<NUMBER:  ("+" | "-")? (["0" - "9"])+ ("." (["0" - "9"] )+)?>

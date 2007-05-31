@@ -116,15 +116,15 @@ public class Compiler {
 				System.exit(1);
 			}
 		}else{
-			if(output.endsWith("u2sl")){
+			if(input.endsWith("u2sl")){
 				checkModel=false;
 				checkLayout=true;
 			}else{
 				checkLayout=false;
 				checkModel=true;
 			}
-			
 		}
+		
 		Calendar cal = new GregorianCalendar();
 		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+":"
 				+cal.get(Calendar.MINUTE)+":"
