@@ -160,8 +160,9 @@ public class LayoutCompilerAction extends TextEditorAction {
 //		cmd.add("/opt/development/eclipse/plugins/cUml2Svg.jar");
 		cmd.add("-i");
 		cmd.add(location+fileToCompile.getFullPath().toOSString());
-		cmd.add("-o");
-		cmd.add("/home/antonio/FirstStep.svg");
+		cmd.add("-c");
+		
+		//cmd.add("/home/antonio/FirstStep.svg");
 		
 		for (Iterator iter = cmd.iterator(); iter.hasNext();) {
 			System.out.print(iter.next()+" ");

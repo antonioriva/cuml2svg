@@ -11,6 +11,6 @@ public class WordDetector implements IWordDetector {
 
 
 	public boolean isWordPart(char c) {
-		return Character.isJavaIdentifierPart(c);
+		return (Character.isJavaIdentifierPart(c)||c==("-".toCharArray()[0]));
 	}
 }
