@@ -222,7 +222,7 @@ public class ModelCompilerAction extends TextEditorAction {
 		// first delete all the previous markers
 		file.deleteMarkers(IMarker.PROBLEM, false, 0);
 
-		CompilerMessageParser lc_compilerMessageParser = new MessageParser();
+		CompilerMessageParser lc_compilerMessageParser = new ModelMessageParser();
 		lc_compilerMessageParser.parseCompilerMessage(file, output);
 
 	}

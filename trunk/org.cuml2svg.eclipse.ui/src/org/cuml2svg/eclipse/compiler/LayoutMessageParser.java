@@ -20,7 +20,7 @@ import org.eclipse.ui.part.FileEditorInput;
  * @author apelletier
  *
  */
-public class MessageParser extends AbstractCompilerMessageParser implements CompilerMessageParser {
+public class LayoutMessageParser extends AbstractCompilerMessageParser implements CompilerMessageParser {
 
     /**
      * @param in_file
@@ -38,8 +38,10 @@ public class MessageParser extends AbstractCompilerMessageParser implements Comp
 			fileName=fileName.substring(0,fileName.indexOf(";"));
 			fileName=fileName.trim();
 			fileName=fileName.substring(1,fileName.length()-1);
+			
 						
 		}catch (Exception e1) {
+			fileName="";
 		}
 		
 		
@@ -53,8 +55,9 @@ public class MessageParser extends AbstractCompilerMessageParser implements Comp
 			l=1;
 		}
 		
-		
-        setMarker(in_file, msg, l);
+		if(fileName.endsWith("u2sl")){
+			setMarker(in_file, msg, l);
+		}
         }
     }
     
