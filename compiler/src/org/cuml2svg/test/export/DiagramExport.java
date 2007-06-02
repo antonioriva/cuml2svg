@@ -39,7 +39,7 @@ public class DiagramExport {
 		group.addObject(secondClass);
 		diagram.addObject(group);
 		
-		SVGExporter exporter = new SVGExporter(diagram,"output/FirstStep.svg");
+		SVGExporter exporter = new SVGExporter(diagram,"output/FirstStep.svg","");
 		exporter.export();
 	}
 }

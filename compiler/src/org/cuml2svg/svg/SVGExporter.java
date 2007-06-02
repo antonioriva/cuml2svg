@@ -1,6 +1,7 @@
 package org.cuml2svg.svg;
 
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -24,6 +25,8 @@ public class SVGExporter {
 	 */
 	private String fileName;
 
+	private String templatePath;
+
 	/**
 	 * Create a new Exporter object
 	 * 
@@ -32,9 +35,18 @@ public class SVGExporter {
 	 * @param fileName
 	 *            the name of the exported file
 	 */
-	public SVGExporter(Diagram diagram, String fileName) {
+	public SVGExporter(Diagram diagram, String fileName, String templatePath) {
 		this.diagram = diagram;
 		this.fileName = fileName;
+		this.templatePath = templatePath;
+		setTemplatePath(templatePath);
+	}
+	
+	/**
+	 * @param path the new path for templates
+	 */
+	public void setTemplatePath(String path) {
+		GraphicsManager.setTemplatePath(path);
 	}
 
 	/**
@@ -43,8 +55,11 @@ public class SVGExporter {
 	 */
 	public boolean export() {
 		try {
+			System.out.println("INFO: Starting export");
 			//Initialize the Velocity engine
-			Velocity.init();
+			Properties p = new Properties();
+			p.put("file.resource.loader.path", GraphicsManager.getTemplatePath());
+			Velocity.init(p);
 			
 			//Create a new VelocityContext
 			VelocityContext context = new VelocityContext();
@@ -58,7 +73,7 @@ public class SVGExporter {
 			//Flush buffer and close file
 			writer.flush();
 			writer.close();
-			
+			System.out.println("INFO: Export completed");
 		} catch (Exception e) {
 			System.out.println(e.getLocalizedMessage());
 		}
