@@ -22,6 +22,8 @@ import org.cuml2svg.model.Diagram.OutputType;
 public class GraphicsManager {
 	private static GraphicsManager instance;
 
+	private static String templatePath = ".";
+
 	private ArrayList<Rectangle> rectangles;
 
 	private ArrayList<Object> objects;
@@ -224,5 +226,13 @@ public class GraphicsManager {
 				object.setId(this.rectangles.size()-1);
 			}
 		}
+	}
+	
+	public static void setTemplatePath(String path) {
+		templatePath = path;
+	}
+
+	public static String getTemplatePath() {
+		return templatePath;
 	}
 }
