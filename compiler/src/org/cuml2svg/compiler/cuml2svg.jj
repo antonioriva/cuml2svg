@@ -38,7 +38,7 @@ public class cuml2svg {
 	
 	static cuml2svg parser;
 	
-	public cuml2svg(String input, String output,boolean warningFlag,boolean noticeFlag,boolean errorFlag,boolean checkModel,boolean checkLayout){
+	public cuml2svg(String input, String output,String templatePath,boolean warningFlag,boolean noticeFlag,boolean errorFlag,boolean checkModel,boolean checkLayout){
 		this.warningFlag=warningFlag;
 		this.noticeFlag=noticeFlag;
 		this.errorFlag=errorFlag;
@@ -55,7 +55,7 @@ public class cuml2svg {
     		 }   
 		
 			if(!(checkModel||checkLayout)){
-				 SVGExporter exporter = new SVGExporter(diagram,output);
+				 SVGExporter exporter = new SVGExporter(diagram,output,templatePath);
 				 exporter.export();
 			 }
         
@@ -559,11 +559,13 @@ void margin_preference(Group currentGroup):{Token t;}{
 
 
 
-///model -> class_definition+ package_definition+
+///model -> (class_definition+ | package_definition+) /
 void model() :  {}
 {
 	(class_definition())+ 
 |	(package_definition())+
+
+<EOF>
 }
 
 
@@ -626,7 +628,7 @@ void relations(Class currentDefinition):{}{
 
 
 
-///relation -> COMMENT? RELATION_TYPE (RELATION_CLASS_NAME|RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality? (RELATION_COMMA (RELATION_CLASS_NAME|RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality?)* RELATION_END
+///relation -> COMMENT? RELATION_TYPE (RELATION_CLASS_NAME | RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality? (RELATION_COMMA (RELATION_CLASS_NAME|RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality?)* RELATION_END
 void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation rel;}{
 	{
 	}
