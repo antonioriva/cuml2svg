@@ -223,7 +223,7 @@ public class LayoutCompilerAction extends TextEditorAction {
 		// first delete all the previous markers
 		file.deleteMarkers(IMarker.PROBLEM, false, 0);
 
-		CompilerMessageParser lc_compilerMessageParser = new MessageParser();
+		CompilerMessageParser lc_compilerMessageParser = new LayoutMessageParser();
 		lc_compilerMessageParser.parseCompilerMessage(file, output);
 
 	}
