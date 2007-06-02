@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 public class Compiler {
 
 	private static boolean pathGui;
+	private static String templatePath="";
 	/**
 	 * Print a help text
 	 *
@@ -31,6 +32,8 @@ public class Compiler {
 		h+="\n ";
 		h+="\n --input, -i\t\tinput layout file path";
 		h+="\n --output, -o\t\toutput svg file path";
+		h+="\n -t path\tpath to the template folder";
+		
 
 		System.out.println(h);
 	}
@@ -93,6 +96,15 @@ public class Compiler {
 					System.err.println("FATAL_ERROR: input file doesn't exist");
 					System.exit(1);
 				}
+			}
+			
+			if(arg.compareTo("-t")==0){
+				i++;
+				if(i>=args.length){
+					System.err.println("FATAL_ERROR: missing template path");
+					System.exit(1);
+				}
+				templatePath=args[i];
 			}
 			if(arg.indexOf("--output")==0){
 				try{
@@ -159,6 +171,6 @@ public class Compiler {
 		}
 		System.out.println("\n--------------------------------------------------\n");
 		
-		new cuml2svg(input,output,warningFlag, noticeFlag, errorFlag,checkModel,checkLayout);
+		new cuml2svg(input,output,templatePath,warningFlag, noticeFlag, errorFlag,checkModel,checkLayout);
 	}
 }
