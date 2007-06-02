@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
-import org.cuml2svg.eclipse.ui.Activator;
 import org.cuml2svg.eclipse.ui.view.ConsoleView;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
@@ -22,12 +21,7 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.osgi.framework.internal.core.ConsoleMsg;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
@@ -143,12 +137,12 @@ public class LayoutCompilerAction extends TextEditorAction {
 		IWorkspaceRoot root = workspace.getRoot();
 		IPath location = root.getLocation();
 		URL platformInstalledURL = Platform.getInstallLocation().getURL();
-		
+
 		ArrayList<String> cmd= new ArrayList<String>();
 		
 		cmd.add("java");
 		cmd.add("-cp");
-		 
+		
 		cmd.add(platformInstalledURL.getPath()+"plugins/cuml2svg/lib/commons-collections-3.2.jar:" +
 				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/commons-lang-2.3.jar:" +
 				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/jakarta-oro-2.0.8.jar:" +
@@ -160,7 +154,11 @@ public class LayoutCompilerAction extends TextEditorAction {
 //		cmd.add("/opt/development/eclipse/plugins/cUml2Svg.jar");
 		cmd.add("-i");
 		cmd.add(location+fileToCompile.getFullPath().toOSString());
-		cmd.add("-c");
+		cmd.add("-o");
+		cmd.add(location+fileToCompile.getFullPath().toOSString()+".svg");
+		cmd.add("-t");
+		cmd.add(platformInstalledURL.getPath()+"plugins/cuml2svg");
+//		cmd.add("-c");
 		
 		//cmd.add("/home/antonio/FirstStep.svg");
 		
