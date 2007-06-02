@@ -6,6 +6,7 @@ options {
 PARSER_BEGIN(cuml2svg)
 package org.cuml2svg.compiler;
 
+import java.io.PrintStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class cuml2svg {
     		 	parser.s();
     		 }   
 		
-			if(checkModel||checkLayout){
+			if(!(checkModel||checkLayout)){
 				 SVGExporter exporter = new SVGExporter(diagram,output);
 				 exporter.export();
 			 }
@@ -159,13 +160,14 @@ public class cuml2svg {
   	}
   
 	public static Class getClassByClassName(String className){
-	  		for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
+			for (Iterator iter = declaredClassList.iterator(); iter.hasNext();) {
 	          Class element =  (Class)iter.next();
 	          if(element.getClassName().compareTo(className)==0){
+	          		
 	        	  return element;
 	          }
-	          
 	       }
+	       
 		return null;
 	}
 	
@@ -375,8 +377,8 @@ TOKEN:{
 
 
 
-////////////////////////////////////////////////////////////////
-//S → diagram DIAGRAM_TYPE diagram_name { DIAGRAM_CONTENT }
+
+///s -> layout /
 void s() :  {Token t;}{
 //	model()
 	{
@@ -388,6 +390,7 @@ void s() :  {Token t;}{
 	
 }
 
+///layout -> import_definition+	main_group
 void layout():{}{
 	
 	(import_definition())+	
@@ -395,6 +398,7 @@ void layout():{}{
 	main_group()
 }
 
+///import_definition -> IMPORT FILE_NAME ;
 void import_definition():{
 	Token n;
 	String oldFileName;
@@ -406,13 +410,13 @@ void import_definition():{
 			printNotice("importing model file \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
 			File f = new File((new File(currentFileName).getParent())+"/"+n.image.trim());
 			if(f.isFile()){
-				if(!checkLayout){
+				
 					cuml2svg modelParser = new cuml2svg(new FileInputStream(f));
 					oldFileName=currentFileName;
 					currentFileName=n.image.trim();
 		    		modelParser.model();
 		    		currentFileName=oldFileName;
-	    		}
+	    		
     		}else{
     			printError("file not found \""+n.image.trim()+"\"",n.beginLine,n.beginColumn);
     		}
@@ -426,7 +430,7 @@ void import_definition():{
 }
 
 
-
+///main_group -> groups
 void main_group():{Group mainGroup;}{
 	{
 		mainGroup=new Group();
@@ -437,17 +441,24 @@ void main_group():{Group mainGroup;}{
 	groups(mainGroup)
 }
 
+///groups -> group_preference* (groups|group_definition)+
 void groups(Group parentGroup):{Group currentGroup;}{
 	{	
 		currentGroup=new Group();
 		parentGroup.addObject(currentGroup);
 	}
 	"[" 
-		((group_preference(currentGroup))* 
-		( groups(currentGroup) | group_definition(currentGroup))+) 
+		(
+		(group_preference(currentGroup))* 
+		( groups(currentGroup) | group_definition(currentGroup))+
+		) 
 	"]"
 }
 
+///group_preference -> layout_preference
+///group_preference -> margin_preference
+///group_preference -> collapse_preference
+///group_preference -> args_preference
 void group_preference(Group currentGroup):{}{
 	
 	layout_preference(currentGroup)
@@ -458,6 +469,7 @@ void group_preference(Group currentGroup):{}{
 
 }
 
+///group_definition -> [ (CLASS_TYPE | CLASS_NAME_WITH_PACKAGE | CLASS_NAME | CLASS_RANGE_WITH_PACKAGE) ]
 void group_definition(Group currentGroup):{Token name;}{
 	
 	"[" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>|name=<CLASS_RANGE_WITH_PACKAGE>) "]"
@@ -499,12 +511,14 @@ void group_definition(Group currentGroup):{Token name;}{
 
 }
 
+///layout_preference -> LAYOUT LAYOUT_CARD
 void layout_preference(Group currentGroup):{Token t;}{
 	
-	<LAYOUT> ( t=<LAYOUT_CARD> | t=<OVERLAPPED> )
+	<LAYOUT> t=<LAYOUT_CARD> 
 	{currentGroup.setProperty("layout",t.image);}
 }
 
+///collapse_preference -> COLLAPSE COLLAPSE_TYPE
 void collapse_preference(Group currentGroup):{Token t;}{
 	
 	<COLLAPSE> t=<COLLAPSE_TYPE> 
@@ -522,6 +536,7 @@ void collapse_preference(Group currentGroup):{Token t;}{
 	}
 }
 
+///args_preference HIDE_ARGS
 void args_preference(Group currentGroup):{Token t;}{
 	
 	<HIDE_ARGS>
@@ -530,6 +545,7 @@ void args_preference(Group currentGroup):{Token t;}{
 	}
 }
 
+///margin_preference -> MARGIN MARGIN_SIZE_TOP MARGIN_SIZE_RIGHT MARGIN_SIZE_BOTTOM MARGIN_SIZE_LEFT
 void margin_preference(Group currentGroup):{Token t;}{
 	<MARGIN> t=<MARGIN_SIZE_TOP>
 	{currentGroup.setProperty("margin-top",t.image.replaceAll("px","").trim());}
@@ -543,11 +559,7 @@ void margin_preference(Group currentGroup):{Token t;}{
 
 
 
-////////////////////////////////////////////////////////////////
-//DIAGRAM_CONTENT → PACKAGE_DEFINITIONS
-//DIAGRAM_CONTENT → CLASS_DEFINITIONS
-//enable to skip package definition for 1 package diagram
-//force the diagram to have at leas one package or one classes
+///model -> class_definition+ package_definition+
 void model() :  {}
 {
 	(class_definition())+ 
@@ -555,10 +567,7 @@ void model() :  {}
 }
 
 
-
-
-///////////////////////////////////////////////////////////////////
-//PACKAGE_DEFINITION → package package_name { CLASS_DEFINITIONS }
+///package_definition -> PACKAGE PACKAGE_NAME { class_definition+ }
 void package_definition():{Token packageName;}{
 	
 	<PACKAGE> 
@@ -572,8 +581,7 @@ void package_definition():{Token packageName;}{
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
-//CLASS_DEFINITION → OPTIONAL_COMMENT VISIBILITY CLASS_TYPE class_name { RELATIONS ATTRIBUTES METHODS }
+///class_definition -> COMMENT? VISIBILITY? CLASS_TYPE CLASS_NAME { relations? attributes? methods? }
 void class_definition():{
 	Token className,type; Token vis=null;
 	Class currentDefinition;
@@ -609,8 +617,7 @@ void class_definition():{
 
 
 
-/////////////////////////////////////////////////
-//RELATIONS → relations { RELATION_DEFINITIONS }
+///relations -> RELATIONS { relation }
 void relations(Class currentDefinition):{}{
 	<RELATIONS> "{" 
 	(relation(currentDefinition))+ "}"
@@ -619,8 +626,7 @@ void relations(Class currentDefinition):{}{
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//RELATION_DEFINITION → OPTIONAL_COMMENT RELATION_TYPE class_name RELATION_CARDINALITY CLASS_LIST_WITH_CARDINALITY
+///relation -> COMMENT? RELATION_TYPE (RELATION_CLASS_NAME|RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality? (RELATION_COMMA (RELATION_CLASS_NAME|RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality?)* RELATION_END
 void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation rel;}{
 	{
 	}
@@ -659,8 +665,7 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 }
 
 
-////////////////////////////////////////////////////////////////
-//RELATION_CARDINALITY → (CARDINALITY, CARDINALITY, CARDINALITY)
+///relation_cardinality -> CARDINALITY_START CARDINALITY RELATION_CARDINALITY_COMMA 						 				   CARDINALITY RELATION_CARDINALITY_COMMA 										   CARDINALITY CARDINALITY_STOP
 String[] relation_cardinality():{Token card;}{
 	{String[] cards= new String[3];}
 	<CARDINALITY_START>
@@ -673,9 +678,7 @@ String[] relation_cardinality():{Token card;}{
 }
 
 
-////////////////////////////////////
-//ATTRIBUTES → ATTRIBUTE_DEFINITIONS
-//ATTRIBUTES → ε
+///attributes -> ATTRIBUTES { attribute+ }
 void attributes(Class currentDefinition):{
 	ArrayList<Attribute> l;
 }{
@@ -685,8 +688,7 @@ void attributes(Class currentDefinition):{
 
 
 
-////////////////////////////////////////////////////////////////////////////
-//ATTRIBUTE → COMMENT VISIBILITY ATTRIBUTE_TYPE attribute_name DEFAULT_VALUE
+///attribute -> COMMENT? VISIBILITY? (typed_attribute_name|attribute_name) default_value?
 void attribute(Class currentDefinition, ArrayList<Attribute> l):{
 	Token vis; AttributeRef a;String s;
 }{
@@ -708,12 +710,14 @@ void attribute(Class currentDefinition, ArrayList<Attribute> l):{
 	
 }
 
+///attribute_name -> VARIABLE
 AttributeRef attribute_name():{Token t;AttributeRef a;}{
 	t=<VARIABLE>
 	{a = new AttributeRef(new Attribute(t.image),t.beginLine,t.beginColumn,this.currentFileName);
     	return a;}
 }
 
+///typed_attribute_name -> VARIABLE VARIABLE
 AttributeRef typed_attribute_name():{Token t,t1;AttributeRef a;}{
 	t=<VARIABLE> t1=<VARIABLE>{
 	a = new AttributeRef(new Attribute(t.image),t.beginLine,t.beginColumn,this.currentFileName);
@@ -724,24 +728,19 @@ AttributeRef typed_attribute_name():{Token t,t1;AttributeRef a;}{
 
 
 
-/////////////////////////
-//DEFAULT_VALUE → ε
-//DEFAULT_VALUE → EQUAL_TO
+///default_value -> EQUAL equal_to
 String default_value():{String value;}{	
 	<EQUAL> value=equal_to()
 	{return value;}
 }
 
-/////////////////////////
-//EQUAL_TO →  value
+///equal_to -> (NUMBER|STRING)
 String equal_to():{Token t;}{
 	(t=<NUMBER> | t=<STRING>)
 	{return t.image;}
 }
 
-//////////////////////////
-//METHODS → METHOD_DEFINITION
-//METHODS → ε
+///methods -> METHOD { method }
 void methods(Class currentDefinition):{}{
 	<METHOD> "{" (method(currentDefinition))+ "}" 
 }
@@ -749,9 +748,7 @@ void methods(Class currentDefinition):{}{
 
 
 
-/////////////////////////////////////////////////////////////////////
-//METHOD → OPTIONAL_COMMENT VISIBILITY METHOD_TYPE method_name { METHOD_ARGS }
-//METHOD_TYPE → TYPE
+///method -> COMMENT? VISIBILITY? (typed_method|method_name) "(" (method_arg (, method_arg)*)? ")" ;
 void method(Class currentDefinition):{
 	Token vis;MethodRef m; Attribute a;
 }{
@@ -776,6 +773,7 @@ void method(Class currentDefinition):{
 	}
 }
 
+///typed_method -> VARIABLE VARIABLE
 MethodRef typed_method():{Token name,t;MethodRef m;}{
 	t=<VARIABLE> name=<VARIABLE> 
 	{
@@ -786,6 +784,7 @@ MethodRef typed_method():{Token name,t;MethodRef m;}{
 	}
 }
 
+///method_name -> VARIABLE
 MethodRef method_name():{Token name;MethodRef m;}{
 	name=<VARIABLE> 
 	{	m= new MethodRef(new Method(name.image),name.beginLine,name.beginColumn,this.currentFileName);
@@ -793,15 +792,15 @@ MethodRef method_name():{Token name;MethodRef m;}{
 	}
 }
 
-//////////////////////////////////////////////////////
-//METHOD_ARG → COMMENT ARG_TYPE arg_name DEFAULT_VALUE
-//ARG_TYPE → TYPE
+///method_arg -> COMMENT? (typed_argument|argument) default_value?
 Attribute method_arg():{Attribute a;String value;}{
 	(<COMMENT>)? 
 	(a=typed_argument() | a=argument())
 	(value=default_value(){a.setDefaultValue(value);})?
 	{return a;}
 }
+
+///argument -> VARIABLE
 Attribute argument():{Token t;}{
 	t=<VARIABLE>
 	{
@@ -809,6 +808,7 @@ Attribute argument():{Token t;}{
 	}
 }
 
+///typed_argument -> VARIABLE VARIABLE
 Attribute typed_argument():{Token t; Token a;}{
 	t=<VARIABLE> a=<VARIABLE>
 	{
@@ -821,16 +821,13 @@ Attribute typed_argument():{Token t; Token a;}{
 
 
 
-///////////////////////
-//ATTRIBUTE_TYPE → TYPE
+///attribute_type -> type
 void attribute_type():{}{
 	type()
 }
 
 
-///////////////
-//TYPE → string
-//TYPE → ε 
+///type -> VARIABLE
 void type ():{}
 {
 	<VARIABLE> 
