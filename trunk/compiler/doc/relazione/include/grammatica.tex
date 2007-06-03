@@ -1,1 +1,105 @@
+\section{Grammatica}
+\begin{itemize}
+\item s   -\textgreater   layout  /
 
+ \item layout   -\textgreater   import{\_}definition+	main{\_}group
+
+ \item import{\_}definition   -\textgreater   IMPORT  FILE{\_}NAME  ;
+
+ \item main{\_}group   -\textgreater   groups
+
+ \item groups   -\textgreater   group{\_}preference*  
+ 
+ (groups \textbar group{\_}definition)+
+
+ \item group{\_}preference   -\textgreater   layout{\_}preference
+
+ \item group{\_}preference   -\textgreater   margin{\_}preference
+
+ \item group{\_}preference   -\textgreater   collapse{\_}preference
+
+ \item group{\_}preference   -\textgreater   args{\_}preference
+
+ \item group{\_}definition   -\textgreater   [  (CLASS{\_}TYPE   
+ 
+ \textbar   CLASS{\_}NAME{\_}WITH{\_}PACKAGE   \textbar   CLASS{\_}NAME   
+ 
+ \textbar   CLASS{\_}RANGE{\_}WITH{\_}PACKAGE)  ]
+
+ \item layout{\_}preference   -\textgreater   LAYOUT  LAYOUT{\_}CARD
+
+ \item collapse{\_}preference   -\textgreater   COLLAPSE  COLLAPSE{\_}TYPE
+
+ \item args{\_}preference  HIDE{\_}ARGS
+
+ \item margin{\_}preference   -\textgreater   MARGIN  MARGIN{\_}SIZE{\_}TOP  
+ 
+ MARGIN{\_}SIZE{\_}RIGHT  MARGIN{\_}SIZE{\_}BOTTOM  MARGIN{\_}SIZE{\_}LEFT
+
+ \item model   -\textgreater   (class{\_}definition+   \textbar   package{\_}definition+)  /
+
+ \item package{\_}definition   -\textgreater   PACKAGE  PACKAGE{\_}NAME  \{  class{\_}definition+  \}
+
+ \item class{\_}definition   -\textgreater   COMMENT?  VISIBILITY?  
+ 
+ CLASS{\_}TYPE  CLASS{\_}NAME  \{  relations?  attributes?  methods?  \}
+
+ \item relations   -\textgreater   RELATIONS  \{  relation  \}
+
+ \item relation   -\textgreater   COMMENT?  RELATION{\_}TYPE  
+ 
+ (RELATION{\_}CLASS{\_}NAME 
+ 
+ \textbar RELATION{\_}CLASS{\_}NAME{\_}WITH{\_}PACKAGE)  relation{\_}cardinality?  
+ 
+ (RELATION{\_}COMMA  (RELATION{\_}CLASS{\_}NAME 
+ 
+ \textbar RELATION{\_}CLASS{\_}NAME{\_}WITH{\_}PACKAGE)  
+ 
+ relation{\_}cardinality?)*  RELATION{\_}END
+
+ \item relation{\_}cardinality   -\textgreater   CARDINALITY{\_}START  CARDINALITY  
+ 
+ RELATION{\_}CARDINALITY{\_}COMMA   CARDINALITY 
+ 
+ RELATION{\_}CARDINALITY{\_}COMMA  CARDINALITY  CARDINALITY{\_}STOP
+
+ \item attributes   -\textgreater   ATTRIBUTES  \{  attribute+  \}
+
+ \item attribute   -\textgreater   COMMENT?  VISIBILITY?  
+ 
+ (typed{\_}attribute{\_}name \textbar attribute{\_}name)  default{\_}value?
+
+ \item attribute{\_}name   -\textgreater   VARIABLE
+
+ \item typed{\_}attribute{\_}name   -\textgreater   VARIABLE  VARIABLE
+
+ \item default{\_}value   -\textgreater   EQUAL  equal{\_}to
+
+ \item equal{\_}to   -\textgreater   (NUMBER \textbar STRING)
+
+ \item methods   -\textgreater   METHOD  \{  method  \}
+
+ \item method   -\textgreater   COMMENT?  VISIBILITY?  
+ 
+ (typed{\_}method \textbar method{\_}name)  
+ 
+ "("  (method{\_}arg  (,  method{\_}arg)*)?  ")"  ;
+
+ \item typed{\_}method   -\textgreater   VARIABLE  VARIABLE
+
+ \item method{\_}name   -\textgreater   VARIABLE
+
+ \item method{\_}arg   -\textgreater   COMMENT?  (typed{\_}argument 
+ 
+ \textbar argument)  default{\_}value?
+
+ \item argument   -\textgreater   VARIABLE
+
+ \item typed{\_}argument   -\textgreater   VARIABLE  VARIABLE
+
+ \item attribute{\_}type   -\textgreater   type
+
+ \item type   -\textgreater   VARIABLE
+
+ \end{itemize}
