@@ -6,6 +6,7 @@
 \usepackage[utf8]{inputenc}
 
 \usepackage{graphicx}
+\usepackage{listings} 
 
 \graphicspath{{img/}}
 
@@ -22,10 +23,27 @@
 \maketitle % Produce effettivamente il titolo a partire dai comandi \title,\author e \date
 
 \tableofcontents % Prepara l'indice generale
-\input{include/bibliography.bib}
+%\input{include/bibliography.bib}
 
 \input{include/introduzione.tex}
+\input{include/linguaggio.tex}
+
+\input{include/schedule.tex}
+
+\input{include/grammatica.tex}
+\input{include/controlli_semantici.tex}
+
+\input{include/implementazione_intro.tex}
+\input{include/implementazione_compiler.tex}
+\input{include/implementazione_generazione_svg.tex}
+\input{include/implementazione_gui_eclipse.tex}
+
+
+\input{include/esempi.tex}
+\input{include/conclusione.tex}
 
 %\input{include/regole_semantiche.tex}
+\bibliographystyle{plain}
+\bibliography{bibliography.bib}
 
 \end{document}
