@@ -54,7 +54,7 @@
     x="${ax}"
     y="${ay}"
     style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
-      $attribute.getAttributeName() #if(!$attribute.getAttributeType().equals("")): $attribute.getAttributeType()#end
+      $attribute.getFullAttributeName()
   </text>
 #end
 #end
@@ -72,11 +72,7 @@
     x="${ax}"
     y="${ay}"
     style="font-size:${fontSize}px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:${fontFamily}">
-      #if($method.getVisibility() == "public")
-      	+$method.getFullMethodName()
-      #elseif($method.getVisibility() == "private")
-        -$method.getFullMethodName()
-      #end
+      $method.getFullMethodName($hideArgs)
   </text>
 #end
 #end

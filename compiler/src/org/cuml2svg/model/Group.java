@@ -84,6 +84,14 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public void addObject(Object object) {
 		object.setHideArgs(this.hideArgs);
+		if(object instanceof Class) {
+			((Class)object).setAttributesCollapsed(attributesCollapsed);
+			((Class)object).setMethodsCollapsed(methodsCollapsed);
+		}
+		if(object instanceof Group) {
+			((Group)object).setAttributesCollapsed(attributesCollapsed);
+			((Group)object).setMethodsCollapsed(methodsCollapsed);
+		}
 		this.objects.add(object);
 		GraphicsManager.getInstance().addObject(object);
 	}
@@ -162,6 +170,7 @@ public class Group extends Groupable implements Object, Renderable {
 		// Add properties to the context
 		context.put("methodsCollapsed", this.methodsCollapsed);
 		context.put("attributesCollapsed", this.attributesCollapsed);
+		context.put("hideArgs", this.hideArgs);
 		for (Object object : objects) {
 			object.render(type, context, writer);
 		}
@@ -366,6 +375,16 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public void setAttributesCollapsed(boolean collapseAttributes) {
 		this.attributesCollapsed = collapseAttributes;
+		for (Object object : this.objects) {
+			if(object instanceof Class) {
+				Class aClass = (Class) object;
+				aClass.setAttributesCollapsed(collapseAttributes);
+			}
+			if(object instanceof Group) {
+				Group group = (Group) object;
+				group.setAttributesCollapsed(collapseAttributes);
+			}
+		}
 	}
 
 	/**
@@ -381,6 +400,16 @@ public class Group extends Groupable implements Object, Renderable {
 	 */
 	public void setMethodsCollapsed(boolean collapseMethods) {
 		this.methodsCollapsed = collapseMethods;
+		for (Object object : this.objects) {
+			if(object instanceof Class) {
+				Class aClass = (Class) object;
+				aClass.setMethodsCollapsed(collapseMethods);
+			}
+			if(object instanceof Group) {
+				Group group = (Group) object;
+				group.setMethodsCollapsed(collapseMethods);
+			}
+		}
 	}
 
 	/*
@@ -474,8 +503,8 @@ public class Group extends Groupable implements Object, Renderable {
 		GraphicsManager.getInstance().addRectangle(this);
 	}
 
-	public void setHideArgs(boolean b) {
-		this.hideArgs = b;
+	public void setHideArgs(boolean hide) {
+		this.hideArgs = hide;
 	}
 
 }

@@ -46,8 +46,10 @@ public class SVGExporter {
 	 * @param path the new path for templates
 	 */
 	public void setTemplatePath(String path) {
-		GraphicsManager.setTemplatePath(path);
-		System.out.println("INFO: new template path "+path);
+		if(!path.equals("")) {
+			GraphicsManager.setTemplatePath(path);
+			System.out.println("INFO: new template path "+path);
+		}
 	}
 
 	/**
