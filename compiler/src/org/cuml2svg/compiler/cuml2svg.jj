@@ -698,7 +698,7 @@ void attribute(Class currentDefinition, ArrayList<Attribute> l):{
 	
 	(vis=<VISIBILITY>)? 
 	(a=typed_attribute_name() | a=attribute_name() )
-	{if(vis!=null){a.setAttributeVisibility(vis.image);}}
+	{if(vis!=null){a.getAttribute().setAttributeVisibility(vis.image);}}
 	
 	(s=default_value(){a.getAttribute().setDefaultValue(s);})? ";"
 	{
