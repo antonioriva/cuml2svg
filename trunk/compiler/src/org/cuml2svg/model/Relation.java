@@ -92,6 +92,7 @@ public class Relation implements Renderable {
 				String path = "M " + point.getX() + "," + point.getY();
 				context.put("points", pointsCopy);
 				context.put("path", path);
+				context.put("relationType", this.relationType);
 				
 				//Handling cardinality text
 				//Start point

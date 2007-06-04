@@ -24,6 +24,11 @@ public class Attribute {
 	 * The attribute type
 	 */
 	private String attributeType;
+	
+	/**
+	 * The attribute visibility
+	 */
+	private String attributeVisibility;
 
 	/**
 	 * Initialize a new attribute object
@@ -34,6 +39,8 @@ public class Attribute {
 	public Attribute(String attributeName) {
 		this.attributeName = attributeName;
 		this.attributeType = "";
+		this.attributeVisibility = "";
+		this.defaultValue = "";
 	}
 
 	/**
@@ -53,6 +60,30 @@ public class Attribute {
 	 */
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
+	}
+	
+	/**
+	 * Get the attribute name
+	 * 
+	 * @return the attributeName
+	 */
+	public String getFullAttributeName() {
+		String name = "";
+		if(this.attributeVisibility.equals("private")){
+			name += "-";
+		}else if(this.attributeVisibility.equals("public")) {
+			name += "+";
+		}else if(this.attributeVisibility.equals("protected")) {
+			name += "#";
+		}
+		name += this.getAttributeName();
+		if(!this.attributeType.equals("")) {
+			name += ":"+this.attributeType;
+		}
+		if(!this.defaultValue.equals("")) {
+			name += "="+this.defaultValue;
+		}
+		return name;
 	}
 
 	/**
@@ -74,12 +105,32 @@ public class Attribute {
 		this.attributeType = attributeType;
 	}
 
+	/**
+	 * @return the defaultValue
+	 */
 	public String getDefaultValue() {
 		return defaultValue;
 	}
 
+	/**
+	 * @param defaultValue the default value to set
+	 */
 	public void setDefaultValue(String defaultValue) {
 		this.defaultValue = defaultValue;
+	}
+
+	/**
+	 * @return the attributeVisibility
+	 */
+	public String getAttributeVisibility() {
+		return attributeVisibility;
+	}
+
+	/**
+	 * @param attributeVisibility the attributeVisibility to set
+	 */
+	public void setAttributeVisibility(String attributeVisibility) {
+		this.attributeVisibility = attributeVisibility;
 	}
 
 }

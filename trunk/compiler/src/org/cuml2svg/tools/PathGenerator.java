@@ -49,7 +49,7 @@ public class PathGenerator {
 	public static final int LEFT_TOP=7;
 	
 
-	private static final boolean showGraphic=true;
+	private static final boolean showGraphic=false;
 	
 	ArrayList<Point> currentPath = new ArrayList<Point>();
 	ArrayList<ArrayList<Point>> storedPaths = new ArrayList<ArrayList<Point>>();

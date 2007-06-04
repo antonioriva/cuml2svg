@@ -105,6 +105,7 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 			this.methodsCollapsed = (Boolean) context.get("methodsCollapsed");
 			this.attributesCollapsed = (Boolean) context
 					.get("attributesCollapsed");
+			this.hideArgs = (Boolean) context.get("hideArgs");
 			Template template = Velocity.getTemplate(SVG_CLASS_TEMPLATE);
 			context.put("x", 0);
 			context.put("y", 0);
@@ -236,16 +237,16 @@ public class Class extends Groupable implements Object, Comparable<Class> {
 		if (!this.methodsCollapsed) {
 			for (Iterator i = methods.iterator(); i.hasNext();) {
 				Method method = (Method) i.next();
-				if (method.getFullMethodName().length() > maxLength) {
-					maxLength = method.getFullMethodName().length();
+				if (method.getFullMethodName(this.hideArgs).length() > maxLength) {
+					maxLength = method.getFullMethodName(this.hideArgs).length();
 				}
 			}
 		}
 		if (!this.attributesCollapsed) {
 			for (Iterator i = attributes.iterator(); i.hasNext();) {
 				Attribute attribute = (Attribute) i.next();
-				if (attribute.getAttributeName().length() > maxLength) {
-					maxLength = attribute.getAttributeName().length();
+				if (attribute.getFullAttributeName().length() > maxLength) {
+					maxLength = attribute.getFullAttributeName().length();
 				}
 			}
 		}
