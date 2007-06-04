@@ -692,12 +692,13 @@ void attributes(Class currentDefinition):{
 
 ///attribute -> COMMENT? VISIBILITY? (typed_attribute_name|attribute_name) default_value?
 void attribute(Class currentDefinition, ArrayList<Attribute> l):{
-	Token vis; AttributeRef a;String s;
+	Token vis=null; AttributeRef a;String s;
 }{
 	(<COMMENT>)? 
 	
 	(vis=<VISIBILITY>)? 
 	(a=typed_attribute_name() | a=attribute_name() )
+	{if(vis!=null){a.setAttributeVisibility(vis.image);}}
 	
 	(s=default_value(){a.getAttribute().setDefaultValue(s);})? ";"
 	{
@@ -722,7 +723,7 @@ AttributeRef attribute_name():{Token t;AttributeRef a;}{
 ///typed_attribute_name -> VARIABLE VARIABLE
 AttributeRef typed_attribute_name():{Token t,t1;AttributeRef a;}{
 	t=<VARIABLE> t1=<VARIABLE>{
-	a = new AttributeRef(new Attribute(t.image),t.beginLine,t.beginColumn,this.currentFileName);
+	a = new AttributeRef(new Attribute(t1.image),t.beginLine,t.beginColumn,this.currentFileName);
     a.getAttribute().setAttributeType(t.image);
 	return a;
 	}
