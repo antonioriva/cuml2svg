@@ -20,7 +20,9 @@ import org.eclipse.swt.graphics.RGB;
 public class ModelScanner extends RuleBasedScanner {
 	
 	//TODO controllare tutte le keyword
-	private static String[] keywords= { "class","package","public","private","interface", "methods","extend", "relations", "attributes"  };
+	private static String[] keywords= { "class","package","public","private","interface", 
+		"methods","extend",
+		"use","include","composed","depend","associate","realize","relations", "attributes"  };
 	
 	
 	public ModelScanner(ColorManager manager) {
