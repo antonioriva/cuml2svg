@@ -14,8 +14,115 @@ Il modello conterrà quindi tutte le informazioni riguardo il contenuto/i dati
 degli elementi che sarà possibile inserire in un diagramma in un secondo
 momento. 
 
+In un linguaggio ad oggetti uno degli strumenti fondamentali è la suddivisione 
+delle classi sotto forma di package. Nella nostra proposta un file di modello
+può contenere o una lista di classi (non associate ad un package) oppure una
+lista di package.
+
+La definizione del package (come un po' tutto il nostro linguaggio) è 
+ispirata alla sintassi dei linguaggi java like.
 
 \begin{lstlisting}[caption={Dichiarazione di package}, style={model}]
-
+package nome.package{
+	...  	
+}
 \end{lstlisting}
 
+Nella definizione della classe è invece dichiarato in modo esplicito la
+suddivisione tra i componenti base di una classe; sono quindi esplicitati quali
+sono gli attributi, i metodi e le relazioni. L'aggiunta delle relazioni rispetto
+ad una classica definizione di classe è necessaria per poter rappresentare nel
+diagramma le frecce di collegamento.
+
+
+\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+class NomeClasse{
+	relations{
+		...
+	}
+	attributes{
+		...
+	}
+	methods{
+		...
+	}
+}
+\end{lstlisting}
+
+Analizziamo ora il contenuto delle varie sezioni.
+
+\subsection{Relazioni}
+
+Nella sezione delle relazioni
+viene appunto dichiarata una lista di definizione che contiene il tipo della 
+ralazione, una lista di classi (complete di package) 
+con cui creare una relazione del tipo scelto
+per ogni classe 3 parametri opzionali (che possono anche essere vuoti) in cui
+il primo parametro e l'ultimo possono essere utilizzati per la definizione delle
+cardinalità, mentre il parametro opzionale puù essere utilizzato per definire
+una descrizione della relazione; queste stringhe andranno a posizionarsi sul 
+disegno delle frecce.
+
+\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+relations{
+	extend nome.package.NomeClasse ("(1,*)" , 
+				"descrizione relazione", "(1,1)" );
+	use nome.package.NomeClasse1, nome.package.NomeClasse2;
+}
+\end{lstlisting}
+
+La lista dei possibili tipi di relzione sono:
+\begin{itemize}
+  \item{use (uso);}
+  \item{extends (ereditarietà);}
+  \item{associate (associazione);}
+  \item{include (inclusione);}
+  \item{realize (realizzazione);}
+  \item{depend (dipendenza);}
+  \item{composed (composizione);}
+\end{itemize}
+
+\subsection{Attributi}
+
+Gli attributi vengono dichiarati come visibilità:
+\begin{itemize}
+  \item public
+  \item privare
+  \item protected
+\end{itemize}
+
+tipo (opzionale), nome attributo e valore di default (opzionale); la sintassi è
+quella inidicata nell'esempio sottostante.
+
+\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+attributes{
+	public int attr1=5;
+	public attr2;
+	private attr3;
+}
+\end{lstlisting}
+
+\subsection{Metodi}
+
+Anche in questo caso la definizione dei metodi è del tutto simile alla
+difinizione della segnatura di un metodo in java.
+
+\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+methods{
+	public nomeMetodo1(int arg1=10, String arg2,arg3);
+	private nomeMetodo2(arg1);
+	nomeMetodo3();
+}
+\end{lstlisting}
+
+Nell'esempio di definizione sopra riportato si possono contraddistinguere varie 
+caratteristiche aggiuntive del nostro linguaggio; un metodo è caratterizzato
+oltre che dal suo nome anche dal tipo di visibilità.
+
+Gli attributi possono essere definiti sia con l'assegnazione di un tipo che con
+la definizione del solo nome, c'è anche la possibilità di assegnare un valore di
+default al parametro del metodo (caratteristica disponibile in alcuni linguaggi
+tipo il PHP).
+Possiamo notare il fatto che è possibile omettere gran parte degli attributi
+perchè l'idea è che deve essere obbligatorio definire solo gli elementi minimi
+per poi poter indicare, opzionalmente, solo ciò che si vuole rappresentare nel diagramma.
