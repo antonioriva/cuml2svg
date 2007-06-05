@@ -9,6 +9,8 @@ import org.apache.velocity.VelocityContext;
 import org.cuml2svg.model.Diagram.OutputType;
 import org.cuml2svg.svg.GraphicsManager;
 
+import sun.reflect.generics.tree.BottomSignature;
+
 /**
  * Object used to group classes and packages in the layout
  * 
@@ -438,8 +440,8 @@ public class Group extends Groupable implements Object, Renderable {
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran() + leftMargin + HORIZONTAL_SPACING);
-				object.setYtran(this.getYtran() + topMargin + VERTICAL_SPACING);
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
 
 				this.setXtran(this.getXtran() + object.computeWidth()
 						+ HORIZONTAL_SPACING);
@@ -457,8 +459,8 @@ public class Group extends Groupable implements Object, Renderable {
 			int maxColWidth = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran() + leftMargin + HORIZONTAL_SPACING);
-				object.setYtran(this.getYtran() + topMargin + VERTICAL_SPACING);
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
 
 				this.setYtran(this.getYtran() + object.computeHeight()
 						+ VERTICAL_SPACING);
@@ -482,8 +484,8 @@ public class Group extends Groupable implements Object, Renderable {
 			int maxHeight = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				object.setXtran(this.getXtran() + leftMargin + HORIZONTAL_SPACING);
-				object.setYtran(this.getYtran() + topMargin + VERTICAL_SPACING);
+				object.setXtran(this.getXtran() + leftMargin);
+				object.setYtran(this.getYtran() + topMargin);
 
 				if (object.computeHeight() > maxHeight) {
 					maxHeight = object.computeHeight();

@@ -119,10 +119,10 @@ public class Diagram implements Renderable {
 				Rectangle bbox = GraphicsManager.getInstance().getBoundingBox();
 				//System.out.println("BBOX: " + bbox.x + "," + bbox.y + ","+ bbox.width + "," + bbox.height);
 				context.put("diagramName", this.diagramName);
-				context.put("diagramX", bbox.x - 100);
-				context.put("diagramY", bbox.y - 100);
-				context.put("diagramWidth", bbox.width + 200);
-				context.put("diagramHeight", bbox.height + 200);
+				context.put("diagramX", bbox.x - 150);
+				context.put("diagramY", bbox.y - 150);
+				context.put("diagramWidth", bbox.width + 300);
+				context.put("diagramHeight", bbox.height + 300);
 				Template template = Velocity.getTemplate(SVG_TEMPLATE_HEADER);
 				template.merge(context, writer);
 
