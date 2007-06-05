@@ -193,7 +193,7 @@ public class cuml2svg {
         public static void printNotice(String message,String fileName,int lineNumber,int columnNumber){
 			
 		if(noticeFlag){
-			System.out.print("NOTICE in file: \""+currentFileName+"\";");
+			System.out.print("NOTICE in file: \""+fileName+"\"");
 			if(lineNumber >= 0 &&columnNumber >= 0){
 				System.out.print("; at line "+lineNumber+ ", at column "+columnNumber+"; ");
 			}
@@ -437,8 +437,10 @@ void import_definition():{
 void main_group():{Group mainGroup;}{
 	{
 		mainGroup=new Group();
-		mainGroup.setProperty("margin-left","100");
-		mainGroup.setProperty("margin-top","100");
+		mainGroup.setProperty("margin-left","200");
+		mainGroup.setProperty("margin-top","200");
+		mainGroup.setProperty("margin-right","200");
+		mainGroup.setProperty("margin-bottom","200");
 		diagram.addObject(mainGroup);
 	}
 	groups(mainGroup)
@@ -475,7 +477,7 @@ void group_preference(Group currentGroup):{}{
 ///group_definition -> [ (CLASS_TYPE | CLASS_NAME_WITH_PACKAGE | CLASS_NAME | CLASS_RANGE_WITH_PACKAGE) ]
 void group_definition(Group currentGroup):{Token name;}{
 	
-	"[" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>|name=<CLASS_RANGE_WITH_PACKAGE>) "]"
+	"(" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>|name=<CLASS_RANGE_WITH_PACKAGE>) ")"
 	
 	{	
 		if(name.image.indexOf("*")>0){
