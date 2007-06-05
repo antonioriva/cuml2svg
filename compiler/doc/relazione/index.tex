@@ -4,19 +4,55 @@
 \documentclass[a4paper,12pt]{book}
 \usepackage[italian]{babel} % Consente l'uso caratteri accentati italiani
 \usepackage[utf8]{inputenc}
+\usepackage{fullpage}
 
 \usepackage{graphicx}
 \usepackage{listings} 
 
-\graphicspath{{img/}}
+\graphicspath{img/}
 
 \frenchspacing % forza LaTeX ad una spaziatura fra parole non inglese
 
 \title{Relazione del Progetto di Linguaggi e Compilatori} 
 \author{Luca Cividini, Fabio Marini, Antonio Riva}
-\date{20 aprile 2007}
+\date{giugno 2007}
 
 
+\lstdefinestyle{model}{
+frame=ltrb,
+	tabsize=2,
+	basicstyle=\small,
+	keywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
+	stringstyle=\ttfamily,
+	captionpos=t,
+	abovecaptionskip=15pt,
+	showstringspaces=false
+}
+
+\lstdefinestyle{java}{
+frame=ltrb,
+	tabsize=2,
+	basicstyle=\small,
+	keywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
+	stringstyle=\ttfamily,
+	captionpos=t,
+	abovecaptionskip=15pt,
+	showstringspaces=false
+}
+
+\lstdefinestyle{layout}{
+frame=ltrb,
+	tabsize=2,
+	basicstyle=\small,
+	keywordstyle=\bfseries,
+	identifierstyle=\ttfamily,
+	stringstyle=\ttfamily,
+	captionpos=t,
+	abovecaptionskip=15pt,
+	showstringspaces=false
+}
 %Fine Preambolo
 
 \begin{document}
@@ -25,24 +61,23 @@
 \tableofcontents % Prepara l'indice generale
 %\input{include/bibliography.bib}
 
-\input{include/introduzione.tex}
-\input{include/linguaggio.tex}
+\input{include/introduzione.tex}%luca
+\input{include/linguaggio.tex}%antonio
 
-\input{include/schedule.tex}
+\input{include/schedule.tex}%fabio
 
-\input{include/grammatica.tex}
-\input{include/controlli_semantici.tex}
+\input{include/grammatica.tex}%antonio
+\input{include/controlli_semantici.tex}%antonio
 
-\input{include/implementazione_intro.tex}
-\input{include/implementazione_compiler.tex}
-\input{include/implementazione_generazione_svg.tex}
-\input{include/implementazione_gui_eclipse.tex}
+\input{include/implementazione_intro.tex}%antonio
+\input{include/implementazione_compiler.tex}%antonio
+\input{include/implementazione_generazione_svg.tex}%fabio
+\input{include/implementazione_gui_eclipse.tex}%luca %fabio
+
+\input{include/esempi.tex}%luca %antonio %fabio
+\input{include/conclusione.tex}%fabio
 
 
-\input{include/esempi.tex}
-\input{include/conclusione.tex}
-
-%\input{include/regole_semantiche.tex}
 \bibliographystyle{plain}
 \bibliography{bibliography.bib}
 
