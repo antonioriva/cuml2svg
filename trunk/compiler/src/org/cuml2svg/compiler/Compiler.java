@@ -35,7 +35,6 @@ public class Compiler {
 		h+="\n -t path\tpath to the template folder";
 		
 
-		System.out.println(h);
 	}
 	/**
 	 * @param args explained in the help function
@@ -138,10 +137,10 @@ public class Compiler {
 		}
 		
 		Calendar cal = new GregorianCalendar();
-		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+":"
-				+cal.get(Calendar.MINUTE)+":"
-				+cal.get(Calendar.SECOND)+"."
-				+cal.get(Calendar.MILLISECOND));
+//		System.out.println(cal.get(Calendar.HOUR_OF_DAY)+":"
+//				+cal.get(Calendar.MINUTE)+":"
+//				+cal.get(Calendar.SECOND)+"."
+//				+cal.get(Calendar.MILLISECOND));
 		System.out.println("--------------------------------------------------\n");
 		
 		System.out.println("Launching compiler");
