@@ -1,8 +1,5 @@
-#summary One-sentence summary of this page.
 #labels example,code
-
 = Code example =
-
 In this page you can see some examples of usage of the cUml code
 
 == Model example ==
