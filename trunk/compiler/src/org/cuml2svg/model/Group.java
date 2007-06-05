@@ -51,6 +51,10 @@ public class Group extends Groupable implements Object, Renderable {
 		this.properties = new HashMap<String, String>();
 
 		this.properties.put("layout", "*x*");
+		this.properties.put("margin-top", "0");
+		this.properties.put("margin-left", "0");
+		this.properties.put("margin-bottom", "0");
+		this.properties.put("margin-right", "0");
 	}
 
 	/**
