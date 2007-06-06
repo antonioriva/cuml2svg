@@ -17,8 +17,16 @@
 \author{Luca Cividini, Fabio Marini, Antonio Riva}
 \date{giugno 2007}
 
+\lstdefinelanguage{model}{
+morekeywords={class,package,relations,attributes,methods,public,private,protected,use,extend,depend,associate,include,composed,realize}
+}
+
+\lstdefinelanguage{layout}{
+morekeywords={import,class,hide-args,margin}
+}
 
 \lstdefinestyle{model}{
+language=model,
 frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
@@ -31,6 +39,7 @@ frame=ltrb,
 }
 
 \lstdefinestyle{java}{
+language=java,
 frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
@@ -43,6 +52,7 @@ frame=ltrb,
 }
 
 \lstdefinestyle{layout}{
+language=layout,
 frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
