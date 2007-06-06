@@ -269,7 +269,7 @@ public class Group extends Groupable implements Object, Renderable {
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				if (maxRowHeight < object.computeHeight()) {
-					maxRowHeight = object.computeHeight() + VERTICAL_SPACING;
+					maxRowHeight = object.computeHeight();
 				}
 				if (((++current) % cols) == 0) {
 					maxHeight += maxRowHeight;
@@ -282,7 +282,7 @@ public class Group extends Groupable implements Object, Renderable {
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				maxRowHeight += object.computeHeight() + VERTICAL_SPACING;
+				maxRowHeight += object.computeHeight();
 				if (((++current) % rows) == 0) {
 					if (maxHeight < maxRowHeight) {
 						maxHeight = maxRowHeight;
@@ -298,7 +298,7 @@ public class Group extends Groupable implements Object, Renderable {
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				if (object.computeHeight() > maxRowHeight) {
-					maxRowHeight = object.computeHeight() + VERTICAL_SPACING;
+					maxRowHeight = object.computeHeight();
 				}
 				if (((++current) % cols) == 0) {
 					maxHeight += maxRowHeight;
@@ -307,8 +307,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxHeight + 2 * VERTICAL_SPACING + this.getTopMargin()
-				+ this.getBottomMargin();
+		return maxHeight + this.getTopMargin() + this.getBottomMargin();
 	}
 
 	/*
@@ -330,7 +329,7 @@ public class Group extends Groupable implements Object, Renderable {
 			current = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				maxRowWidth += object.computeWidth() + HORIZONTAL_SPACING;
+				maxRowWidth += object.computeWidth();
 				if (((++current) % cols) == 0) {
 					maxWidth += maxRowWidth;
 					maxRowWidth = 0;
@@ -343,7 +342,7 @@ public class Group extends Groupable implements Object, Renderable {
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
 				if (((++current) % rows) == 0) {
-					maxWidth += object.computeWidth() + HORIZONTAL_SPACING;
+					maxWidth += object.computeWidth();
 				}
 			}
 			break;
@@ -354,7 +353,7 @@ public class Group extends Groupable implements Object, Renderable {
 			maxRowWidth = 0;
 			for (Iterator i = objects.iterator(); i.hasNext();) {
 				Groupable object = (Groupable) i.next();
-				maxRowWidth += object.computeWidth() + HORIZONTAL_SPACING;
+				maxRowWidth += object.computeWidth();
 				if (((++current) % cols) == 0) {
 					if (maxRowWidth > maxWidth) {
 						maxWidth = maxRowWidth;
@@ -364,7 +363,7 @@ public class Group extends Groupable implements Object, Renderable {
 			}
 			break;
 		}
-		return maxWidth + 2 * HORIZONTAL_SPACING + this.getLeftMargin()
+		return maxWidth + this.getLeftMargin()
 				+ this.getRightMargin();
 	}
 
