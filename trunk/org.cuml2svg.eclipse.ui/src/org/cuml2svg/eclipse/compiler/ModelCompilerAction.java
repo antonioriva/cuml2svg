@@ -23,6 +23,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.osgi.framework.internal.core.ConsoleMsg;
@@ -103,9 +104,9 @@ public class ModelCompilerAction extends TextEditorAction {
 
 		} catch (IOException e) {
 			// $$$ should throw the exception again
-			System.err.println("Problem");
-			e.printStackTrace();
-		} catch (CoreException e) {
+			printResultInConsole(e.getMessage());
+		} catch (Exception e) {
+			printResultInConsole(e.getMessage());
 			// $$$ do something here !
 		}
 	}
@@ -137,23 +138,29 @@ public class ModelCompilerAction extends TextEditorAction {
 	protected String[] buildCommand(IFile fileToCompile) {
 		//StringBuffer command = new StringBuffer(getCSharpCompilerLocation());
 		
-		File f= new File("./");
-		System.out.println(f.getAbsolutePath());
+		
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 		IPath location = root.getLocation();
-		URL platformInstalledURL = Platform.getInstallLocation().getURL();
 		
 		ArrayList<String> cmd= new ArrayList<String>();
 		
 		cmd.add("java");
 		cmd.add("-cp");
-		 
-		cmd.add(platformInstalledURL.getPath()+"plugins/cuml2svg/lib/commons-collections-3.2.jar:" +
-				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/commons-lang-2.3.jar:" +
-				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/jakarta-oro-2.0.8.jar:" +
-				platformInstalledURL.getPath()+"plugins/cuml2svg/lib/velocity-1.5.jar:" +
-				platformInstalledURL.getPath()+"plugins/cuml2svg/cUml2Svg.jar" );
+		String path=(new Path( Platform.getInstallLocation().getURL().getPath())).toOSString();
+		if(System.getProperty("os.name").startsWith("Windows")){
+			cmd.add(path+"plugins\\cuml2svg\\lib\\commons-collections-3.2.jar;" +
+					path+"plugins\\cuml2svg\\lib\\commons-lang-2.3.jar;" +
+					path+"plugins\\cuml2svg\\lib\\jakarta-oro-2.0.8.jar;" +
+					path+"plugins\\cuml2svg\\lib\\velocity-1.5.jar;" +
+					path+"plugins\\cuml2svg\\cUml2Svg.jar" );
+		}else{
+		cmd.add(path+"plugins/cuml2svg/lib/commons-collections-3.2.jar:" +
+				path+"plugins/cuml2svg/lib/commons-lang-2.3.jar:" +
+				path+"plugins/cuml2svg/lib/jakarta-oro-2.0.8.jar:" +
+				path+"plugins/cuml2svg/lib/velocity-1.5.jar:" +
+				path+"plugins/cuml2svg/cUml2Svg.jar" );
+		}
 		cmd.add("org.cuml2svg.compiler.Compiler");
 		
 //		cmd.add("-jar");
@@ -163,10 +170,11 @@ public class ModelCompilerAction extends TextEditorAction {
 		cmd.add("-c");
 		//cmd.add("/home/antonio/FirstStep.svg");
 		
-		for (Iterator iter = cmd.iterator(); iter.hasNext();) {
-			System.out.print(iter.next()+" ");
-		}
-		System.out.println("");
+//		String cmdStr="";
+//		for (Iterator iter = cmd.iterator(); iter.hasNext();) {
+//			cmdStr+=iter.next()+" ";
+//		}
+//		printResultInConsole(cmdStr);
 		
 		return cmd.toArray(new String[cmd.size()]);
 	}
