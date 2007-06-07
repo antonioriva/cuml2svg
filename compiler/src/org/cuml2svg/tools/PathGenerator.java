@@ -88,9 +88,9 @@ public class PathGenerator {
 		Point p1=null;
 		Point p2=null;
 		int start=0,x=0,y=0;
-		if(path.size()>2){
-			start=1;
-		}
+//		if(path.size()>2){
+//			start=1;
+//		}
 		for (int i = start; i < path.size(); i++) {
 			p1=p2;
 			p2=path.get(i);
@@ -188,12 +188,6 @@ public class PathGenerator {
 								newPoint=getMakeStepPoint(newPath.get(newPath.size()-1), directions.get(j));
 								if(isCollided(newPoint)){
 									collided=true;
-//									TODO rimuovere una volta testato
-									System.err.println("Rilevata collisione;" +
-											"\nTODO questa cosa non è testata; non so se funziona ma non " +
-											"so neanche come generare un caso di test: " +
-											"controlla di non essere in un loop infinito e sfrutta il caso " +
-											"per test più approfonditi.");
 									break;
 								}else{
 									newPath.add(newPoint);
@@ -205,25 +199,18 @@ public class PathGenerator {
 							
 						
 					}
-					//TODO questa cosa non è testata; non so se funziona ma non so neanche come generare un caso di test
 					if(!collided){
 						for (int j = newPath.size(); j < currentPath.size(); j++) {
 							newPath.add(currentPath.get(j));
 							newDirection.add(pathDirections.get(j));
 						}
 						if(isPathCollided(newPath)){
+							
 							currentPath= newPath;
 							pathDirections= newDirection;
 						}
 						//storedPaths.add(newPath);
 						return true;
-					}else{
-//						TODO rimuovere una volta testato
-						System.err.println("Rilevata collisione;" +
-								"\nTODO questa cosa non è testata; non so se funziona ma non " +
-								"so neanche come generare un caso di test: " +
-								"controlla di non essere in un loop infinito e sfrutta il caso " +
-								"per test più approfonditi.");
 					}
 				}
 			}	
@@ -239,6 +226,8 @@ public class PathGenerator {
 		}
 		return false;
 	}
+	
+	
 	private void collapsePath(){
 		ArrayList<Point> tmpPath= new ArrayList<Point>();
 		//ArrayList<Integer> tmpDirections= new ArrayList<Integer>();

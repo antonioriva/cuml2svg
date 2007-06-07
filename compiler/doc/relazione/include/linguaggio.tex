@@ -63,7 +63,7 @@ cardinalità, mentre il parametro opzionale puù essere utilizzato per definire
 una descrizione della relazione; queste stringhe andranno a posizionarsi sul 
 disegno delle frecce.
 
-\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+\begin{lstlisting}[caption={Dichiarazione di relazione}, style={model}]
 relations{
 	extend nome.package.NomeClasse ("(1,*)" , 
 				"descrizione relazione", "(1,1)" );
@@ -94,7 +94,7 @@ Gli attributi vengono dichiarati come visibilità:
 tipo (opzionale), nome attributo e valore di default (opzionale); la sintassi è
 quella inidicata nell'esempio sottostante.
 
-\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+\begin{lstlisting}[caption={Dichiarazione di attributi}, style={model}]
 attributes{
 	public int attr1=5;
 	public attr2;
@@ -107,7 +107,7 @@ attributes{
 Anche in questo caso la definizione dei metodi è del tutto simile alla
 difinizione della segnatura di un metodo in java.
 
-\begin{lstlisting}[caption={Dichiarazione di classe}, style={model}]
+\begin{lstlisting}[caption={Dichiarazione di metodi}, style={model}]
 methods{
 	public nomeMetodo1(int arg1=10, String arg2,arg3);
 	private nomeMetodo2(arg1);

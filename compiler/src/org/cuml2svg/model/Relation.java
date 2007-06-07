@@ -163,6 +163,8 @@ public class Relation implements Renderable {
 				}
 				template = Velocity.getTemplate(RELATION_TEMPLATE);
 				template.merge(context, writer);
+			}else{
+				System.out.println("ERROR: relation of type "+this.relationType+" from "+this.startClass+" to "+this.endClass+" cannot be generated; try to give to it more space.");
 			}
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
