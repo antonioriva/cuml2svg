@@ -20,11 +20,11 @@
 
  \item group{\_}preference   -\textgreater   args{\_}preference
 
- \item group{\_}definition   -\textgreater   [  (CLASS{\_}TYPE   
+ \item group{\_}definition   -\textgreater   ``(''  (CLASS{\_}TYPE   
  
  \textbar   CLASS{\_}NAME{\_}WITH{\_}PACKAGE   \textbar   CLASS{\_}NAME   
  
- \textbar   CLASS{\_}RANGE{\_}WITH{\_}PACKAGE)  ]
+ \textbar   CLASS{\_}RANGE{\_}WITH{\_}PACKAGE)  ``)''
 
  \item layout{\_}preference   -\textgreater   LAYOUT  LAYOUT{\_}CARD
 
@@ -34,15 +34,11 @@
 
  \item margin{\_}preference   -\textgreater   MARGIN  MARGIN{\_}SIZE{\_}TOP  
  
- MARGIN{\_}SIZE{\_}RIGHT  MARGIN{\_}SIZE{\_}BOTTOM  
- 
- MARGIN{\_}SIZE{\_}LEFT
+ MARGIN{\_}SIZE{\_}RIGHT  MARGIN{\_}SIZE{\_}BOTTOM  MARGIN{\_}SIZE{\_}LEFT
 
  \item model   -\textgreater   (class{\_}definition+   \textbar   package{\_}definition+)  /
 
- \item package{\_}definition   -\textgreater   PACKAGE  PACKAGE{\_}NAME  
-
- \{  class{\_}definition+  \}
+ \item package{\_}definition   -\textgreater   PACKAGE  PACKAGE{\_}NAME  \{  class{\_}definition+  \}
 
  \item class{\_}definition   -\textgreater   COMMENT?  VISIBILITY?  
  
@@ -88,7 +84,7 @@
  
  (typed{\_}method \textbar method{\_}name)  
  
- "("  (method{\_}arg  (,  method{\_}arg)*)?  ")"  ;
+ ``(''  (method{\_}arg  (,  method{\_}arg)*)?  ``)''  ;
 
  \item typed{\_}method   -\textgreater   VARIABLE  VARIABLE
 
