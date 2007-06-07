@@ -26,7 +26,7 @@ public class PathGenerator {
 	
 	
 	ArrayList<Rectangle> rectangleArray=null;
-	ArrayList<Rectangle> arrorRectangleArray = new ArrayList<Rectangle>();
+	ArrayList<Rectangle> arrowRectangleArray = new ArrayList<Rectangle>();
 	ArrayList<Point> visitedPoint = new ArrayList<Point>();
 	
 	
@@ -49,7 +49,7 @@ public class PathGenerator {
 	public static final int LEFT_TOP=7;
 	
 
-	private static final boolean showGraphic=false;
+	private static final boolean showGraphic=true;
 	
 	ArrayList<Point> currentPath = new ArrayList<Point>();
 	ArrayList<ArrayList<Point>> storedPaths = new ArrayList<ArrayList<Point>>();
@@ -105,7 +105,7 @@ public class PathGenerator {
 				}else{
 					y=p2.y;
 				}
-				arrorRectangleArray.add(new Rectangle(x,y,Math.abs(p1.x-p2.x),Math.abs(p1.y-p2.y)));
+				arrowRectangleArray.add(new Rectangle(x,y,Math.abs(p1.x-p2.x),Math.abs(p1.y-p2.y)));
 				//canvas.repaint();
 	
 			}
@@ -782,17 +782,17 @@ public class PathGenerator {
 				}
 			}
 		}
-		for (int i = 0; i < arrorRectangleArray.size(); i++) {
-			if(i!=pathStop ){//&& i!=pathStart){
+		for (int i = 0; i < arrowRectangleArray.size(); i++) {
+			//if(i!=pathStop ){//&& i!=pathStart){
 				//System.out.println(k);
-				Rectangle r = (Rectangle) arrorRectangleArray.get(i);
+				Rectangle r = (Rectangle) arrowRectangleArray.get(i);
 				if(inRectangle(p, r,arrowDefaultBorder)
 						&&
 				   inRectangle(currentPath.get(currentPath.size()-2), r,arrowDefaultBorder)){
 					//System.out.println("Collided with number: "+i);
 					return true;
 				}
-			}
+			//}
 		}
 		
 		return false;
