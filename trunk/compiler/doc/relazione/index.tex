@@ -5,7 +5,9 @@
 \usepackage[italian]{babel} % Consente l'uso caratteri accentati italiani
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
-
+\usepackage{color} 
+\definecolor{grayback}{rgb}{0.9,0.9,0.9}
+\definecolor{grayrows}{rgb}{0.3,0.3,0.3} 
 \usepackage{graphicx}
 \usepackage{listings} 
 
@@ -17,12 +19,22 @@
 \author{Luca Cividini, Fabio Marini, Antonio Riva}
 \date{giugno 2007}
 
+\lstdefinestyle{num_righe}
+  { numbers=left,
+    stepnumber=1,
+    numberstyle=\footnotesize\color{grayrows},
+    numbersep=10pt,
+    }
+
 \lstdefinelanguage{model}{
 morekeywords={class,package,relations,attributes,methods,public,private,protected,use,extend,depend,associate,include,composed,realize}
+,morekeywords=[s]{[]}
+,morestring=[b]"
 }
 
 \lstdefinelanguage{layout}{
-morekeywords={import,class,hide-args,margin}
+morekeywords={import,class,\@margin,\@hide−args,\@collapse,\@layout}
+,morestring=[b]"
 }
 
 \lstdefinestyle{model}{
@@ -30,12 +42,15 @@ language=model,
 frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
-	keywordstyle=\bfseries,
+	keywordstyle={\color{blue}\bfseries},
 	identifierstyle=\ttfamily,
 	stringstyle=\ttfamily,
 	captionpos=t,
 	abovecaptionskip=15pt,
-	showstringspaces=false
+	showstringspaces=false,
+	style=num_righe,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/}
 }
 
 \lstdefinestyle{java}{
@@ -43,12 +58,15 @@ language=java,
 frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
-	keywordstyle=\bfseries,
+	keywordstyle={\color{blue}\bfseries},
 	identifierstyle=\ttfamily,
 	stringstyle=\ttfamily,
 	captionpos=t,
 	abovecaptionskip=15pt,
-	showstringspaces=false
+	showstringspaces=false,
+	style=num_righe,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/}
 }
 
 \lstdefinestyle{layout}{
@@ -56,12 +74,15 @@ language=layout,
 frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
-	keywordstyle=\bfseries,
+	keywordstyle={\color{blue}\bfseries},
 	identifierstyle=\ttfamily,
 	stringstyle=\ttfamily,
 	captionpos=t,
 	abovecaptionskip=15pt,
-	showstringspaces=false
+	showstringspaces=false,
+	style=num_righe,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/}
 }
 %Fine Preambolo
 
@@ -76,6 +97,7 @@ frame=ltrb,
 
 \input{include/schedule.tex}%fabio
 
+\chapter{Implementazione}
 \input{include/grammatica.tex}%antonio
 \input{include/controlli_semantici.tex}%antonio
 
