@@ -23,7 +23,7 @@ La definizione del package (come un po' tutto il nostro linguaggio) è
 ispirata alla sintassi dei linguaggi java like.
 
 \begin{lstlisting}[caption={Dichiarazione di package}, style={model}]
-package nome.package{
+package nome.pkg{
 	...  	
 }
 \end{lstlisting}
@@ -65,9 +65,9 @@ disegno delle frecce.
 
 \begin{lstlisting}[caption={Dichiarazione di relazione}, style={model}]
 relations{
-	extend nome.package.NomeClasse ("(1,*)" , 
+	extend nome.pkg.NomeClasse ("(1,*)" , 
 				"descrizione relazione", "(1,1)" );
-	use nome.package.NomeClasse1, nome.package.NomeClasse2;
+	use nome.pkg.NomeClasse1, nome.pkg.NomeClasse2;
 }
 \end{lstlisting}
 
@@ -87,7 +87,7 @@ La lista dei possibili tipi di relzione sono:
 Gli attributi vengono dichiarati come visibilità:
 \begin{itemize}
   \item public
-  \item privare
+  \item private
   \item protected
 \end{itemize}
 
@@ -125,4 +125,110 @@ default al parametro del metodo (caratteristica disponibile in alcuni linguaggi
 tipo il PHP).
 Possiamo notare il fatto che è possibile omettere gran parte degli attributi
 perchè l'idea è che deve essere obbligatorio definire solo gli elementi minimi
-per poi poter indicare, opzionalmente, solo ciò che si vuole rappresentare nel diagramma.
+per poi poter indicare, opzionalmente, solo ciò che si vuole rappresentare nel
+diagramma. 
+
+
+\section{Layout}
+
+
+Una volta specificato il modello si procede con il disegnare il diagramma
+attraverso la definizione di un file di layout (estensione .u2sl).
+
+Come prima cose bisogna associare al layout i modelli da utilizzare questa
+operazione si effettua con il comando import; si possono importare più file
+modello, ma devono essere importati come prime righe,altrimenti il compilatore
+non sa cosa disegnare. E' possibile che ci sia il caso in cui la stessa classe è
+contenuta in più file modello, la regola è che il primo dichiarato rimane; verrà
+comunque segnalato un errore.
+
+\begin{lstlisting}[caption={Import dei modelli necessari}, style={layout}] 
+import test.u2sm;
+\end{lstlisting}
+
+La logica di definizione del modello si basa sul concetto delle scatole cinesi (o
+dei gruppi); un gruppo viene definito attraverso l'uso delle parentesi quadre,
+un gruppo può contenere altri gruppi o una definizione di classe.
+
+Il codice sottostante definisce 2 gruppi; il primo contenente 2 sottogruppi e
+ con una dichiarazione di classe per ogni gruppo di livello più basso.
+
+\begin{lstlisting}[caption={Un semplice diagramma}, style={layout}] 
+[
+	[
+		(class nome.pkg.NomeClasse1)
+	]
+	[
+		(class nome.pkg.NomeClasse2)
+	]
+]
+[
+	(class nome.pkg.NomeClasse3)
+]
+\end{lstlisting}
+
+In questo modo è molto semplice definire dei gruppi di oggetti da lagare tra di
+loro. Per ogni gruppo è possibile specificare delle proprietà subito dopo
+l'apertura della parentesi che modificano l'aspetto del gruppo o delle classi in
+esso contenute; le proprietà disponibili sono:
+
+\begin{itemize}
+  \item @layout i cui calori possono essere:
+  \begin{itemize}
+  	\item Nx* dove N è il numero di righe su cui disporre le classi;
+  	\item *xN dove N è il numero di colonne su cui disporre le classi;
+  	\item *x* per disporre le classi in un quadrato di lato uguale alla radice
+  	quadrata del numero di elementi del gruppo;
+  \end{itemize}
+  
+  \item @margin con quattro numeri che indicano il margine superiore (top),
+  destro (right), inferiore (bottom), sinistro (left);
+  \item @collapse che prende come parametri all, methods, attributes; per far in
+  modo di non visualizzare i metodi o gli attributi o tutti e due;
+  \item @hide-args che permette di nascondere gli argomenti dei metodi.
+\end{itemize}
+
+\begin{lstlisting}[caption={Diagramma decorato di attributi}, style={layout}] 
+[
+	[	
+		@margin 15 10 5 0
+		@collapse all
+		(class nome.pkg.NomeClasse1)
+	]
+	[
+		@collapse methods
+		@hide-args
+		(class nome.pkg.NomeClasse2)
+	]
+]
+[
+	@layout *x1
+	@collapse attributes
+	(class nome.pkg.NomeClasse3)
+	(class nome.pkg.NomeClasse4)
+]
+\end{lstlisting}
+
+
+Come è possibile notare dagli esempi di codice superiori l'introduzione di una
+classe nel diagramma è dettata dal nome della classe circondato da parentesi
+tonde all'interno di un gruppo.
+
+Il nome della classe può essere indicato per esplicito inserendo il nome della
+classe comprensivo di package oppure si possono inserire tutte le classi di un
+package semplicemente indicando il package e facendolo seguire da un ``.*''.
+
+Un semplice esempio eplicativo
+
+\begin{lstlisting}[caption={Diagramma decorato di attributi}, style={layout}] 
+import test.u2sm;
+[
+	[	
+		(class nome.pkg.NomeClasse1)
+	]
+]
+[
+	@layout *x*
+	(class nome.pkg.*)
+]
+\end{lstlisting}
