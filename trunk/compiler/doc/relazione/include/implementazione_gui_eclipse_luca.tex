@@ -7,10 +7,10 @@ Per il progetto è stato sviluppato un plugin per Eclipse che si occupa di: \\*
 
 
 \subsection{text-hilight}
-Il plugin gestisce i file \emph{model} e \emph{layout} in modi differenti; i 
-file, infatti, presentano caratteristiche e strutture diverse tra loro.
-La classe che esegue la scansione del file e gestisce l'editor di \emph{model} è
-la seguente:
+Il plugin gestisce il \emph{modello dati} e lo \emph{schema di layout} in modi differenti; 
+entrambi, infatti, presentano caratteristiche e strutture diverse tra loro.
+La classe che esegue la scansione del \emph{modello dati} e ne gestisce l'editor
+è la seguente:
 
 \begin{lstlisting}[caption={ModelScanner}, style={java}]
 public class ModelScanner extends RuleBasedScanner {
@@ -52,11 +52,10 @@ public class ModelScanner extends RuleBasedScanner {
 
 Le parole chiave di questo modello sono specificate nella stringa
 \emph{Keywords}, inoltre vengono definite le regole per i commenti e viene
-utilizzata la classe RuleBrace, che è utilizzata sia per \emph{model} che \emph{layout}, per
-la gestione delle parentesi.
-
-la classe che esegue la scansione del file e gestisce l'editor di \emph{layout},
-invece, è la seguente:
+utilizzata la classe RuleBrace, che è utilizzata per la gestione delle
+parentesi.\\* 
+La classe che esegue la scansione dello  \emph{schema di layout} e ne gestisce
+l'editor, invece, è la seguente:
 
 \begin{lstlisting}[caption={LayoutScanner}, style={java}]
 
@@ -104,7 +103,15 @@ public class LayoutScanner extends RuleBasedScanner {
 
 \end{lstlisting}
 
-In questo nodello le parole chiave sono specificate nella stringa
+
+
+
+aaaaaaaaaaaaaaaaaaaa
+
+
+
+
+In questo modello le parole chiave sono specificate nella stringa
 \emph{Keywords}, e \emph{keywordslayout} per poter gestire i due gruppi in modo
 differente. Anche in questo modello la gestione delle parentesi e dei commenti
 sono state utilizzate le stesse tecniche del modello \emph{model}.
