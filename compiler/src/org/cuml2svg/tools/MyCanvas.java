@@ -83,7 +83,7 @@ public class MyCanvas extends JPanel {
 			i++;
 		}
 		
-		for (final Rectangle r : pathGenerator.arrorRectangleArray) {
+		for (final Rectangle r : pathGenerator.arrowRectangleArray) {
 			g.setColor(new Color(0,200,200,255));
 			g.drawRect((int)((r.x-this.pathGenerator.arrowDefaultBorder+xstart)/zoomLevel), 
 					(int)((r.y-this.pathGenerator.arrowDefaultBorder+ystart)/zoomLevel), 
