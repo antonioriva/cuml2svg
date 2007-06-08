@@ -9,7 +9,7 @@ Per il progetto è stato sviluppato un plugin per Eclipse che si occupa di: \\*
 \subsection{text-hilight}
 Il plugin gestisce i file \emph{model} e \emph{layout} in modi differenti; i 
 file, infatti, presentano caratteristiche e strutture diverse tra loro.
-la classe che esegue la scansione del file e gestisce l'editor di \emph{model} è
+La classe che esegue la scansione del file e gestisce l'editor di \emph{model} è
 la seguente:
 
 \begin{lstlisting}[caption={ModelScanner}, style={java}]
@@ -49,19 +49,65 @@ public class ModelScanner extends RuleBasedScanner {
 }
 \end{lstlisting}
 
+
+Le parole chiave di questo modello sono specificate nella stringa
+\emph{Keywords}, inoltre vengono definite le regole per i commenti e viene
+utilizzata la classe RuleBrace, che è utilizzata sia per \emph{model} che \emph{layout}, per
+la gestione delle parentesi.
+
 la classe che esegue la scansione del file e gestisce l'editor di \emph{layout},
 invece, è la seguente:
 
 \begin{lstlisting}[caption={LayoutScanner}, style={java}]
 
-prendere quella aggiornata
+public class LayoutScanner extends RuleBasedScanner {
+	private static String[] keywordslayout= {"@layout","@hide-args",
+												"@collapse","@margin"};
+	private static String[] keywords= { "class","import","interface"};
+	
+	public LayoutScanner(ColorManager manager) {
+		ArrayList<IRule> rules= new ArrayList<IRule>();
+		Token token= new Token(new TextAttribute(
+				manager.getColor(ColorConstants.KEYWORD), 	//parola
+				null, 																			//sfondo
+				SWT.BOLD));
+		Token tokenlayout= new Token(new TextAttribute(
+				manager.getColor(ColorConstants.LAYOUT), 	//parola
+				null, 																		//sfondo
+				SWT.BOLD));
+		WordRule wordRule = new WordRule(new WordDetector());
+
+		for (int i = 0; i < keywords.length; i++) {
+			wordRule.addWord(keywords[i], token);
+		}
+		for (int i = 0; i < keywordslayout.length; i++) {
+			wordRule.addWord(keywordslayout[i], tokenlayout);
+		}
+		rules.add(wordRule);
+		Token tokencomment = new Token(new TextAttribute(
+								manager.getColor(ColorConstants.COMMENT)));
+		//Add rule for processing instructions		
+		rules.add( new SingleLineRule("//", "", tokencomment));
+		rules.add( new SingleLineRule("#", "", tokencomment));
+		rules.add( new MultiLineRule("/*", "*/", tokencomment));
+//gestione colore parentesi
+		token = new Token(new TextAttribute(
+										manager.getColor(ColorConstants.BRACET)));
+		RuleBrace braceRule = new RuleBrace(token);
+		rules.add(braceRule);
+		IRule[] r= new IRule[rules.size()];
+		setRules(rules.toArray(r));
+	}
+}
+
 
 
 \end{lstlisting}
 
-In entrambe le classi le parole chiave sono specificate nella stringa \emph{Keywords}, 
-vengono definite le regole per i commenti, mentre per la gestione delle parentesi sono state 
-definite delle regole comuni per entrambi i modelli.
+In questo nodello le parole chiave sono specificate nella stringa
+\emph{Keywords}, e \emph{keywordslayout} per poter gestire i due gruppi in modo
+differente. Anche in questo modello la gestione delle parentesi e dei commenti
+sono state utilizzate le stesse tecniche del modello \emph{model}.
 
 \subsection{controllo degli errori}
 il controllo degli errori viene eseguito ogni volta che il file viene salvato; a
