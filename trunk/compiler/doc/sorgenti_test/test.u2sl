@@ -1,11 +1,21 @@
-import test.u2sm;
-
+ import test.u2sm;
 [
-	[
-		@layout *x1
-		@hide-args
-		[class org.cc.*]
-	]
-	
-	
+[
+@layout *x*
+@hide-args
+
+(class org.cc.Class1)
+[
+@margin 0 0 0 0
+(class org.cc.Class2)
 ]
+(class org.cc.Class3)
+(class org.cc.Class4)
+
+(class org.cc.Class5)
+(class org.cc.Class6)
+
+
+]
+]
+[(class org.cc.Class7)]
