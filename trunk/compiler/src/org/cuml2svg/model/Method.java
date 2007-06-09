@@ -144,7 +144,7 @@ public class Method {
 		}
 		fullName += ")";
 		if(!this.type.equals("")) {
-			fullName += ":"+this.type;
+			fullName += ":"+this.type.replaceAll("<", "&lt;").replaceAll(">","&gt;" );
 		}
 		return fullName;
 	}
