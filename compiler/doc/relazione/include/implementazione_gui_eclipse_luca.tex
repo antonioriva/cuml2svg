@@ -8,7 +8,7 @@ Per il progetto è stato sviluppato un plugin per Eclipse che si occupa di: \\*
 
 \subsection{Text-highlight}
 Il plugin gestisce il \emph{modello dati} e lo \emph{schema di layout} in modi differenti; 
-entrambi, infatti, presentano caratteristiche e strutture diverse tra loro.
+entrambi, infatti, presentano caratteristiche e strutture diverse tra loro. \\*
 La classe che esegue la scansione del \emph{modello dati} e ne gestisce l'editor
 è la seguente:
 
@@ -29,7 +29,7 @@ public class ModelScanner extends RuleBasedScanner {
 		
 		Token token= new Token(new TextAttribute(
 				manager.getColor(ColorConstants.KEYWORD), 	//parola
-				null, 	//sfondo
+				null,                                       //sfondo
 				SWT.BOLD));
 		WordRule wordRule = new WordRule(new WordDetector());
 		for (int i = 0; i < keywords.length; i++) {
@@ -67,11 +67,11 @@ public class LayoutScanner extends RuleBasedScanner {
 		ArrayList<IRule> rules= new ArrayList<IRule>();
 		Token token= new Token(new TextAttribute(
 				manager.getColor(ColorConstants.KEYWORD), 	//parola
-				null, 																			//sfondo
+				null,                                       //sfondo
 				SWT.BOLD));
 		Token tokenlayout= new Token(new TextAttribute(
 				manager.getColor(ColorConstants.LAYOUT), 	//parola
-				null, 																		//sfondo
+				null,                                     //sfondo
 				SWT.BOLD));
 		WordRule wordRule = new WordRule(new WordDetector());
 
@@ -88,7 +88,7 @@ public class LayoutScanner extends RuleBasedScanner {
 		rules.add( new SingleLineRule("//", "", tokencomment));
 		rules.add( new SingleLineRule("#", "", tokencomment));
 		rules.add( new MultiLineRule("/*", "*/", tokencomment));
-//gestione colore parentesi
+        //gestione colore parentesi
 		token = new Token(new TextAttribute(
 										manager.getColor(ColorConstants.BRACET)));
 		RuleBrace braceRule = new RuleBrace(token);
@@ -99,10 +99,7 @@ public class LayoutScanner extends RuleBasedScanner {
 }
 
 
-
 \end{lstlisting}
-
-
 
 In questo modello le parole chiave sono specificate nella
 stringa \emph{Keywords}, mentre le proprietà disponibili sono definite in
