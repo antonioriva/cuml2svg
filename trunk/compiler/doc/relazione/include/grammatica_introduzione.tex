@@ -1,0 +1,55 @@
+\section{Grammatica}
+
+Una lista dei non-terminali e di ciò che rappresentano:
+
+\begin{itemize}
+\item IMPORT: la parola chiave \emph{import};
+\item MARGIN: la parola chiave \emph{@margin};
+\item LAYOUT: la parola chiave \emph{@layout};
+\item HIDE{\_}ARGS: la parola chiave \emph{@hide-args};
+\item COLLAPSE: la parola chiave \emph{@collapse}; 
+\item PACKAGE: la parola chiave \emph{package}; 
+\item RELATIONS:  la parola chiave \emph{relation}; 
+\item ATTRIBUTES:  la parola chiave \emph{attributes};  
+\item EQUAL: l'uguale nei valori di defaul;
+\item FILE{\_}NAME: il token per coatturare il nome del file di import;
+\item CLASS{\_}TYPE: il tipo di oggetto, per ora \emph{class} o \emph{interface};
+\item CLASS{\_}NAME{\_}WITH{\_}PACKAGE: il nome di una classe conmprensiva di package;
+\item CLASS{\_}NAME: il nome di una classe;
+\item CLASS{\_}RANGE{\_}WITH{\_}PACKAGE: il nome di un range di classi definito
+con \emph{.*};
+\item LAYOUT{\_}CARD: la cardinalità del layout, \emph{*x*}, \emph{*xN}, \emph{Nx*};
+\item COLLAPSE{\_}TYPE: cosa devo collassare, \emph{all}, \emph{attributes}, \emph{methods};
+\item MARGIN{\_}SIZE{\_}TOP: il valore del margine superiore;
+\item MARGIN{\_}SIZE{\_}RIGHT: il valore del margine destro;
+\item MARGIN{\_}SIZE{\_}LEFT: il valore del margine sinistro;
+\item MARGIN{\_}SIZE{\_}BOTTOM: il valore del margine inferiore;
+\item PACKAGE{\_}NAME: il nome del package che si sta dichiarando; 
+\item \{, \},[,],(,): definizione diretta dele parentesi;
+\item COMMENT: un commento;
+\item VISIBILITY: la visibilità di un oggetto, eg. \emph{public},\emph{private},\ldots 
+\item RELATION{\_}TYPE: il tipo della relazione (vedere il capitolo sul
+linguaggio); 
+\item RELATION{\_}CLASS{\_}NAME: nome della classe nell'ambito della definizione
+dei relazioni;
+\item RELATION{\_}CLASS{\_}NAME{\_}WITH{\_}PACKAGE: nome della classe
+comprensiva di package nell'ambito della definizione dei relazioni;
+\item RELATION{\_}COMMA: virgola di separazione tra le varie classi in una
+definizione di relazioni;
+\item RELATION{\_}END: il ``;'' che determina la conclusione della definizione
+delle relazioni;
+\item CARDINALITY{\_}START: carattere che determina l'inzio di definizione di
+una relazione di cardinalità;
+\item RELATION{\_}CARDINALITY{\_}COMMA: carattere di separazione tra definizioni
+di cardinalità; 
+\item CARDINALITY{\_}STOP: carattere che determina la fine di definizione di
+una relazione di cardinalità;
+\item CARDINALITY: valore di cardinalità (equivalente alla STRING);
+\item VARIABLE: una sequenza di carattere con permessi i tipici caratteri
+permessi in una definzione di variabili;
+\item NUMBER: valore numerico; 
+\item STRING: stringa separata da doppi apici;
+
+\end{itemize}
+
+Di seguito viene riportata la grammatica EBNF\footnote{BNF: Extends-BNF}

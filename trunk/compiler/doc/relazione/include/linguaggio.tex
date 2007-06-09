@@ -10,7 +10,8 @@ a generare.
 
 \section{Model}
 
-Il modello conterrà quindi tutte le informazioni riguardo il contenuto/i dati
+Il modello (estensione .u2sm) conterrà quindi tutte le informazioni riguardo il
+contenuto/i dati
 degli elementi che sarà possibile inserire in un diagramma in un secondo
 momento. 
 
@@ -97,10 +98,15 @@ quella indicata nell'esempio sottostante.
 \begin{lstlisting}[caption={Dichiarazione di attributi}, style={model}]
 attributes{
 	public int attr1=5;
-	public attr2;
+	public "ArrayList<Integer>" attr2;
 	private attr3;
 }
 \end{lstlisting}
+
+Un ulteriore osservazione che si può fare è che i tipi (anche per i metodi e gli 
+argomenti dei metodi) possono essere indicati come stringhe in modo da poter 
+rappresentare situazioni con tipi contenenti caratteri speciali, come per esempio
+un tipo ``generico''.
 
 \subsection{Metodi}
 
@@ -140,7 +146,8 @@ operazione si effettua con il comando import; si possono importare più file
 modello, ma devono essere importati come prime righe,altrimenti il compilatore
 non sa cosa disegnare. E' possibile che ci sia il caso in cui la stessa classe è
 contenuta in più file modello, la regola è che il primo dichiarato rimane; verrà
-comunque segnalato un errore.
+comunque segnalato un errore. Il percorso del file è un percorso relativo
+rispetto al path in cui è salvato il file layout.
 
 \begin{lstlisting}[caption={Import dei modelli necessari}, style={layout}] 
 import test.u2sm;
@@ -233,5 +240,17 @@ import test.u2sm;
 ]
 \end{lstlisting}
 
+\section{Commenti}
 
-\emph{TODO i tipo possono essere stringhe}
+I commenti possono essere inseriti in 3 modi:
+\begin{itemize}
+  \item /* \ldots */: dalla sintassi Java commento multilinea;
+  \item // \ldots: sempre dalla sinstassi Java commento singola linea;
+  \item \# \ldots: ulteriore commento singola linea.
+\end{itemize}
+
+
+I commenti vengono accettati in quasi tutti i punti del codice\footnote{Un
+eccezione per esempio è la direttiva ``import''; in quel caso i commenti possono essere
+inseriti solo dopo il ``;'', altrimenti vengono interpretati come appartenente
+al percorso del path da importare.}.
