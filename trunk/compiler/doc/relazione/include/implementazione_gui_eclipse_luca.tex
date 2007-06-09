@@ -105,21 +105,18 @@ public class LayoutScanner extends RuleBasedScanner {
 
 
 
+In questo modello le parole chiave sono specificate nella
+stringa \emph{Keywords}, mentre le proprietà disponibili sono definite in
+\emph{keywordslayout}, in questo modo è possibile gestirle in modo separato.
+Per la gestione delle parentesi e dei commenti sono state utilizzate le stesse
+tecniche del modello dello \emph{schema di layout}.
 
-aaaaaaaaaaaaaaaaaaaa
-
-
-
-
-In questo modello le parole chiave sono specificate nella stringa
-\emph{Keywords}, e \emph{keywordslayout} per poter gestire i due gruppi in modo
-differente. Anche in questo modello la gestione delle parentesi e dei commenti
-sono state utilizzate le stesse tecniche del modello \emph{model}.
-
-\subsection{controllo degli errori}
-il controllo degli errori viene eseguito ogni volta che il file viene salvato; a
-livello di editor sono stati usati i marker laterali che indicano il tipo di
-errore commesso (figura 2.1)
+\subsection{controllo degli errori} 
+Il plugins si occupa di visualizzare, tramite dei marker laterali, gli errori 
+commessi in fase di scrittura del \emph{modello dati} e dello \emph{schema di
+layout}. \\*
+Il controllo degli errori viene eseguito ogni volta che il file su cui si stà lavorando
+viene salvato; un esempio del funzionamento è visibile in figura 
 
 \begin{figure}[htp]
 \begin{center}
