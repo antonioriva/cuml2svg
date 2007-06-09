@@ -19,13 +19,13 @@
 \author{Luca Cividini, Fabio Marini, Antonio Riva}
 \date{giugno 2007}
 
-\lstdefinestyle{num_righe}
-  { numbers=left,
+\lstdefinestyle{num_righe}{
+	numbers=left,
     stepnumber=1,
     numberstyle=\footnotesize\color{grayrows},
     numbersep=10pt,
     firstnumber=1
-    }
+}
 
 \lstdefinelanguage{model}{
 morekeywords={class,package,relations,attributes,methods,public,private,protected,use,extend,depend,associate,include,composed,realize}
@@ -36,10 +36,11 @@ morekeywords={class,package,relations,attributes,methods,public,private,protecte
 
 \lstdefinelanguage{layout}{
 morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
-,morestring=[b]",
+	,morestring=[b]",
     morecomment=[l]{//},    morecomment=[l]{\#},
     morecomment=[s]{/*}{*/}
 }
+
 
 \lstdefinestyle{none}{
 	frame=ltrb,
@@ -59,32 +60,17 @@ morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
 
 \lstdefinestyle{model}{
 	language=model,
-	frame=ltrb,
-	tabsize=2,
-	basicstyle=\small,
-	keywordstyle={\color{blue}\bfseries},
-	identifierstyle=\ttfamily,
-	stringstyle=\ttfamily,
-	captionpos=t,
-	abovecaptionskip=15pt,
-	showstringspaces=false,
-	style=num_righe,
-	commentstyle={\color{grayrows}\bfseries}
+	style=none
+}
+
+\lstdefinestyle{java}{
+	language=java,
+	style=none
 }
 
 \lstdefinestyle{layout}{
 	language=layout,
-	frame=ltrb,
-	tabsize=2,
-	basicstyle=\small,
-	keywordstyle={\color{blue}\bfseries},
-	identifierstyle=\ttfamily,
-	stringstyle=\ttfamily,
-	captionpos=t,
-	abovecaptionskip=15pt,
-	showstringspaces=false,
-	commentstyle={\color{grayrows}\bfseries},
-	style=num_righe
+	style=none
 }
 %Fine Preambolo
 
