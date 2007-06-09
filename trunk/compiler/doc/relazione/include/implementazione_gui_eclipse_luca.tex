@@ -115,12 +115,40 @@ tecniche del modello dello \emph{schema di layout}.
 Il plugins si occupa di visualizzare, tramite dei marker laterali, gli errori 
 commessi in fase di scrittura del \emph{modello dati} e dello \emph{schema di
 layout}. \\*
+Gli errori che vengono controllati e segnalati sono:
+\begin{itemize}
+  \item attributo duplicato;
+  \item metodo duplicato
+  \item metodo con parametri con lo stesso nome
+  \item dichiarazione di classe duplicata
+  \item classe già inserita nella dichiarazione
+  \item classe inesistente
+\end{itemize} 
+
 Il controllo degli errori viene eseguito ogni volta che il file su cui si stà lavorando
-viene salvato; un esempio del funzionamento è visibile in figura 
+viene salvato; un esempio del funzionamento è visibile in figura \ref{errorieditor}
 
 \begin{figure}[htp]
 \begin{center}
   \includegraphics[width=0.9\textwidth]{img/errori_editor.png}
   \caption[labelInTOC]{Gestione degli errori}
+  \label{errorieditor} 
 \end{center}
-\end{figure}
+\end{figure} 
+
+
+
+
+
+
+
+
+
+
+
+\subsection{compilazione} 
+Il plugins si occupa di visualizzare, tramite dei marker laterali, gli errori 
+commessi in fase di scrittura del \emph{modello dati} e dello \emph{schema di
+layout}. \\*
+Il controllo degli errori viene eseguito ogni volta che il file su cui si stà lavorando
+viene salvato; un esempio del funzionamento è visibile in figura \ref{errorieditor}
