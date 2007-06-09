@@ -8,7 +8,30 @@ quello principale per poi riprenderlo successivamente; si è fatto in modo di
 separare fortemente le due sezioni in modo da poter implementare una
 funzionalità di solo checking (utile per il plugin eclipse).
 
-\emph{//TODO inserire commento su cambio di stati}
+Un aspetto interessante della compilatore è quello di poter definire espressioni
+regolari che funzionano in un particolare STATE; con questo meccanismo è
+possibile utilizzare un meccanismo basato su contesti in cui viene attivato il
+riconoscimento di determinate espressioni regolari solo se è avvenuto il
+riconoscimento di un'altra particolare espressione. In questo modo è molto più
+semplice definire con precisione ciò che ci si aspetta di riconoscere
+successivamente. Un esempio compatto è quello dei riconscimento del file di
+input: 
+
+
+\begin{lstlisting}[ style={none}]
+TOKEN:{
+	<IMPORT: "import"> : IMPORT_STATE
+}
+<IMPORT_STATE>  TOKEN : { <FILE_NAME: (~[";"])* > : DEFAULT  }
+\end{lstlisting}
+
+Con questo spezzone di codice si dice che una volta incontrata la parola chiave
+``import'' si entra in uno stato denominato ``IMPORT\_STATE''; tutto quello che
+c'è dopo fino al ``;'' è da considerarsi come il token FILE\_NAME. Con questo
+metodo non si devono definire strane meccanismi per fare in modo che un elemento non
+venga riconosciuto come un altro (per il problema della sovrapposizione delle
+espressioni regolari) ma basta indicare l'espressione che meglio si adatta
+perchè solo quella verrà cercata in quella posizione.
 
 \subsection{Utilizzo del compilatore da linea di comando}
 
