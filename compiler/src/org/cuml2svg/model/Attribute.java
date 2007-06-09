@@ -78,7 +78,7 @@ public class Attribute {
 		}
 		name += this.getAttributeName();
 		if(!this.attributeType.equals("")) {
-			name += ":"+this.attributeType;
+			name += ":"+this.attributeType.replaceAll("<", "&lt;").replaceAll(">","&gt;" );
 		}
 		if(!this.defaultValue.equals("")) {
 			name += "="+this.defaultValue;
