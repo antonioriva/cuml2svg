@@ -111,18 +111,76 @@ tecniche del \emph{modello dati}.
 Il plugin si occupa di visualizzare, tramite dei marker laterali, gli errori 
 commessi in fase di scrittura del \emph{modello dati} e dello \emph{schema di
 layout}. \\*
-Gli errori che vengono controllati e segnalati sono:
+Il controllo degli errori viene eseguito ogni volta che il file su cui si stà lavorando
+viene salvato; \\*
+Vengono controllati tutti i tipi di errori:
 \begin{itemize}
-  \item attributo duplicato;
-  \item metodo duplicato
-  \item metodo con parametri con lo stesso nome
-  \item dichiarazione di classe duplicata
-  \item classe già inserita nella dichiarazione
-  \item classe inesistente
+  \item errori semantici
+  \item errori sintattici
+  \item i warning
 \end{itemize} 
 
-Il controllo degli errori viene eseguito ogni volta che il file su cui si stà lavorando
-viene salvato; un esempio del funzionamento è visibile in figura \ref{errorieditor}
+La classe che si occupa della gestione dei marker è la seguente:
+
+\begin{lstlisting}[caption={AbstractCompilerMessageParser}, style={java}]
+public abstract class AbstractCompilerMessageParser implements 
+                                           CompilerMessageParser {
+
+    protected static final String ERROR = "ERROR"; 
+    protected static final String WARNING = "WARNING";
+    protected static final String NOTICE = "NOTICE"; 
+
+    public void parseCompilerMessage(
+                            IFile in_file, String in_compilerOutPut)
+            throws CoreException {
+        String lc_fileName = in_file.getName();
+        StringTokenizer tokenizer =  
+                       new StringTokenizer(in_compilerOutPut, "\n"); 
+        while (tokenizer.hasMoreElements()) {
+            String current = (String) tokenizer.nextElement();
+            parseLine(in_file, current);
+        }
+    }
+
+    /**
+     * @param in_file
+     * @param lc_fileName
+     * @param current
+     * @throws CoreException
+     */
+    protected abstract void parseLine(IFile in_file, 
+                               String in_ligne) throws CoreException;
+    /**
+     * @param in_file
+     * @param message
+     * @param lineNumber
+     * @throws CoreException
+     */
+    protected void setMarker(IFile in_file, String message, 
+                               int lineNumber) throws CoreException {
+        Map attributes = new HashMap();
+    
+        if (message.startsWith(ERROR)){
+        	attributes.put(IMarker.SEVERITY, new Integer(
+                    IMarker.SEVERITY_ERROR));
+        }
+        else if (message.startsWith(WARNING)){
+            attributes.put(IMarker.SEVERITY, new Integer(
+                    IMarker.SEVERITY_WARNING));}
+        else
+            attributes.put(IMarker.SEVERITY, new Integer(
+                    IMarker.SEVERITY_INFO));
+    
+        MarkerUtilities.setLineNumber(attributes, lineNumber);
+        MarkerUtilities.setMessage(attributes, "Message"+message);
+        MarkerUtilities.createMarker(in_file, attributes,
+                IMarker.PROBLEM);
+    }
+}
+
+\end{lstlisting}
+\\*
+Un esempio del funzionamento è visibile in figura \ref{errorieditor}.
 
 \begin{figure}[htp]
 \begin{center}
