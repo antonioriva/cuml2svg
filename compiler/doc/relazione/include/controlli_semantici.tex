@@ -12,3 +12,25 @@ I controlli semantici effettuati sono quelli elencati sotto:
    nome)
    \item non è possibile inserire la stessa classe in un diagramma 
 \end{itemize}
+
+I controlli vengono effettuati con due modalità: quando i dati devono essere
+verificati localmente vengono passati sull'albero, mentre se sono dati che vanno
+raccolti per tutto l'albero e poi controllati alla radice vengono gestiti per
+mezzo di variabili globali.
+
+Esempi di variabili globali sono la lista delle classi dichiarate, delle
+relazioni dichiarate, delle classi contenute nel diagramma; mentre vengono passati
+sull'albero la
+definizione dei Gruppi, delle Classi, degli Attributi, dei Metodi.
+
+Per effettuare i controlli sono stati definite delle funzioni semantiche: eccone
+una rappresentazione esplicativa.
+
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[width=0.9\textwidth]{img/uml_compilatore.png}
+  \caption[labelInTOC]{Try}
+\end{center}
+\end{figure}
+
+Nel diagramma uml soprastante sono indicate le strutture

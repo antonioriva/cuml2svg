@@ -8,13 +8,17 @@ quello principale per poi riprenderlo successivamente; si è fatto in modo di
 separare fortemente le due sezioni in modo da poter implementare una
 funzionalità di solo checking (utile per il plugin eclipse).
 
-Questa funzionalità è lampante se si analizza il listato del comando:
+\emph{//TODO inserire commento su cambio di stati}
+
+\subsection{Utilizzo del compilatore da linea di comando}
+
+Per illustrare l'utilizzo del compilatore analizziamo il listato del comando:
 
 \begin{lstlisting}[ style={none}]
 java -jar cUml2Svg.jar --help
 \end{lstlisting}
 
-oppure eseguendo la classe ``org.cuml2svg.compiler.Compiler''. Il risultato sarà:
+oppure eseguiamo la classe ``org.cuml2svg.compiler.Compiler''; il risultato sarà:
 
 \begin{lstlisting}[caption={Output dell'help da linea di comando}, style={none}]
 cUml2Svg - generation of svg diagram
@@ -51,4 +55,32 @@ Analizzando le opzioni:
   diagramma; se non indicato punta alla cartella ``./templates''.
 \end{itemize} 
 
+L'esecuzione del compilatore necessità anche di alcune librerie (utili alla
+gestione dei template e dell'svg); queste librerie devono essere indicate nel
+classpath:
+
+\begin{itemize}
+  \item commons-collections-3.2.jar
+  \item jakarta-oro-2.0.8.jar
+  \item commons-lang-2.3.jar
+  \item velocity-1.5.jar
+  \item cUml2Svg.jar
+\end{itemize}
+
+E' anche disponibile uno script preconfezionato (da modificare in modo da
+aderire alla cartella di installazione):
+
+\begin{lstlisting}[caption={Output dell'help da linea di comando}, style={none},language=sh]
+#!/bin/bash
+
+java -cp "lib/cUml2Svg.jar:\
+	lib/commons-collections-3.2.jar:\
+ 	lib/commons-lang-2.3.jar:\
+ 	lib/jakarta-oro-2.0.8.jar:\
+ 	lib/velocity-1.5.jar" org.cuml2svg.compiler.Compiler $@
+\end{lstlisting}
+
+Questo script in un installazione dovrebbe prendere il nome di u2sc (Uml2Svg
+Compiler) che è il nome che appare nell'aiuto del visualizzabile con il
+parametro ``--help''.
 

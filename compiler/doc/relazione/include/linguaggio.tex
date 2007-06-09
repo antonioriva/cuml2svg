@@ -55,11 +55,11 @@ Analizziamo ora il contenuto delle varie sezioni.
 
 Nella sezione delle relazioni
 viene appunto dichiarata una lista di definizione che contiene il tipo della 
-ralazione, una lista di classi (complete di package) 
+relazione, una lista di classi (complete di package) 
 con cui creare una relazione del tipo scelto
 per ogni classe 3 parametri opzionali (che possono anche essere vuoti) in cui
 il primo parametro e l'ultimo possono essere utilizzati per la definizione delle
-cardinalità, mentre il parametro opzionale puù essere utilizzato per definire
+cardinalità, mentre il parametro opzionale può essere utilizzato per definire
 una descrizione della relazione; queste stringhe andranno a posizionarsi sul 
 disegno delle frecce.
 
@@ -92,7 +92,7 @@ Gli attributi vengono dichiarati come visibilità:
 \end{itemize}
 
 tipo (opzionale), nome attributo e valore di default (opzionale); la sintassi è
-quella inidicata nell'esempio sottostante.
+quella indicata nell'esempio sottostante.
 
 \begin{lstlisting}[caption={Dichiarazione di attributi}, style={model}]
 attributes{
@@ -105,7 +105,7 @@ attributes{
 \subsection{Metodi}
 
 Anche in questo caso la definizione dei metodi è del tutto simile alla
-difinizione della segnatura di un metodo in java.
+definizione della segnatura di un metodo in java.
 
 \begin{lstlisting}[caption={Dichiarazione di metodi}, style={model}]
 methods{
@@ -124,7 +124,7 @@ la definizione del solo nome, c'è anche la possibilità di assegnare un valore 
 default al parametro del metodo (caratteristica disponibile in alcuni linguaggi
 tipo il PHP).
 Possiamo notare il fatto che è possibile omettere gran parte degli attributi
-perchè l'idea è che deve essere obbligatorio definire solo gli elementi minimi
+perché l'idea è che deve essere obbligatorio definire solo gli elementi minimi
 per poi poter indicare, opzionalmente, solo ciò che si vuole rappresentare nel
 diagramma. 
 
@@ -167,7 +167,7 @@ Il codice sottostante definisce 2 gruppi; il primo contenente 2 sottogruppi e
 ]
 \end{lstlisting}
 
-In questo modo è molto semplice definire dei gruppi di oggetti da lagare tra di
+In questo modo è molto semplice definire dei gruppi di oggetti da legare tra di
 loro. Per ogni gruppo è possibile specificare delle proprietà subito dopo
 l'apertura della parentesi che modificano l'aspetto del gruppo o delle classi in
 esso contenute; le proprietà disponibili sono:
@@ -218,7 +218,7 @@ Il nome della classe può essere indicato per esplicito inserendo il nome della
 classe comprensivo di package oppure si possono inserire tutte le classi di un
 package semplicemente indicando il package e facendolo seguire da un ``.*''.
 
-Un semplice esempio eplicativo
+Un semplice esempio esplicativo:
 
 \begin{lstlisting}[caption={Diagramma decorato di attributi}, style={layout}] 
 import test.u2sm;
@@ -232,3 +232,6 @@ import test.u2sm;
 	(class nome.pkg.*)
 ]
 \end{lstlisting}
+
+
+\emph{TODO i tipo possono essere stringhe}
