@@ -7,7 +7,7 @@
 \usepackage{fullpage}
 \usepackage{color} 
 \definecolor{grayback}{rgb}{0.9,0.9,0.9}
-\definecolor{grayrows}{rgb}{0.3,0.3,0.3} 
+\definecolor{grayrows}{rgb}{0.5,0.5,0.5} 
 \usepackage{graphicx}
 \usepackage{listings} 
 
@@ -29,12 +29,16 @@
 
 \lstdefinelanguage{model}{
 morekeywords={class,package,relations,attributes,methods,public,private,protected,use,extend,depend,associate,include,composed,realize}
-,morestring=[b]"
+,morestring=[b]",
+    morecomment=[l]{//},    morecomment=[l]{\#},
+    morecomment=[s]{/*}{*/}
 }
 
 \lstdefinelanguage{layout}{
 morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
-,morestring=[b]"
+,morestring=[b]",
+    morecomment=[l]{//},    morecomment=[l]{\#},
+    morecomment=[s]{/*}{*/}
 }
 
 \lstdefinestyle{none}{
@@ -48,7 +52,8 @@ morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
 	abovecaptionskip=15pt,
 	showstringspaces=false,
 	style=num_righe,
-    morecomment=[l]{//},
+	commentstyle={\color{grayrows}\bfseries},
+    morecomment=[l]{//},    morecomment=[l]{\#},
     morecomment=[s]{/*}{*/}
 }
 
@@ -64,29 +69,12 @@ morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
 	abovecaptionskip=15pt,
 	showstringspaces=false,
 	style=num_righe,
-    morecomment=[l]{//},
-    morecomment=[s]{/*}{*/}
-}
-
-\lstdefinestyle{java}{
-language=java,
-frame=ltrb,
-	tabsize=2,
-	basicstyle=\small,
-	keywordstyle={\color{blue}\bfseries},
-	identifierstyle=\ttfamily,
-	stringstyle=\ttfamily,
-	captionpos=t,
-	abovecaptionskip=15pt,
-	showstringspaces=false,
-	style=num_righe,
-    morecomment=[l]{//},
-    morecomment=[s]{/*}{*/}
+	commentstyle={\color{grayrows}\bfseries}
 }
 
 \lstdefinestyle{layout}{
-language=layout,
-frame=ltrb,
+	language=layout,
+	frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
 	keywordstyle={\color{blue}\bfseries},
@@ -95,9 +83,8 @@ frame=ltrb,
 	captionpos=t,
 	abovecaptionskip=15pt,
 	showstringspaces=false,
-	style=num_righe,
-    morecomment=[l]{//},
-    morecomment=[s]{/*}{*/}
+	commentstyle={\color{grayrows}\bfseries},
+	style=num_righe
 }
 %Fine Preambolo
 
@@ -112,12 +99,10 @@ frame=ltrb,
 
 \input{include/schedule.tex}%fabio
 
-\chapter{Implementazione}
-\input{include/grammatica.tex}%antonio
-\input{include/controlli_semantici.tex}%antonio
-
 \input{include/implementazione_intro.tex}%antonio
 \input{include/implementazione_compiler.tex}%antonio
+\input{include/grammatica.tex}%antonio
+\input{include/controlli_semantici.tex}%antonio
 \input{include/implementazione_generazione_svg.tex}%fabio
 \input{include/implementazione_gui_eclipse.tex}%luca %fabio
 
