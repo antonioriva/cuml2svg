@@ -725,11 +725,16 @@ AttributeRef attribute_name():{Token t;AttributeRef a;}{
     	return a;}
 }
 
-///typed_attribute_name -> VARIABLE VARIABLE
-AttributeRef typed_attribute_name():{Token t,t1;AttributeRef a;}{
-	t=<VARIABLE> t1=<VARIABLE>{
+///typed_attribute_name -> (<VARIABLE>|<STRING>) VARIABLE
+AttributeRef typed_attribute_name():{Token t,t1;AttributeRef a;String n;}{
+	(
+	(t=<VARIABLE> {n= t.image;})
+	|(t=<STRING>{ n=t.image.substring(1,t.image.length()-1);})
+	) 
+	t1=<VARIABLE>
+	{
 	a = new AttributeRef(new Attribute(t1.image),t.beginLine,t.beginColumn,this.currentFileName);
-    a.getAttribute().setAttributeType(t.image);
+    a.getAttribute().setAttributeType(n);
 	return a;
 	}
 }
@@ -781,12 +786,16 @@ void method(Class currentDefinition):{
 	}
 }
 
-///typed_method -> VARIABLE VARIABLE
-MethodRef typed_method():{Token name,t;MethodRef m;}{
-	t=<VARIABLE> name=<VARIABLE> 
+///typed_method -> (<VARIABLE>|<STRING>) VARIABLE
+MethodRef typed_method():{Token name,t;MethodRef m;String n;}{
+	(
+	(t=<VARIABLE> {n= t.image;})
+	|(t=<STRING>{ n=t.image.substring(1,t.image.length()-1);})
+	) 
+	name=<VARIABLE>
 	{
 		m= new MethodRef(new Method(name.image),name.beginLine,name.beginColumn,this.currentFileName);
-		m.getMethod().setType(t.image);
+		m.getMethod().setType(n);
 		//TODO controllare il tipo del metodo
 		return m;
 	}
@@ -816,12 +825,16 @@ Attribute argument():{Token t;}{
 	}
 }
 
-///typed_argument -> VARIABLE VARIABLE
-Attribute typed_argument():{Token t; Token a;}{
-	t=<VARIABLE> a=<VARIABLE>
+///typed_argument -> (<VARIABLE>|<STRING>) VARIABLE
+Attribute typed_argument():{Token t; Token a;String n;}{
+	(
+	(t=<VARIABLE> {n= t.image;})
+	|(t=<STRING>{ n=t.image.substring(1,t.image.length()-1);})
+	) 
+	a=<VARIABLE>
 	{
 		Attribute arg=new Attribute(a.image);
-		arg.setAttributeType(t.image);
+		arg.setAttributeType(n);
 		return arg;
 	}
 }
