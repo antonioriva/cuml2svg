@@ -1,1 +1,54 @@
+\section{Implementazione Compilatore}
+
+Il compilatore è stato costruito con l'ausilio di javacc. Essendo il linguaggio
+costituito da due tipi di file è stato necessario capire come poter effettuare
+il parsing. La soluzione è stata quella di caricare (al momento della direttiva
+di import) il file al volo e iniziare il parsing del file sospendendo
+quello principale per poi riprenderlo successivamente; si è fatto in modo di
+separare fortemente le due sezioni in modo da poter implementare una
+funzionalità di solo checking (utile per il plugin eclipse).
+
+Questa funzionalità è lampante se si analizza il listato del comando:
+
+\begin{lstlisting}[ style={none}]
+java -jar cUml2Svg.jar --help
+\end{lstlisting}
+
+oppure eseguendo la classe ``org.cuml2svg.compiler.Compiler''. Il risultato sarà:
+
+\begin{lstlisting}[caption={Output dell'help da linea di comando}, style={none}]
+cUml2Svg - generation of svg diagram
+        from a coded rappresentation
+
+  Usage: u2sc [option]
+ 
+ --help         print this message
+ 
+ --disable-warning, -dw disable warning messages
+ --disable-error, -de   disable error messages
+ --disable-notice, -dn  disable notice mesages
+ 
+ --check, -c            only check syntax
+ 
+ --input, -i            input layout file path
+ --output, -o           output svg file path
+ -t                     path path to the template folder
+\end{lstlisting}
+
+Analizzando le opzioni:
+
+\begin{itemize}
+  \item --help: utile per stampare a monitor il messaggio di aiuto;
+  \item -dw,-de,-dn: per non stampare, nell'ordine, messaggi d'attenzione,
+  d'errore, di notifica;
+  \item -c: per effettuare solo i controllo del file e non generare l'output;
+  \item -i: il file di input da processare (obbligatorio);
+  \item -o: il file di output da processare (obbligatorio solo se non è presente
+  -c);
+  \item -t: è il percorso ai file di template per la generazione dell'svg, poter
+  indicare dove sono questi file permette ad un utente avanzato di intervenire
+  su questi file ed effettuare cambiamenti estetici alla visualizzazione del
+  diagramma; se non indicato punta alla cartella ``./templates''.
+\end{itemize} 
+
 

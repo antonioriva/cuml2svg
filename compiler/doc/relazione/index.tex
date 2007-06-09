@@ -24,22 +24,37 @@
     stepnumber=1,
     numberstyle=\footnotesize\color{grayrows},
     numbersep=10pt,
+    firstnumber=1
     }
 
 \lstdefinelanguage{model}{
 morekeywords={class,package,relations,attributes,methods,public,private,protected,use,extend,depend,associate,include,composed,realize}
-,morekeywords=[s]{[]}
 ,morestring=[b]"
 }
 
 \lstdefinelanguage{layout}{
-morekeywords={import,class,\@margin,\@hide−args,\@collapse,\@layout}
+morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
 ,morestring=[b]"
 }
 
+\lstdefinestyle{none}{
+	frame=ltrb,
+	tabsize=2,
+	basicstyle=\small,
+	keywordstyle={\color{blue}\bfseries},
+	identifierstyle=\ttfamily,
+	stringstyle=\ttfamily,
+	captionpos=t,
+	abovecaptionskip=15pt,
+	showstringspaces=false,
+	style=num_righe,
+    morecomment=[l]{//},
+    morecomment=[s]{/*}{*/}
+}
+
 \lstdefinestyle{model}{
-language=model,
-frame=ltrb,
+	language=model,
+	frame=ltrb,
 	tabsize=2,
 	basicstyle=\small,
 	keywordstyle={\color{blue}\bfseries},

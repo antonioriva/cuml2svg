@@ -28,11 +28,12 @@ public class Compiler {
 		h+="\n --disable-error, -de\tdisable error messages";
 		h+="\n --disable-notice, -dn\tdisable notice mesages";
 		h+="\n ";
-		h+="\n --check, -c\tonly check syntax";
+		h+="\n --check, -c\t\tonly check syntax";
 		h+="\n ";
 		h+="\n --input, -i\t\tinput layout file path";
 		h+="\n --output, -o\t\toutput svg file path";
-		h+="\n -t path\tpath to the template folder";
+		h+="\n -t\t\t\tpath path to the template folder";
+		System.out.println(h);
 		
 
 	}
