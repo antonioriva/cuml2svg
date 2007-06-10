@@ -1,0 +1,8 @@
+class Classe{
+	relations{
+		realize Interfaccia("","realizza","");
+	}
+}
+
+interface Interfaccia{
+}

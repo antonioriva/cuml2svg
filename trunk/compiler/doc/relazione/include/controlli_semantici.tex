@@ -23,9 +23,8 @@ Esempi di variabili globali sono la lista delle classi dichiarate, delle
 relazioni dichiarate, delle classi contenute nel diagramma; mentre vengono passati
 sull'albero la
 definizione dei Gruppi, delle Classi, degli Attributi, dei Metodi.
-
-Per effettuare i controlli sono stati definite delle funzioni semantiche: eccone
-una rappresentazione esplicativa.
+Per effettuare i controlli sono stati definite delle funzioni semantiche
+all'interno del file ``.cc''.
 
 \begin{figure}[htp]
 \begin{center}
@@ -36,3 +35,9 @@ una rappresentazione esplicativa.
 
 Nel diagramma uml soprastante\footnote{Il digramma è stato creato con cUml2Svg} sono
 indicate le strutture dati e le funzioni di supporto per i controlli semantici.
+In questa implementazione nessun controllo semantico blocca la compilazione,
+viene visualizzato il messaggio di errore ma il diagramma viene comunque
+generato; è stato scelto questo comportamento per fare in modo di visualizzare
+tutti gli errori oltre a permettere ad un utente esperto (che conosce il
+funzionamento della generazione del diagramma) di utilizzare il sistema in
+situazioni particolari come per esempio l'import di modelli multipli e sovrapposti.
