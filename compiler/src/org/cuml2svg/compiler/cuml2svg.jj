@@ -474,7 +474,7 @@ void group_preference(Group currentGroup):{}{
 
 }
 
-///group_definition -> [ (CLASS_TYPE | CLASS_NAME_WITH_PACKAGE | CLASS_NAME | CLASS_RANGE_WITH_PACKAGE) ]
+///group_definition -> "(" (CLASS_TYPE | CLASS_NAME_WITH_PACKAGE | CLASS_NAME | CLASS_RANGE_WITH_PACKAGE) ")"
 void group_definition(Group currentGroup):{Token name;}{
 	
 	"(" <CLASS_TYPE> (name=<CLASS_NAME_WITH_PACKAGE>|name=<CLASS_NAME>|name=<CLASS_RANGE_WITH_PACKAGE>) ")"

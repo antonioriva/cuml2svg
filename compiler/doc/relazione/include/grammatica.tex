@@ -1,4 +1,5 @@
 
+
 \begin{itemize}
   
 \item s   -\textgreater   layout  /
@@ -9,9 +10,9 @@
 
  \item main{\_}group   -\textgreater   groups
 
- \item groups   -\textgreater   group{\_}preference*  
+ \item groups   -\textgreater  ``['' group{\_}preference*  
  
- (groups \textbar group{\_}definition)+
+ (groups \textbar group{\_}definition)+ ``]''
 
  \item group{\_}preference   -\textgreater   layout{\_}preference
 
@@ -37,15 +38,19 @@
  
  MARGIN{\_}SIZE{\_}RIGHT  MARGIN{\_}SIZE{\_}BOTTOM  MARGIN{\_}SIZE{\_}LEFT
 
- \item model   -\textgreater   (class{\_}definition+   \textbar   package{\_}definition+)  /
+ \item model   -\textgreater   (class{\_}definition+  
+ 
+   \textbar   package{\_}definition+)  /
 
- \item package{\_}definition   -\textgreater   PACKAGE  PACKAGE{\_}NAME  \{  class{\_}definition+  \}
+ \item package{\_}definition   -\textgreater   PACKAGE  PACKAGE{\_}NAME  
+ 
+ ``\{''  class{\_}definition+  ``\}''
 
  \item class{\_}definition   -\textgreater   COMMENT?  VISIBILITY?  
  
- CLASS{\_}TYPE  CLASS{\_}NAME  \{  relations?  attributes?  methods?  \}
+ CLASS{\_}TYPE  CLASS{\_}NAME  ``\{'' relations?  attributes?  methods?  ``\}''
 
- \item relations   -\textgreater   RELATIONS  \{  relation  \}
+ \item relations   -\textgreater   RELATIONS  ``\{''  relation  ``\}''
 
  \item relation   -\textgreater   COMMENT?  RELATION{\_}TYPE  
  
@@ -65,7 +70,7 @@
  
  RELATION{\_}CARDINALITY{\_}COMMA  CARDINALITY  CARDINALITY{\_}STOP
 
- \item attributes   -\textgreater   ATTRIBUTES  \{  attribute+  \}
+ \item attributes   -\textgreater   ATTRIBUTES  ``\{''  attribute+  ``\}''
 
  \item attribute   -\textgreater   COMMENT?  VISIBILITY?  
  
@@ -79,7 +84,7 @@
 
  \item equal{\_}to   -\textgreater   (NUMBER \textbar STRING)
 
- \item methods   -\textgreater   METHODS  \{  method  \}
+ \item methods   -\textgreater   METHODS  ``\{''  method  ``\}''
 
  \item method   -\textgreater   COMMENT?  VISIBILITY?  
  
