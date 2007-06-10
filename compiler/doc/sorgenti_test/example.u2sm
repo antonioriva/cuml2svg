@@ -1,0 +1,26 @@
+package org.example {
+  class Classe1 {
+    attributes {
+      public int x = 0;
+    }
+
+    methods {
+      public void print();
+    }
+  }
+
+  class Classe2 {
+    relations {
+      extend org.example.Classe1 ("","estende","");
+    }
+
+    attributes {
+      private int value = 0;
+    }
+
+    methods {
+      public void setValue(int newValue);
+      public int getValue();
+    }
+  }
+}

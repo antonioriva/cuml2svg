@@ -1,0 +1,210 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+     width="29.7cm" height="21cm" viewBox="-150 -150 1478 490"
+     xmlns="http://www.w3.org/2000/svg">
+  <desc>Export of </desc>
+  <defs
+     id="defs4">
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Use">
+      <path
+         d="M -35.0,11.5 L -0.0,0.0 L -35.0,-11.5 L -35.0,11.5 z "
+         transform="scale(0.9,0.9)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+      />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Extend">
+      <path
+         d="M -35.0,11.5 L -0.0,0.0 L -35.0,-11.5 L -35.0,11.5 z "
+         transform="scale(0.9,0.9)"
+         style="fill-rule:evenodd;fill:#ffffff;stroke:#000000;stroke-width:1pt;marker-start:none"
+      />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Depend">
+      <path
+         d="M -35.0,11.5 L -0.0,0.0 L -35.0,-11.5 "
+         transform="scale(0.9,0.9)"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+      />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Include">
+      <path
+         d="M 0.0,0.0 L 10.0,10.0 L 20.0,0.0 L 10.0,-10.0 L 0.0,0.0 z "
+         transform="scale(1.5,1.5)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;marker-start:none"
+      />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Composed">
+      <path
+         d="M 0.0,0.0 L 10.0,10.0 L 20.0,0.0 L 10.0,-10.0 L 0.0,0.0 z "
+         transform="scale(1.5,1.5)"
+         style="fill-rule:evenodd;fill:#ffffff;stroke:#000000;stroke-width:1pt;marker-start:none"
+      />
+    </marker>
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Realize">
+      <path
+         d="M -35.0,11.5 L -0.0,0.0 L -35.0,-11.5 L -35.0,11.5 z "
+         transform="scale(0.9,0.9)"
+         style="fill-rule:evenodd;fill:#ffffff;stroke:#000000;stroke-width:1pt;marker-start:none"
+      />
+    </marker>
+  </defs>
+  <g transform="translate(0,0)" >
+  <rect
+    width="414"
+    height="152"
+    rx="0"
+    ry="0"
+    x="0"
+    y="0"
+    style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
+  />
+  <text
+    x="20"
+    y="38"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+    <tspan
+            x="227"
+      y="38"
+      style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
+      org.example.Classe1
+     </tspan>
+  </text>
+  <path
+         d="M 0,48 L 414,48"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+  <text
+    x="20"
+    y="76"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+      +x:int=0
+  </text>
+  <path
+         d="M 0,86 L 414,86"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+  <text
+    x="20"
+    y="114"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+      +print():void
+  </text>
+</g><g transform="translate(764,0)" >
+  <rect
+    width="414"
+    height="190"
+    rx="0"
+    ry="0"
+    x="0"
+    y="0"
+    style="fill:#fff6d5;stroke:#800080;stroke-width:1.25;stroke-miterlimit:4;stroke-dasharray:none"
+  />
+  <text
+    x="20"
+    y="38"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+    <tspan
+            x="227"
+      y="38"
+      style="font-size:28px;text-align:center;text-anchor:middle;font-family:Bitstream Vera Sans Mono">
+      org.example.Classe2
+     </tspan>
+  </text>
+  <path
+         d="M 0,48 L 414,48"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+  <text
+    x="20"
+    y="76"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+      -value:int=0
+  </text>
+  <path
+         d="M 0,86 L 414,86"
+     style="fill:none;fill-rule:evenodd;stroke:#800080;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  />
+  <text
+    x="20"
+    y="114"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+      +setValue():void
+  </text>
+  <text
+    x="20"
+    y="152"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+      +getValue():int
+  </text>
+</g><g
+   style="stroke:#000000;stroke-opacity:1">
+  <path
+     d="M 764.0,95.0 L 414.0,95.0"
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Extend);stroke-opacity:1"/>
+  <text
+    x="774.0"
+    y="85.0"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+    <tspan
+      x="774.0"
+      y="85.0"
+      style="font-size:28px;text-align:end;text-anchor:end;font-family:Bitstream Vera Sans Mono;font-style: italic;">
+      
+     </tspan>
+  </text>
+  <text
+    transform="translate(579.0, 95.0)"
+    x="0"
+    y="0"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+    <tspan
+      x="0"
+      y="0"
+      style="font-size:28px;text-align:middle;text-anchor:middle;font-family:Bitstream Vera Sans Mono;font-style: italic;">
+      estende
+     </tspan>
+  </text>
+  <text
+    x="424.0"
+    y="85.0"
+    style="font-size:28px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans Mono">
+    <tspan
+      x="424.0"
+      y="85.0"
+      style="font-size:28px;text-align:start;text-anchor:start;font-family:Bitstream Vera Sans Mono;font-style: italic;">
+      
+     </tspan>
+  </text>
+</g></svg>
