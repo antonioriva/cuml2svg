@@ -54,11 +54,12 @@ Le parole chiave di questo modello sono specificate nella stringa
 utilizzata la classe RuleBrace, che è utilizzata per la gestione delle
 parentesi.\\* 
 La classe che esegue la scansione dello  \emph{schema di layout} e ne gestisce
-l'editor, invece, è la seguente:
+l'editor, ha la stessa struttura di quella del \emph{modello dati}; le regole
+per i commenti e per le parentesi, infatti, non cambiano. 
+L'unica differenza è nella gestione delle keywords che nel modello dello
+\emph{schema di layout} si presenta così:
 
 \begin{lstlisting}[caption={LayoutScanner}, style={java}]
-
-public class LayoutScanner extends RuleBasedScanner {
 	private static String[] keywordslayout= {"@layout","@hide-args",
 												"@collapse","@margin"};
 	private static String[] keywords= { "class","import","interface"};
@@ -73,39 +74,13 @@ public class LayoutScanner extends RuleBasedScanner {
 				manager.getColor(ColorConstants.LAYOUT), 	//parola
 				null,                                     //sfondo
 				SWT.BOLD));
-		WordRule wordRule = new WordRule(new WordDetector());
-
-		for (int i = 0; i < keywords.length; i++) {
-			wordRule.addWord(keywords[i], token);
-		}
-		for (int i = 0; i < keywordslayout.length; i++) {
-			wordRule.addWord(keywordslayout[i], tokenlayout);
-		}
-		rules.add(wordRule);
-		Token tokencomment = new Token(new TextAttribute(
-								manager.getColor(ColorConstants.COMMENT)));
-		//Add rule for processing instructions		
-		rules.add( new SingleLineRule("//", "", tokencomment));
-		rules.add( new SingleLineRule("#", "", tokencomment));
-		rules.add( new MultiLineRule("/*", "*/", tokencomment));
-        //gestione colore parentesi
-		token = new Token(new TextAttribute(
-										manager.getColor(ColorConstants.BRACET)));
-		RuleBrace braceRule = new RuleBrace(token);
-		rules.add(braceRule);
-		IRule[] r= new IRule[rules.size()];
-		setRules(rules.toArray(r));
-	}
-}
-
-
+		
 \end{lstlisting}
 
-In questo modello le parole chiave sono specificate nella
-stringa \emph{Keywords}, mentre le proprietà disponibili sono definite in
-\emph{keywordslayout}, in questo modo è possibile gestirle in modo separato.
-Per la gestione delle parentesi e dei commenti sono state utilizzate le stesse
-tecniche del \emph{modello dati}.
+La divisione delle parole chiave, che sono specificate nella stringa 
+\emph{Keywords} e delle proprietà dello schema, che sono specificate nella
+stringa \emph{keywordslayout},  è stata fatta per dare la possibilità di gestirle in modo separato.
+
 
 \subsection{Controllo degli errori} 
 Il plugin si occupa di visualizzare, tramite dei marker laterali, gli errori 
