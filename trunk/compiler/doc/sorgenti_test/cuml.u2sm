@@ -1,0 +1,30 @@
+
+
+
+
+public class Temp {
+attributes{
+	 	"ArrayList<Class>" declaredClassList;
+         "ArrayList<RelationRef>" declaredRelationList;
+         "ArrayList<Class>" classInDiagram;
+         Diagram diagram;
+         String currentPackage;
+         String currentFileName;
+         String currentClassName;
+}
+methods{
+	public  boolean isRelationAlreadyDeclared(Class c, Relation r) ;
+
+	public  boolean isMethodAlreadyDeclared(Class c, Method m) ;
+
+	public  boolean isDuplicatedArgsName(Method m) ;
+
+	public boolean isClassAlreadyDeclared(String className);
+
+	public boolean isAttributeAlreadyDeclared("ArrayList<Attribute>" l, Attribute a) ;
+
+	public boolean isClassInDiagram(Class c);
+	}
+
+	
+}

@@ -1,22 +1,42 @@
-Per il progetto è stato sviluppato un plugin per Eclipse che si occupa di: \\*
+\section{Plugin Eclipse}
+
+Per il progetto è stato sviluppato un plugin per Eclipse che si occupa di:
 \begin{itemize}
   \item text-highlight
   \item controllo degli errori
   \item compilazione
 \end{itemize} 
 
+Il pacchetto viene fornito sia come archivio (da estrarre nella cartella di un
+eclipse) sia come IDE completo basato sul platform di Eclipse 3.2 (Callisto).
+
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[width=0.9\textwidth]{img/eclipse}
+  \caption[labelInTOC]{Screenshot dell'ambiente eclipse con un editor di layout
+  attivo}
+  \label{errorieditor} 
+\end{center}
+\end{figure}
+
 
 \subsection{Text-highlight}
 Il plugin gestisce il \emph{modello dati} e lo \emph{schema di layout} in modi differenti; 
-entrambi, infatti, presentano caratteristiche e strutture diverse tra loro. \\*
+entrambi, infatti, presentano caratteristiche e strutture diverse tra loro. 
 La classe che esegue la scansione del \emph{modello dati} e ne gestisce l'editor
-è la seguente:
+è la ``ModelScanner'' di cui vediamo i passi essenziali:
 
+In questo spezzone di codice vengono definite le keyword del file di tipo modello:
 \begin{lstlisting}[caption={ModelScanner}, style={java}]
-public class ModelScanner extends RuleBasedScanner {
 	private static String[] keywords= { "class","package", "public",
 			"private","interface", "methods","extend", "relations", 
 			"attributes"  };
+\end{lstlisting}
+
+Vengono poi definite (nel Costruttore) una lista di regole che definiscono cosa
+evidenziare associandole a un ``token'' che definisce l'aspetto:
+
+\begin{lstlisting}[caption={ModelScanner}, style={java}]
 	public ModelScanner(ColorManager manager) {
 					manager.getColor(ColorConstants.DEFAULT)));
 		ArrayList<IRule> rules= new ArrayList<IRule>();	
@@ -48,11 +68,6 @@ public class ModelScanner extends RuleBasedScanner {
 }
 \end{lstlisting}
 
-
-Le parole chiave di questo modello sono specificate nella stringa
-\emph{Keywords}, inoltre vengono definite le regole per i commenti e viene
-utilizzata la classe RuleBrace, che è utilizzata per la gestione delle
-parentesi.\\* 
 La classe che esegue la scansione dello  \emph{schema di layout} e ne gestisce
 l'editor, ha la stessa struttura di quella del \emph{modello dati}; le regole
 per i commenti e per le parentesi, infatti, non cambiano. 
@@ -79,92 +94,65 @@ L'unica differenza è nella gestione delle keywords che nel modello dello
 
 La divisione delle parole chiave, che sono specificate nella stringa 
 \emph{Keywords} e delle proprietà dello schema, che sono specificate nella
-stringa \emph{keywordslayout},  è stata fatta per dare la possibilità di gestirle in modo separato.
+stringa \emph{keywordslayout},  è stata fatta per dare la possibilità 
+di gestirle in modo separato.
 
 
 \subsection{Controllo degli errori} 
+
 Il plugin si occupa di visualizzare, tramite dei marker laterali, gli errori 
 commessi in fase di scrittura del \emph{modello dati} e dello \emph{schema di
-layout}. \\*
+layout}.
 Il controllo degli errori viene eseguito ogni volta che il file su cui si stà lavorando
-viene salvato; \\*
+viene salvato; 
 Vengono controllati tutti i tipi di errori:
 \begin{itemize}
   \item errori semantici
   \item errori sintattici
-  \item i warning
+  \item erorri lessicali
 \end{itemize} 
 
-La classe che si occupa della gestione dei marker è la seguente:
+Vengono inoltre gestiti tutti i messaggi di attenzione (Warning) e nitifica
+(Notice) segnalandoli con icone opportune
 
-\begin{lstlisting}[caption={AbstractCompilerMessageParser}, style={java}]
-public abstract class AbstractCompilerMessageParser implements 
-                                           CompilerMessageParser {
+La classe che si occupa della gestione dei marker è la seguente
+``AbstractCompilerMessageParser'' che prende in input i messaggi prodotti dal
+compilatore ed effettuando il parsing riga per riga estrae i messaggi validi e
+li adatta al codice sorgente in base al tipo e alla linea che ha generato l'errore.
 
-    protected static final String ERROR = "ERROR"; 
-    protected static final String WARNING = "WARNING";
-    protected static final String NOTICE = "NOTICE"; 
 
-    public void parseCompilerMessage(
-                            IFile in_file, String in_compilerOutPut)
-            throws CoreException {
-        String lc_fileName = in_file.getName();
-        StringTokenizer tokenizer =  
-                       new StringTokenizer(in_compilerOutPut, "\n"); 
-        while (tokenizer.hasMoreElements()) {
-            String current = (String) tokenizer.nextElement();
-            parseLine(in_file, current);
-        }
-    }
-
-    /**
-     * @param in_file
-     * @param lc_fileName
-     * @param current
-     * @throws CoreException
-     */
-    protected abstract void parseLine(IFile in_file, 
-                               String in_ligne) throws CoreException;
-    /**
-     * @param in_file
-     * @param message
-     * @param lineNumber
-     * @throws CoreException
-     */
-    protected void setMarker(IFile in_file, String message, 
-                               int lineNumber) throws CoreException {
-        Map attributes = new HashMap();
-    
-        if (message.startsWith(ERROR)){
-        	attributes.put(IMarker.SEVERITY, new Integer(
-                    IMarker.SEVERITY_ERROR));
-        }
-        else if (message.startsWith(WARNING)){
-            attributes.put(IMarker.SEVERITY, new Integer(
-                    IMarker.SEVERITY_WARNING));}
-        else
-            attributes.put(IMarker.SEVERITY, new Integer(
-                    IMarker.SEVERITY_INFO));
-    
-        MarkerUtilities.setLineNumber(attributes, lineNumber);
-        MarkerUtilities.setMessage(attributes, "Message"+message);
-        MarkerUtilities.createMarker(in_file, attributes,
-                IMarker.PROBLEM);
-    }
-}
-
-\end{lstlisting}
-\\*
-Un esempio del funzionamento è visibile in figura \ref{errorieditor}.
 
 \begin{figure}[htp]
 \begin{center}
-  \includegraphics[width=0.9\textwidth]{img/errori_editor.png}
-  \caption[labelInTOC]{Gestione degli errori}
+  \includegraphics[width=0.9\textwidth]{img/error}
+  \caption[labelInTOC]{Esempio di segnalazione di errore}
   \label{errorieditor} 
 \end{center}
-\end{figure} 
+\end{figure}
 
-\subsection{Compilazione} 
-Il plugin, ogni volta che viene salvato il file che si occupa di definire lo
-\emph{schema di layout}, si occupa eseguire in modo automatico la compilazione.
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[width=0.9\textwidth]{img/notice}
+  \caption[labelInTOC]{Esempio di segnalazione di notifica}
+  \label{errorieditor} 
+\end{center}
+\end{figure}
+ 
+ \subsection{Compilazione} 
+La compilazione avviene in modo implicito nel momento del salvataggio di un file
+di tipo layout. Così facendo viene permesso allo sviluppatore di correggere alcuni
+errori ancor prima di visualizzare l'output di compilazione.
+
+Il file compilato per default è un file con il nome del file di layout seguito
+dall'estenzione ``.svg''.
+
+E' stata pure sviluppata una ``Vista Console'' per visualizzare tutto l'output
+generato dal plugin.
+
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[width=0.9\textwidth]{img/console_view}
+  \caption[labelInTOC]{Vista Console}
+  \label{errorieditor} 
+\end{center}
+\end{figure}

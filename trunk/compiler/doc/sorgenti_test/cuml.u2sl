@@ -1,0 +1,5 @@
+import cuml.u2sm;
+
+[
+	(class Temp )
+]

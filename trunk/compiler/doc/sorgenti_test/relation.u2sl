@@ -1,0 +1,25 @@
+import relation.u2sm;
+
+[
+	[
+		@layout *x1
+		@margin 0 250 0 0
+		(class Class1)
+		(class Class2)
+		(class Class3)
+		(class Class4)
+		(class Class5)
+		(class Class6)
+		(class Class7)
+	]
+	[
+		@layout *x1
+		(class Class11)
+		(class Class22)
+		(class Class33)
+		(class Class44)
+		(class Class55)
+		(class Class66)
+		(class Class77)
+	]
+]
