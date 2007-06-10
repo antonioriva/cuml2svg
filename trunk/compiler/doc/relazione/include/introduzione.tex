@@ -9,28 +9,31 @@ controllo di dichiarazione/uso/non redichiarazione
 delle classi e a controlli di non re-dichiarazione di package.
 
 
-\section{Uml} 
+\section{cUml2Svg - Coded UML to SVG} 
+Il progetto da noi sviluppato si chiama \emph{cUml2Svg}. \\*  
+L'acronimo \emph{cUml2Svg} sta per ``\emph{Coded UML to SVG}`` ; 
+il progetto consiste nello sviluppare un traduttore che traduca da una
+rappresentazione in codice dei digrammi UML delle classi alla rappresentazione
+grafica tipica dell'UML.\\*
+La rappresentazione grafica da noi scelta e sulla quale abbiamo basato il nostro
+progetto è l'SVG.
+
+Per utilizzare al meglio il nostro progetto abbiamo sviluppato anche una 
+interfaccia grafica, che aiuta nella stesura dei modelli e degli schemi da
+utilizzare. In particolare abbiamo sviluppato il text-highlight, i
+controlli degli errori (errori di sintassi, errori semantici e warning) e la
+compilazione automatica.
+L'interfaccia grafica è stata costruita come estensione del popolare ambiente 
+ di sviluppo Eclipse~\cite{eclipse_website:1}
+
+
+\section{Uml}  
 
 L'acronimo UML significa \emph{Unified Modeling Language} ("linguaggio di modellazione
 unificato"), è un linguaggio di modellazione e specifica basato sul paradigma object-oriented. 
 UML è un linguaggio di modellazione semi-formale; il diagramma che genera è costituito da elementi
 grafici, elementi testuali formali, ed elementi di testo libero. Ha una semantica molto precisa e un
 grande potere descrittivo.
-
-
-
-Rappresentazione di un package
-
-
-
-Rappresentazione di una classe/interfaccia
-
-
-
-Rappresentazione di una classe/interfaccia
-
-
-
 
 
 \section{SVG - Scalable Vector Graphics} 
@@ -46,22 +49,17 @@ In Particolare SVG permette di trattare tre tipi di oggetti grafici:
   \item immagini della grafica raster e immagini digitali;
   \item testi esplicativi, eventualmente cliccabili.
 \end{itemize} 
+ 
+La visualizzazione del risultato in modalità grafica è molto semplice ed
+immediata, basta utilizzare il browser-web Mozilla
+Firefox~\cite{firefox_website:1}.
 
-\section{cUml2Svg - Coded UML to SVG} 
-Il progetto da noi sviluppato si chiama \emph{cUml2Svg}. \\*
-L'acronimo \emph{cUml2Svg} sta per ``\emph{Coded UML to SVG}"; 
-il progetto consiste nello sviluppare un traduttore che traduca da una
-rappresentazione in codice dei digrammi UML delle classi alla rappresentazione
-grafica tipica dell'UML.\\*
-La rappresentazione grafica da noi scelta e sulla quale abbiamo basato il nostro
-progetto è l'SVG.\\*
+Per la modifica della reppresentazione è possibile utilizzare un editor molto
+funzionale e completo, si tratta di inkscape~\cite{Inkscape_website:1}. \\* 
+Entrambi i programmi da utilizzare sono opensource e
+multi-piattaforma, è possibile, infatti, installarli su macchine con sistema 
+operativo Unix, MacOs e Windows.
+     
 
 
-Per utilizzare al meglio il nostro progetto abbiamo sviluppato anche una 
-interfaccia grafica, che aiuta nella stesura dei modelli e degli schemi da
-utilizzare. in particolare abbiamo sviluppato il text-highlight, i
-controlli degli errori (errori di sintassi, errori semantici e warning) e la
-compilazione automatica.
-L'interfaccia grafica è stata costruita
-come estensione del popolare ambiente di sviluppo Eclipse~\cite{eclipse_website:1}
-
+ 
