@@ -1,0 +1,62 @@
+class Class1{
+	relations{
+		use Class11("","use","");
+	}
+}
+
+class Class11{
+}
+#########################
+class Class2{
+	relations{
+		extend Class22("","extend","");
+	}
+}
+
+class Class22{
+}
+#########################
+class Class3{
+	relations{
+		associate Class33("","associate","");
+	}
+}
+
+class Class33{
+}
+#########################
+class Class4{
+	relations{
+		include Class44("","include","");
+	}
+}
+
+class Class44{
+}
+#########################
+class Class5{
+	relations{
+		realize Class55("","realize","");
+	}
+}
+
+class Class55{
+}
+#########################
+class Class6{
+	relations{
+		depend Class66("","depend","");
+	}
+}
+
+class Class66{
+}
+#########################
+class Class7{
+	relations{
+		composed Class77("","composed","");
+	}
+}
+
+class Class77{
+}
