@@ -13,13 +13,15 @@ Il seguente listato definisce una classe di nome Class1 con un attributo
 pubblico di tipo intero e con valore iniziale pari a 0. La classe ha inoltre un
 metodo pubblico print.
 \begin{lstlisting}[language=model, caption={Semplice esempio di modello}, style={model}]
-class Classe1 {
-  attributes {
-    public int x = 0;
-  }
-
-  methods {
-    public void print();
+package org.example {
+  class Classe1 {
+    attributes {
+      public int x = 0;
+    }
+  
+    methods {
+      public void print();
+    }
   }
 }
 \end{lstlisting}
@@ -41,7 +43,7 @@ package org.example {
 
   class Classe2 {
     relations {
-      extend Class1 ("(1,*)","estende","(1,*)");
+      extend org.example.Classe1 ("(1,*)","estende","(1,*)");
     }
 
     attributes {
@@ -76,6 +78,13 @@ import example(*\ref{model_complex}*).u2sm;
 
 Questo comando indica di includere tutte le classi del package org.example.
 
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[width=0.5\textwidth]{img/esempio1.png}
+  \caption[labelInTOC]{Risultato dell'esportazione del codice dell'esempio 1}
+\end{center}
+\end{figure}
+
 \subsection{Un esempio un po' più complesso}
 In questo secondo esempio viene mostrato come includere il file di modello con
 la definizione degli oggetti e si utilizzano alcuni parametri avanzati come:
@@ -85,14 +94,23 @@ la definizione degli oggetti e si utilizzano alcuni parametri avanzati come:
 nell'ordine \lstinline{top right bottom left} come da standard W3C.
 \end{itemize}
 
-\begin{lstlisting}[language=layout, caption={Un semplice esempio}, style={layout}, label=layout_simple]
+\begin{lstlisting}[language=layout, caption={Un esempio un po' più complesso}, style={layout}, label=layout_simple]
 import example(*\ref{model_complex}*).u2sm;
 [
   @hide-args
-  (class org.example.Class1)
+  (class org.example.Classe1)
   [
-    @margin 0 0 0 50
-    (class org.example.Class1)
+    @margin 0 0 0 300
+    (class org.example.Classe2)
   ]
 ]
 \end{lstlisting}
+
+Ecco il risultato dell'esportazione
+
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[width=0.9\textwidth]{img/esempio2.png}
+  \caption[labelInTOC]{Risultato dell'esportazione del codice dell'esempio 2}
+\end{center}
+\end{figure}
