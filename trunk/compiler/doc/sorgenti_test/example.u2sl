@@ -1,0 +1,9 @@
+import example.u2sm;
+[
+  @hide-args
+  (class org.example.Classe1)
+  [
+    @margin 0 0 0 300
+    (class org.example.Classe2)
+  ]
+]
