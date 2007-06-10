@@ -2,7 +2,7 @@
 
 
 
-public class Temp {
+public class Compiler {
 attributes{
 	 	"ArrayList<Class>" declaredClassList;
          "ArrayList<RelationRef>" declaredRelationList;

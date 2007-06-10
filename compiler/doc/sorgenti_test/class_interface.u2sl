@@ -1,0 +1,14 @@
+import class_interface.u2sm;
+
+[
+
+	[
+		@layout 1x*
+		[
+			@margin 0 250 0 0
+			(class Classe)
+		]
+		(interface Interfaccia)
+	]
+	
+]
