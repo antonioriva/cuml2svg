@@ -1,88 +1,61 @@
-
 package visitor{
 	class Client{
 		relations{
-			use Visitor , ObjectStructure;
+			depend visitor.Visitor("","import","");
+			realize visitor.ObjectStructure;
 		}
 	}
-	class Visitor{
-					
+	interface Visitor{
 		methods{
-			public int VisitConcreteElementA(
-				is ConcreteElementB
-			);
-			public VisitConcreteElementB(
-				ConcreteElementB
-			);
-			
+			public int VisitConcreteElementA(is ConcreteElementB);
+			public VisitConcreteElementB(ConcreteElementB);
 		}
-
 	}
 	class ConcreteVisitor1{
 		relations{
-			extend Visitor;
+			realize visitor.Visitor;
 		}
 		methods{
-			public VisitConcreteElementA(
-				ConcreteElementA
-			);
-			public VisitConcreteElementB(
-				ConcreteElementB
-			);
+			public VisitConcreteElementA(ConcreteElementA);
+			public VisitConcreteElementB(ConcreteElementB);
 		}
 	}
 	class ConcreteVisitor2{
 		relations{
-			extend Visitor;
+			realize visitor.Visitor;
 		}
 		methods{
-			public VisitConcreteElementA(
-				ConcreteElementA
-			);
-			public VisitConcreteElementB(
-				ConcreteElementB
-			);
+			public VisitConcreteElementA(ConcreteElementA);
+			public VisitConcreteElementB(ConcreteElementB);
 		}
 	}
 	class ObjectStructure{
 		relations{
-			use Element;
+			depend visitor.Element("","import","");
 		}
 	}
 	class Element{
 		methods{
-			public Accept(
-				Visitor Visitor
-			);
+			public Accept(Visitor Visitor);
 		}
 	}
 	class ConcreteElementA{
 		relations{
-			extend Element;
+			realize visitor.Element;
 		}
 		methods{
-			public Accept(
-				Visitor Visitor
-			);
-			public OperationA(
-			);
+			public Accept(Visitor Visitor);
+			public OperationA();
 		}
 	}
 	class ConcreteElementB{
 		
 		relations{
-			extend Element;
-		}
-		attributes{
-			public string ciao= "ciao come stai?";
-			int = 10.776;
+			realize visitor.Element;
 		}
 		methods{
-			public Accept(
-				Visitor Visitor
-			);			
-			public OperationB(
-			);
+			public Accept(Visitor Visitor);			
+			public OperationB();
 		}
 	}
 }

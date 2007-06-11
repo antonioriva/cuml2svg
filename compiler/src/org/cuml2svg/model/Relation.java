@@ -160,6 +160,10 @@ public class Relation implements Renderable {
 				}
 				if(cardinalities.size() > 0) {
 					context.put("cardinality", this.cardinalities);
+				}else{
+					ArrayList<String> c = new ArrayList<String>();
+					c.add("");c.add("");c.add("");
+					context.put("cardinality", c);
 				}
 				template = Velocity.getTemplate(RELATION_TEMPLATE);
 				template.merge(context, writer);
