@@ -326,7 +326,7 @@ TOKEN:{
 
 TOKEN:{<PACKAGE: "package">: PACKAGE_STATE}
 <PACKAGE_STATE> SKIP:{< ("//" (~["\n"])* ) > |" "|"\r"|"\t"|	"\n"}
-<PACKAGE_STATE> TOKEN:{<PACKAGE_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*	("."(["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*)+> :DEFAULT}
+<PACKAGE_STATE> TOKEN:{<PACKAGE_NAME: (["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*	("."(["a"-"z" , "A"-"Z" ])( ["0" - "9", "a"-"z" , "A" - "Z" , "_"] )*)*> :DEFAULT}
 
 
 //riconosce i nomi delle classi come CLASS_NAME
@@ -636,6 +636,7 @@ void relations(Class currentDefinition):{}{
 ///relation -> COMMENT? RELATION_TYPE (RELATION_CLASS_NAME | RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality? (RELATION_COMMA (RELATION_CLASS_NAME|RELATION_CLASS_NAME_WITH_PACKAGE) relation_cardinality?)* RELATION_END
 void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation rel;}{
 	{
+		cards= new String[]{"","",""};
 	}
 	(<COMMENT>)? t=<RELATION_TYPE> 
 	((r=<RELATION_CLASS_NAME>)|(r=<RELATION_CLASS_NAME_WITH_PACKAGE>))
@@ -649,7 +650,7 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 	
 		//currentDefinition.addRelation(rel);
         declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName,currentDefinition));
-        printNotice("the class "+currentDefinition.getClassName()+" is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
+        printNotice("the class "+currentDefinition.getClassName()+" ("+cards[0]+","+cards[1]+","+cards[2]+") is in relation \""+t.image+ "\" with the class "+r.image,r.beginLine,r.beginColumn);
 		}
 	
 	//lista delle relazioni opzionale
@@ -659,9 +660,8 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 	
 	{rel = new Relation(currentDefinition.getClassName(),r.image,RelationType.valueOf(t.image));}
 	
-	(cards=relation_cardinality() 	
-		{rel.setCardinality(cards);}
-	)? 
+	(cards=relation_cardinality() 	{rel.setCardinality(cards);})? 
+	
 	{	
 		//currentDefinition.addRelation(rel);
      	 declaredRelationList.add(new RelationRef(rel, r.beginLine,r.beginColumn,currentFileName,currentDefinition));
@@ -673,8 +673,8 @@ void relation(Class currentDefinition):{Token r;Token t;String[] cards;Relation 
 
 
 ///relation_cardinality -> CARDINALITY_START CARDINALITY RELATION_CARDINALITY_COMMA 						 				   CARDINALITY RELATION_CARDINALITY_COMMA 										   CARDINALITY CARDINALITY_STOP
-String[] relation_cardinality():{Token card;}{
-	{String[] cards= new String[3];}
+String[] relation_cardinality():{Token card;String[] cards;}{
+	{cards= new String[3];}
 	<CARDINALITY_START>
 	card=<CARDINALITY> {cards[0]=card.image.substring(1,card.image.length()-1); }
 	<RELATION_CARDINALITY_COMMA> card=<CARDINALITY> {cards[1]=card.image.substring(1,card.image.length()-1); } 

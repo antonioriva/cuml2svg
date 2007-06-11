@@ -80,10 +80,11 @@ Questo comando indica di includere tutte le classi del package org.example.
 
 \begin{figure}[htp]
 \begin{center}
-  \includegraphics[width=0.5\textwidth]{img/esempio1.png}
+  \includegraphics[width=0.5\textwidth]{img/esempio1}
   \caption[labelInTOC]{Risultato dell'esportazione del codice dell'esempio 1}
 \end{center}
 \end{figure}
+
 
 \subsection{Un esempio un po' più complesso}
 In questo secondo esempio viene mostrato come includere il file di modello con
@@ -110,7 +111,129 @@ Ecco il risultato dell'esportazione
 
 \begin{figure}[htp]
 \begin{center}
-  \includegraphics[width=0.9\textwidth]{img/esempio2.png}
+  \includegraphics[width=0.9\textwidth]{img/esempio2}
   \caption[labelInTOC]{Risultato dell'esportazione del codice dell'esempio 2}
 \end{center}
 \end{figure}
+
+\subsection{Il pattern Visitor}
+
+Per dimostrare che il sistemaè utilizzabile anche in un ambito reale, procediamo
+ora con l'esempio del pattern Visitor.
+
+\begin{lstlisting}[language=model, caption={Il modello}]
+package visitor{
+	class Client{
+		relations{
+			depend visitor.Visitor("","import","");
+			realize visitor.ObjectStructure;
+		}
+	}
+	interface Visitor{
+		methods{
+			public int VisitConcreteElementA(is ConcreteElementB);
+			public VisitConcreteElementB(ConcreteElementB);
+		}
+	}
+	class ConcreteVisitor1{
+		relations{
+			realize visitor.Visitor;
+		}
+		methods{
+			public VisitConcreteElementA(ConcreteElementA);
+			public VisitConcreteElementB(ConcreteElementB);
+		}
+	}
+	class ConcreteVisitor2{
+		relations{
+			realize visitor.Visitor;
+		}
+		methods{
+			public VisitConcreteElementA(ConcreteElementA);
+			public VisitConcreteElementB(ConcreteElementB);
+		}
+	}
+	class ObjectStructure{
+		relations{
+			depend visitor.Element("","import","");
+		}
+	}
+	class Element{
+		methods{
+			public Accept(Visitor Visitor);
+		}
+	}
+	class ConcreteElementA{
+		relations{
+			realize visitor.Element;
+		}
+		methods{
+			public Accept(Visitor Visitor);
+			public OperationA();
+		}
+	}
+	class ConcreteElementB{		
+		relations{
+			realize visitor.Element;
+		}
+		methods{
+			public Accept(Visitor Visitor);			
+			public OperationB();
+		}
+	}
+}
+\end{lstlisting}
+
+Il layout sfrutta l'alternarsi di disposizione in linea e disposizione in
+colonna per allineare glo oggetti nel diagramma.
+
+\begin{lstlisting}[language=layout, caption={Il Layout}]
+import visitor.u2sm;
+[	
+	@layout *x1
+	[
+		@layout 1x*
+		[
+			@margin 0 150 0 0
+			(class	visitor.Client)
+		]
+		[
+			@layout *x1
+			@margin 0 50 0 0
+			(interface	visitor.Visitor)
+			[
+				@layout 1x*
+				(class	visitor.ConcreteVisitor1)
+				(class	visitor.ConcreteVisitor2)
+			]
+		]
+	]
+	[
+		@layout 1x*
+		@margin 50 0 0 0
+		(class	visitor.ObjectStructure)
+		[
+			@margin 0 0 0 150
+			@layout *x1
+			(class	visitor.Element)
+			[
+				@layout 1x*
+				(class	visitor.ConcreteElementA)
+				(class	visitor.ConcreteElementB)
+			]
+		]
+	]
+]
+\end{lstlisting}
+
+Ed ora l'output generato.
+
+\begin{figure}[htp]
+\begin{center}
+  \includegraphics[angle=90,width=0.5\textwidth]{img/visitor}
+  \caption[labelInTOC]{Risultato dell'esportazione del codice visitor}
+\end{center}
+\end{figure}
+
+
+
