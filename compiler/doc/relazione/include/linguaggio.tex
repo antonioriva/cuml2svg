@@ -1,6 +1,6 @@
 \chapter{Il linguaggio}
 
-Il linguaggio che stiamo proponendo è strutturato in 2 parti, e quindi due tipi di
+Il linguaggio che stiamo proponendo è strutturato in 2 parti e quindi due tipi di
 file, che corrispondono al concetto di modello e layout; non a caso l'estensione
 del primo è u2sm e il secondo è u2sl.
 
@@ -52,12 +52,12 @@ class NomeClasse{
 \end{lstlisting}
 
 E' anche possibile dichiarare delle Interfacce utilizzando la parola chiave
-interface al posto di class. 
+\emph{interface} al posto di \emph{class}. 
 
 \begin{figure}[htp]
 \begin{center}
   \includegraphics[width=0.8\textwidth]{img/class_interface}
-  \caption[labelInTOC]{La visualizzazione di una classe vuota e di
+  \caption[labelInTOC]{Visualizzazione di una classe vuota e di
   un'interfaccia vuota}
 \end{center}
 \end{figure}
@@ -71,7 +71,7 @@ Nella sezione delle relazioni
 viene appunto dichiarata una lista di definizione che contiene il tipo della 
 relazione, una lista di classi (complete di package) 
 con cui creare una relazione del tipo scelto
-per ogni classe 3 parametri opzionali (che possono anche essere vuoti) in cui
+per ogni classe, 3 parametri opzionali (che possono anche essere vuoti) in cui
 il primo parametro e l'ultimo possono essere utilizzati per la definizione delle
 cardinalità, mentre il parametro opzionale può essere utilizzato per definire
 una descrizione della relazione; queste stringhe andranno a posizionarsi sul 
@@ -108,15 +108,17 @@ Di seguito un digramma creato per visualizzare tutti i tipi di relazione.
 
 \subsection{Attributi}
 
-Gli attributi vengono dichiarati come visibilità:
+Gli attributi vengono dichiarati come visibilità, tipo (opzionale), nome
+attributo e valore di default (opzionale); la sintassi è
+quella indicata nell'esempio sottostante.
+
+Dei possibili valori per il campo di visibilità sono:
 \begin{itemize}
-  \item public
-  \item private
-  \item protected
+  \item public;
+  \item private;
+  \item protected.
 \end{itemize}
 
-tipo (opzionale), nome attributo e valore di default (opzionale); la sintassi è
-quella indicata nell'esempio sottostante.
 
 \begin{lstlisting}[caption={Dichiarazione di attributi}, style={model}]
 attributes{
@@ -164,9 +166,9 @@ diagramma.
 Una volta specificato il modello si procede con il disegnare il diagramma
 attraverso la definizione di un file di layout (estensione .u2sl).
 
-Come prima cose bisogna associare al layout i modelli da utilizzare questa
+Come prima cosa bisogna associare al layout i modelli da utilizzare, questa
 operazione si effettua con il comando import; si possono importare più file
-modello, ma devono essere importati come prime righe,altrimenti il compilatore
+modello, ma devono essere importati come prime righe, altrimenti il compilatore
 non sa cosa disegnare. E' possibile che ci sia il caso in cui la stessa classe è
 contenuta in più file modello, la regola è che il primo dichiarato rimane; verrà
 comunque segnalato un errore. Il percorso del file è un percorso relativo
@@ -203,7 +205,7 @@ l'apertura della parentesi che modificano l'aspetto del gruppo o delle classi in
 esso contenute; le proprietà disponibili sono:
 
 \begin{itemize}
-  \item @layout i cui calori possono essere:
+  \item @layout i cui valori possono essere:
   \begin{itemize}
   	\item Nx* dove N è il numero di righe su cui disporre le classi;
   	\item *xN dove N è il numero di colonne su cui disporre le classi;

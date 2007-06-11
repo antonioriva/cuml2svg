@@ -1,6 +1,6 @@
 \section{Implementazione Compilatore}
 
-Il compilatore è stato costruito con l'ausilio di javacc. Essendo il linguaggio
+Il compilatore è stato costruito con l'ausilio di JavaCC\cite{javacc_website:11}\cite{javacc_faq:13}\cite{javacc_lexer:14}. Essendo il linguaggio
 costituito da due tipi di file è stato necessario capire come poter effettuare
 il parsing. La soluzione è stata quella di caricare (al momento della direttiva
 di import) il file al volo e iniziare il parsing del file sospendendo
@@ -8,8 +8,10 @@ quello principale per poi riprenderlo successivamente; si è fatto in modo di
 separare fortemente le due sezioni in modo da poter implementare una
 funzionalità di solo checking (utile per il plugin eclipse).
 
+
 Un aspetto interessante della compilatore è quello di poter definire espressioni
-regolari che funzionano in un particolare STATE; con questo meccanismo è
+regolari che funzionano in un particolare stato\footnote{Nella teminologia
+JavaCC, STATE}\cite{javacc_state:12}; con questa soluzione è
 possibile utilizzare un meccanismo basato su contesti in cui viene attivato il
 riconoscimento di determinate espressioni regolari solo se è avvenuto il
 riconoscimento di un'altra particolare espressione. In questo modo è molto più
@@ -27,7 +29,7 @@ TOKEN:{
 
 Con questo spezzone di codice si dice che una volta incontrata la parola chiave
 ``import'' si entra in uno stato denominato ``IMPORT\_STATE''; tutto quello che
-c'è dopo fino al ``;'' è da considerarsi come il token FILE\_NAME. Con questo
+c'è dopo, fino al ``;'', è da considerarsi come il token FILE\_NAME. Con questo
 metodo non si devono definire strane meccanismi per fare in modo che un elemento non
 venga riconosciuto come un altro (per il problema della sovrapposizione delle
 espressioni regolari) ma basta indicare l'espressione che meglio si adatta
@@ -69,17 +71,17 @@ Analizzando le opzioni:
   \item -dw,-de,-dn: per non stampare, nell'ordine, messaggi d'attenzione,
   d'errore, di notifica;
   \item -c: per effettuare solo i controllo del file e non generare l'output;
-  \item -i: il file di input da processare (obbligatorio);
-  \item -o: il file di output da processare (obbligatorio solo se non è presente
-  -c);
-  \item -t: è il percorso ai file di template per la generazione dell'svg, poter
+  \item -i: percorso del file di input da processare (obbligatorio);
+  \item -o: percorso del file di output da processare (obbligatorio solo se non
+  è presente -c);
+  \item -t: è il percorso ai file di template per la generazione dell'SVG, poter
   indicare dove sono questi file permette ad un utente avanzato di intervenire
   su questi file ed effettuare cambiamenti estetici alla visualizzazione del
   diagramma; se non indicato punta alla cartella ``./templates''.
 \end{itemize} 
 
 L'esecuzione del compilatore necessità anche di alcune librerie (utili alla
-gestione dei template e dell'svg); queste librerie devono essere indicate nel
+gestione dei template e dell'SVG); queste librerie devono essere indicate nel
 classpath:
 
 \begin{itemize}

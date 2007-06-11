@@ -25,7 +25,11 @@
     stepnumber=1,
     numberstyle=\footnotesize\color{grayrows},
     numbersep=10pt,
-    firstnumber=1
+    firstnumber=1,
+	gobble=2,
+    tabsize=2,
+	keepspaces=true,
+	xleftmargin=20pt,
 }
 
 \lstdefinelanguage{model}{
@@ -45,7 +49,6 @@ morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
 
 \lstdefinestyle{none}{
 	frame=ltrb,
-	tabsize=2,
 	basicstyle=\small,
 	keywordstyle={\color{blue}\bfseries},
 	identifierstyle=\ttfamily,
@@ -56,7 +59,7 @@ morekeywords={import,class,\@margin,\@hide-args,\@collapse,\@layout}
 	style=num_righe,
 	commentstyle={\color{grayrows}\bfseries},
     morecomment=[l]{//},    morecomment=[l]{\#},
-    morecomment=[s]{/*}{*/}
+    morecomment=[s]{/*}{*/}    
 }
 
 \lstdefinestyle{model}{
