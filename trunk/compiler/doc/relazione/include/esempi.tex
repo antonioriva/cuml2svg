@@ -12,7 +12,7 @@ Il modello dei dati è rappresentato all'interno di files con estensione u2sm.
 Il seguente listato definisce una classe di nome Class1 con un attributo
 pubblico di tipo intero e con valore iniziale pari a 0. La classe ha inoltre un
 metodo pubblico print.
-\begin{lstlisting}[language=model, caption={Semplice esempio di modello}, style={model}]
+\begin{lstlisting}[caption={Semplice esempio di modello}, style={model}]
 package org.example {
   class Classe1 {
     attributes {
@@ -29,7 +29,7 @@ package org.example {
 \subsection{Un esempio un po' più complesso}
 In questo esempio viene mostrato l'uso delle relazioni tra due classi.
 
-\begin{lstlisting}[language=model, caption={Un esempio un po' più complesso}, style={model}, label=model_complex]
+\begin{lstlisting}[caption={Un esempio un po' più complesso}, style={model}]
 package org.example {
   class Classe1 {
     attributes {
@@ -69,7 +69,7 @@ In questo esempio viene mostrato come includere il file di modello con gli
 oggetti da rappresentare e come includerli nel diagramma in output. Si considera
 come input il modello riportato nel listato \ref{model_complex}
 
-\begin{lstlisting}[language=layout, caption={Un semplice esempio}, style={layout}, label=layout_simple]
+\begin{lstlisting}[caption={Un semplice esempio}, style={layout}]
 import example(*\ref{model_complex}*).u2sm;
 [
   (class org.example.*)
@@ -121,7 +121,7 @@ Ecco il risultato dell'esportazione
 Per dimostrare che il sistemaè utilizzabile anche in un ambito reale, procediamo
 ora con l'esempio del pattern Visitor.
 
-\begin{lstlisting}[language=model, caption={Il modello}]
+\begin{lstlisting}[style={model}, caption={Il modello}]
 package visitor{
 	class Client{
 		relations{
@@ -187,7 +187,7 @@ package visitor{
 Il layout sfrutta l'alternarsi di disposizione in linea e disposizione in
 colonna per allineare glo oggetti nel diagramma.
 
-\begin{lstlisting}[language=layout, caption={Il Layout}]
+\begin{lstlisting}[style=layout, caption={Il Layout}]
 import visitor.u2sm;
 [	
 	@layout *x1
