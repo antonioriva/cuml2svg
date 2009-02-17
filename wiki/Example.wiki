@@ -29,16 +29,5 @@ import text.u2sm
     (class org.cc.Class1)
   ]
 ]
-package org.cc{
-  class Class1{
-    attributes{
-      public attribute1;
-      public attribute2;
-    }
-    methods{
-      private method1(int arg1);
-      public method2(void arg);
-    }
-  }
-}
+
 }}}
