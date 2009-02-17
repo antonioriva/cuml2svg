@@ -2,6 +2,8 @@
 = Code example =
 In this page you can see some examples of usage of the cUml code
 
+[http://cuml2svg.googlecode.com/files/relazione.pdf docs]
+
 == Model example ==
 File test.u2sm
 {{{
